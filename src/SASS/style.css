@@ -34,4 +34,60 @@ h2 {
 .seccion2 .cajaProds {
   height: 100vh;
   background-color: aqua;
+}
+
+.carouselCaja {
+  background-color: aquamarine;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#wrapper {
+  width: 100%;
+  position: relative;
+}
+#wrapper #carousel {
+  overflow: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+#wrapper #carousel::-webkit-scrollbar {
+  height: 0;
+}
+#wrapper #prev,
+#wrapper #next {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  border: none;
+  padding: 8px;
+  border-radius: 50%;
+  outline: 0;
+  cursor: pointer;
+  position: absolute;
+}
+#wrapper #prev {
+  top: 50%;
+  left: 0;
+  transform: translate(50%, -50%);
+  display: none;
+}
+#wrapper #next {
+  top: 50%;
+  right: 0;
+  transform: translate(-50%, -50%);
+}
+#wrapper #content {
+  display: grid;
+  grid-gap: 16px;
+  grid-auto-flow: column;
+  margin: auto;
+  box-sizing: border-box;
+}
+#wrapper #content .item {
+  width: 180px;
+  height: 180px;
+  background: green;
 }/*# sourceMappingURL=style.css.map */
