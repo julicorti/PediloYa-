@@ -16,7 +16,7 @@ const CarouselProd = () => {
     const handleNextClick = (e) => {
       carousel.scrollBy({
         left: width + gap,
-        behavior: "smooth" // Desplazamiento suave al hacer clic en el botón next
+        behavior: "smooth" 
       });
       if (carousel.scrollWidth !== 0) {
         prev.style.display = "flex";
@@ -29,7 +29,7 @@ const CarouselProd = () => {
     const handlePrevClick = (e) => {
       carousel.scrollBy({
         left: -(width + gap),
-        behavior: "smooth" // Desplazamiento suave al hacer clic en el botón prev
+        behavior: "smooth" 
       });
       if (carousel.scrollLeft - width - gap <= 0) {
         prev.style.display = "none";

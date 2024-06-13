@@ -1,0 +1,45 @@
+
+.seccionProd{
+    height: 50vh;
+    width: 100%;
+    background-color: #b89393;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    
+    .cartaSeccion{
+        
+        height: 250px;
+        width: 300px;
+        border-radius: 15px;
+        background-size: cover; /* Para cubrir todo el contenedor */
+        background-position: center; /* Para centrar la imagen */
+        display: flex;
+        flex-direction: column;
+        background-color: rgb(223, 223, 223);
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(4px);
+        transition: all 400ms ease;
+        h1{
+            font-size: 20px;
+
+        }
+        img{
+            border-radius: 15px;
+
+        }
+        &:hover{
+            box-shadow: 5px 5px 20px grey;
+            transform: translateY(-3%);
+        }
+        &::before{
+            content: "";
+            inset: 0;
+            z-index: -1;
+            position: absolute;
+            backdrop-filter: blur(4px);
+        }
+    }
+  }
