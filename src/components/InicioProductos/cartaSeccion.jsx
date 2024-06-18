@@ -3,7 +3,7 @@ import "../../SASS/style.css";
 
 const cartaSeccion = ({ nombre, img }) => {
     return (
-        <div className="seccionProd">
+        <div >
 
 
             <div className="cartaSeccion">

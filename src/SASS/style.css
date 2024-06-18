@@ -21,7 +21,7 @@ h2 {
 .seccion2 .carouselProds {
   width: 100%;
   height: 70vh;
-  background-color: rgb(236, 236, 236);
+  background-color: rgb(247, 244, 244);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -37,7 +37,7 @@ h2 {
 }
 
 .carouselCaja {
-  background-color: rgb(221, 221, 221);
+  background-color: rgb(233, 233, 233);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -86,6 +86,9 @@ h2 {
   grid-auto-flow: column;
   margin: auto;
   box-sizing: border-box;
+  background-size: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 #wrapper #content .item {
   width: 180px;
@@ -94,20 +97,32 @@ h2 {
 }
 
 .seccionProd {
-  height: 50vh;
+  height: 100vh;
   width: 100%;
-  background-color: #b89393;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+.seccionProd .cajaProds {
+  height: 90vh;
+  width: 90vw;
+  background-color: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow-y: hidden;
   flex-wrap: wrap;
+  gap: 15px;
 }
-.seccionProd .cartaSeccion {
+.seccionProd .cajaProds .cartaSeccion {
   height: 250px;
   width: 300px;
   border-radius: 15px;
-  background-size: cover; /* Para cubrir todo el contenedor */
-  background-position: center; /* Para centrar la imagen */
+  background-size: cover;
+  background-position: center;
   display: flex;
   flex-direction: column;
   background-color: rgb(223, 223, 223);
@@ -117,17 +132,19 @@ h2 {
           backdrop-filter: blur(4px);
   transition: all 400ms ease;
 }
-.seccionProd .cartaSeccion h1 {
+.seccionProd .cajaProds .cartaSeccion h1 {
   font-size: 20px;
 }
-.seccionProd .cartaSeccion img {
+.seccionProd .cajaProds .cartaSeccion img {
   border-radius: 15px;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
-.seccionProd .cartaSeccion:hover {
+.seccionProd .cajaProds .cartaSeccion:hover {
   box-shadow: 5px 5px 20px grey;
   transform: translateY(-3%);
 }
-.seccionProd .cartaSeccion::before {
+.seccionProd .cajaProds .cartaSeccion::before {
   content: "";
   inset: 0;
   z-index: -1;
