@@ -17,12 +17,12 @@ const Carousel = () => {
           <div className="blur-md hidden duration-700 ease-in-out" data-carousel-item>
             <img
               src={image2}
-              className="absolute block w-full h-full object-cover"
+              className="absolute block w-full h-full object-cover "
               alt="..."
             />
             <div className="absolute inset-0 flex items-center justify-center text-white">
               <div className="text-center">
-                <h2 className="font-bold ">Buffet</h2>
+                <h2 className="font-bold">Buffet</h2>
                 <p className="text-lg">Tenemos los precios más baratos</p>
               </div>
             </div>
