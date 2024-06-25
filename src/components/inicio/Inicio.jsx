@@ -2,7 +2,7 @@ import React from "react";
 import NavBar from "./NavBar";
 import "../../SASS/style.css";
 import Carousel from "./Carousel";
-import CartaSeccion from "../InicioProductos/CartaSeccion";
+import CartaSeccion from '../InicioProductos/cartaSeccion'
 import img1 from "../../img/comida/medialuna.webp";
 import img2 from "../../img/comida/pizza.webp";
 import img3 from "../../img/comida/cocacola.webp";
