@@ -1,5 +1,6 @@
 .pag {
     height: 100vh;
+    width: 100%;
     background-color: rgb(250, 250, 250);
     display: flex;
     justify-content: center;
@@ -7,7 +8,6 @@
     .cajaProductos {
         height: 70vh;
         flex-wrap: wrap;
-        width: 100%;
         display: flex;
 
         justify-content: center;
@@ -20,7 +20,7 @@
             background-color: rgb(202, 202, 202);
             border-radius: 10px;
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
             align-items: center;
             flex-direction: column;
             transition: width 0.3s ease, height 0.3s ease, box-shadow 0.3s ease; // Agrega box-shadow a la transición
@@ -32,36 +32,48 @@
             }
           
           
-            a {
-                height: 50px;
-                width: 150px;
-                background-color: black;
-                color: white;
-                text-align: center;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 20px;
-                font-size: 15px;
-            }
+           
             .contenido {
-                width: 95%;
                 height: 100%;
+                width: 90%;
                 display: flex;
-                justify-content: space-between;
+                justify-content: space-around;
                 flex-direction: row;
                 align-items: center;
                 .contenido2 {
                     height: 100%;
+                    width: 100%;
                     display: flex;
-                    justify-content: space-evenly;
+                    justify-content: center;
                     flex-direction: column;
+
                 }
+
                 h2 {
                     font-size: 15px;
                 }
                 p {
-                    font-size: 15px;
+                    font-size: 10px;
+                }
+                .contenido3{
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    justify-content: space-evenly;
+                    align-items: center;
+                    flex-direction: column;
+                    a {
+                        height: 40px;
+                        width: 100%;
+                        background-color: black;
+                        color: white;
+                        text-align: center;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 20px;
+                        font-size: 14px;
+                    }
                 }
             }
             h1 {

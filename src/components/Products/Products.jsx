@@ -1,16 +1,17 @@
 import "../../SASS/style.css";
-import CartaProducts from "./CartaProducts";
 import img1 from '../../img/comida/PASTAFROLA.jpg';
+import CartaPrueba from './cartaPrueba';
 const Products = () => {
     return (
         <div className="pag">
+            <h1>Productos</h1>
             <div className="cajaProductos">
-            <CartaProducts nombre="Pastafrola" price="$20.5" img={img1} desc="Pastafrola de membrillo"/>
-            <CartaProducts nombre="Pastafrola" price="$20.5" img={img1} desc="Pastafrola de membrillo"/>
-
-            <CartaProducts nombre="Pastafrola" price="$20.5" img={img1} desc="Pastafrola de membrillo"/>
-
-            <CartaProducts nombre="Pastafrola" price="$20.5" img={img1} desc="Pastafrola de membrillo" stock='50'/>
+           
+           <CartaPrueba nombre='Pastafrola' img={img1} stock="50" precio="50" desc="Pastafrola de membrillo"/>
+           <CartaPrueba nombre='Pastafrola' img={img1} stock="50" precio="50" desc="Pastafrola de membrillo"/>
+           <CartaPrueba nombre='Pastafrola' img={img1} stock="50" precio="50" desc="Pastafrola de membrillo"/>
+           <CartaPrueba nombre='Pastafrola' img={img1} stock="50" precio="50" desc="Pastafrola de membrillo"/>
+           <CartaPrueba nombre='Pastafrola' img={img1} stock="50" precio="50" desc="Pastafrola de membrillo"/>
 
 
 
