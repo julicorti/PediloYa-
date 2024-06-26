@@ -1,13 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap');
+
 .pag {
   height: 100vh;
   width: 100%;
   background-color: rgb(250, 250, 250);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  
+
+
+  h1 {
+    padding-left: 30px;
+    margin: 0;
+     margin-top: 40px;
+    /* Elimina el margen predeterminado del h1 */
+    align-self: flex-start;
+    font-family: "Heebo", sans-serif;
+
+    font-size: 40px;
+  }
+
   .cajaProductos {
+     margin-top: 30px;
     height: 70vh;
     flex-wrap: wrap;
     display: flex;
@@ -16,11 +29,13 @@
     align-items: center;
     flex-direction: row;
     gap: 20px;
+
     .card {
       overflow: visible;
-      width: 190px;
-      height: 254px;
-      margin-bottom: 20px; /* Espacio entre las cartas en pantallas grandes */
+      width: 250px;
+      height: 300px;
+      margin-bottom: 20px;
+      /* Espacio entre las cartas en pantallas grandes */
 
       .content {
         width: 100%;
@@ -54,15 +69,13 @@
           display: block;
           width: 160px;
           height: 160%;
-          background: linear-gradient(
-            90deg,
-            transparent,
-            #ff9966,
-            #ff9966,
-            #ff9966,
-            #ff9966,
-            transparent
-          );
+          background: linear-gradient(90deg,
+              transparent,
+              #ff9966,
+              #ff9966,
+              #ff9966,
+              #ff9966,
+              transparent);
           animation: rotation_481 5000ms infinite linear;
         }
 
@@ -98,6 +111,10 @@
           flex-direction: column;
           justify-content: space-between;
 
+          a {
+            font-size: 20px;
+          }
+
           .badge {
             background-color: #00000055;
             padding: 2px 10px;
@@ -121,6 +138,7 @@
               justify-content: space-between;
 
               p {
+                font-size: 15px;
                 width: 50%;
               }
             }
@@ -128,7 +146,7 @@
             .card-footer {
               color: #ffffff88;
               margin-top: 5px;
-              font-size: 8px;
+              font-size: 13px;
             }
           }
         }
@@ -170,102 +188,120 @@
         }
       }
 
-      /* Media Query para dispositivos móviles */
     }
   }
 }
+
 @media (max-width: 600px) {
-    
-    
+  .pag{
    
-    .cajaProductos {
-        flex-direction: column;
-        align-items: center;
-        padding: 10px;
+    h1{
+      margin-top: 80px;
+    }
+  }
+  .cajaProductos {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+
+  }
+
+
+  .card {
+    width: 90%;
+    /* Ajusta el ancho al 90% del contenedor */
+    max-width: 400px;
+    /* Define un ancho máximo para las cartas */
+    height: auto;
+    /* Ajusta la altura automáticamente */
+    margin-bottom: 20px;
+    /* Espacio entre las cartas */
+    box-shadow: 0px 0px 15px 2px #000000ee;
+    /* Aumenta la sombra */
+
+    .content {
+      box-shadow: 0px 0px 15px 2px #000000ee;
+      /* Aumenta la sombra */
+      border-radius: 10px;
     }
 
-    .card {
-        width: 90%; /* Ajusta el ancho al 90% del contenedor */
-        max-width: 400px; /* Define un ancho máximo para las cartas */
-        height: auto; /* Ajusta la altura automáticamente */
-        margin-bottom: 20px; /* Espacio entre las cartas */
-        box-shadow: 0px 0px 15px 2px #000000ee; /* Aumenta la sombra */
-
-        .content {
-            box-shadow: 0px 0px 15px 2px #000000ee; /* Aumenta la sombra */
-            border-radius: 10px;
-        }
-
-        .back, .front {
-            height: 100%;
-            border-radius: 10px;
-        }
-
-        .back-content {
-            padding: 20px; /* Ajusta el padding */
-        }
-
-        .front-content {
-            padding: 20px; /* Ajusta el padding */
-            
-            .badge {
-                background-color: #00000055;
-                padding: 5px 15px; /* Aumenta el padding */
-                border-radius: 10px;
-                backdrop-filter: blur(2px);
-                width: fit-content;
-            }
-            
-            .description {
-                box-shadow: 0px 0px 10px 5px #00000088;
-                padding: 15px;
-                background-color: #00000099;
-                backdrop-filter: blur(5px);
-                border-radius: 10px;
-
-                .title {
-                    font-size: 14px; /* Aumenta el tamaño del texto */
-                    display: flex;
-                    justify-content: space-between;
-                }
-                .card-footer {
-                    color: #ffffff88;
-                    margin-top: 10px;
-                    font-size: 12px; /* Aumenta el tamaño del texto */
-                }
-            }
-        }
-
-        .img {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            .circle {
-                width: 100px;
-                height: 100px;
-                border-radius: 50%;
-                background-color: #ffbb66;
-                filter: blur(15px);
-                animation: floating 2600ms infinite linear;
-            }
-
-            #bottom {
-                background-color: #ff8866;
-                width: 150px;
-                height: 150px;
-                animation-delay: -800ms;
-            }
-
-            #right {
-                background-color: #ff2233;
-                width: 30px;
-                height: 30px;
-                animation-delay: -1800ms;
-            }
-        }
+    .back,
+    .front {
+      height: 100%;
+      border-radius: 10px;
     }
+
+    .back-content {
+      padding: 20px;
+      /* Ajusta el padding */
+    }
+
+    .front-content {
+      padding: 20px;
+      /* Ajusta el padding */
+
+      .badge {
+        background-color: #00000055;
+        padding: 5px 15px;
+        /* Aumenta el padding */
+        border-radius: 10px;
+        backdrop-filter: blur(2px);
+        width: fit-content;
+      }
+
+      .description {
+        box-shadow: 0px 0px 10px 5px #00000088;
+        padding: 15px;
+        background-color: #00000099;
+        backdrop-filter: blur(5px);
+        border-radius: 10px;
+
+        .title {
+          font-size: 14px;
+          /* Aumenta el tamaño del texto */
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .card-footer {
+          color: #ffffff88;
+          margin-top: 10px;
+          font-size: 12px;
+          /* Aumenta el tamaño del texto */
+        }
+      }
+    }
+
+    .img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .circle {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background-color: #ffbb66;
+        filter: blur(15px);
+        animation: floating 2600ms infinite linear;
+      }
+
+      #bottom {
+        background-color: #ff8866;
+        width: 150px;
+        height: 150px;
+        animation-delay: -800ms;
+      }
+
+      #right {
+        background-color: #ff2233;
+        width: 30px;
+        height: 30px;
+        animation-delay: -1800ms;
+      }
+    }
+  }
 }
