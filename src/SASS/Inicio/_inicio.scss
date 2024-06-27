@@ -9,3 +9,44 @@
         width: 20vw;
     }
 }
+/* Estilo para el modo claro */
+.main-content {
+    background-color: #ffffff;
+    color: #000000;
+    /* Estilo para el modo oscuro */
+    .dark  {
+      background-color: #333333;
+      color: #ffffff;
+    }
+  }
+  
+  .mode-button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .mode-button.dark {
+    transform: rotate(180deg);
+  }
+  
+  .mode-button.light {
+    transform: rotate(0deg);
+  }
+  
+  .sun-icon,
+  .moon-icon {
+    font-size: 1.5rem; /* Ajusta el tamaño según sea necesario */
+    transition: transform 0.3s ease, color 0.3s ease; /* Agrega transición para el color */
+  }
+  
+  .dark-sun {
+    color: #FFD700; /* Color dorado para el sol en modo oscuro */
+  }
+  
+  .mode-button.dark .sun-icon {
+    transform: rotate(180deg);
+  }
+  

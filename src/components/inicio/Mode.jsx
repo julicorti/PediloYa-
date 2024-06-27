@@ -5,12 +5,14 @@ const Mode = () => {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
+    // Verifica el estado guardado en localStorage para el modo oscuro
     if (localStorage.getItem('dark-mode') === 'enabled') {
       setDarkMode(true);
       document.documentElement.classList.add('dark');
     }
   }, []);
 
+  // Función para cambiar entre modos claro y oscuro
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
     if (!darkMode) {
@@ -23,12 +25,12 @@ const Mode = () => {
   };
 
   return (
-    <div className="relative inline-block w-12 h-6 bg-gray-200 dark:bg-gray-800 rounded-full">
+    <div className="mode-switch">
       <button
         onClick={toggleDarkMode}
-        className={`absolute top-0 left-0 w-6 h-6 bg-white rounded-full transform transition-transform ${darkMode ? 'translate-x-6' : 'translate-x-0'} flex items-center justify-center`}
+        className={`mode-button ${darkMode ? 'dark' : 'light'}`}
       >
-        {darkMode ? <FaSun className="text-yellow-500" /> : <FaMoon className="text-gray-900 dark:text-gray-200" />}
+        {darkMode ? <FaSun className="sun-icon dark-sun" /> : <FaMoon className="moon-icon" />}
       </button>
     </div>
   );

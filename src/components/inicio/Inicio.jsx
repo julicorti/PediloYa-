@@ -8,9 +8,31 @@ import img2 from "../../img/comida/pizza.webp";
 import img3 from "../../img/comida/cocacola.webp";
 import img4 from "../../img/comida/rapsodia.png";
 import Footer from "./Footer";
+import { useState, useEffect  } from "react";
 const Inicio = () => {
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    // Verifica el estado guardado en localStorage para el modo oscuro
+    if (localStorage.getItem('dark-mode') === 'enabled') {
+      setDarkMode(true);
+      document.documentElement.classList.add('dark');
+    }
+  }, []);
+
+  // Función para cambiar entre modos claro y oscuro
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+    if (!darkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('dark-mode', 'enabled');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('dark-mode', 'disabled');
+    }
+  };
   return (
-    <div>
+    <div className={`main-content ${darkMode ? 'dark' : 'light'}`}>
 
       <div className="pagina">
         <Carousel />

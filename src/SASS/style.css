@@ -12,6 +12,47 @@
   width: 20vw;
 }
 
+/* Estilo para el modo claro */
+.main-content {
+  background-color: #ffffff;
+  color: #000000;
+  /* Estilo para el modo oscuro */
+}
+.main-content .dark {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+.mode-button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.mode-button.dark {
+  transform: rotate(180deg);
+}
+
+.mode-button.light {
+  transform: rotate(0deg);
+}
+
+.sun-icon,
+.moon-icon {
+  font-size: 1.5rem; /* Ajusta el tamaño según sea necesario */
+  transition: transform 0.3s ease, color 0.3s ease; /* Agrega transición para el color */
+}
+
+.dark-sun {
+  color: #FFD700; /* Color dorado para el sol en modo oscuro */
+}
+
+.mode-button.dark .sun-icon {
+  transform: rotate(180deg);
+}
+
 h2 {
   font-size: 100px;
 }
@@ -129,8 +170,8 @@ h2 {
   justify-content: center;
   align-items: center;
 }
-.pag .cajaProductos {
-  height: 70vh;
+.pag .cajaProds {
+  height: 90vh;
   flex-wrap: wrap;
   display: flex;
   justify-content: center;
@@ -138,7 +179,7 @@ h2 {
   flex-direction: row;
   gap: 20px;
 }
-.pag .cajaProductos .carta {
+.pag .cajaProds .carta {
   height: 300px;
   width: 300px;
   background-color: rgb(202, 202, 202);
@@ -149,12 +190,12 @@ h2 {
   flex-direction: column;
   transition: width 0.3s ease, height 0.3s ease, box-shadow 0.3s ease;
 }
-.pag .cajaProductos .carta:hover {
+.pag .cajaProds .carta:hover {
   width: 330px;
   height: 330px;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
 }
-.pag .cajaProductos .carta .contenido {
+.pag .cajaProds .carta .contenido {
   height: 100%;
   width: 90%;
   display: flex;
@@ -162,20 +203,20 @@ h2 {
   flex-direction: row;
   align-items: center;
 }
-.pag .cajaProductos .carta .contenido .contenido2 {
+.pag .cajaProds .carta .contenido .contenido2 {
   height: 100%;
   width: 100%;
   display: flex;
   justify-content: center;
   flex-direction: column;
 }
-.pag .cajaProductos .carta .contenido h2 {
+.pag .cajaProds .carta .contenido h2 {
   font-size: 15px;
 }
-.pag .cajaProductos .carta .contenido p {
+.pag .cajaProds .carta .contenido p {
   font-size: 10px;
 }
-.pag .cajaProductos .carta .contenido .contenido3 {
+.pag .cajaProds .carta .contenido .contenido3 {
   width: 100%;
   height: 100%;
   display: flex;
@@ -183,7 +224,7 @@ h2 {
   align-items: center;
   flex-direction: column;
 }
-.pag .cajaProductos .carta .contenido .contenido3 a {
+.pag .cajaProds .carta .contenido .contenido3 a {
   height: 40px;
   width: 100%;
   background-color: black;
@@ -195,7 +236,7 @@ h2 {
   border-radius: 20px;
   font-size: 14px;
 }
-.pag .cajaProductos .carta h1 {
+.pag .cajaProds .carta h1 {
   font-size: 30px;
 }
 
@@ -217,7 +258,7 @@ h2 {
 }
 .pag .cajaProductos {
   margin-top: 30px;
-  height: 70vh;
+  height: 80vh;
   flex-wrap: wrap;
   display: flex;
   justify-content: center;
