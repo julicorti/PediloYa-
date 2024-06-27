@@ -39,7 +39,7 @@ const Inicio = () => {
       </div>
       <div className="seccion2">
         <div className="seccionProd">
-          <div className="cajaProds">
+          <div className={`cajaProds ${darkMode ? 'dark' : 'light'}`}>
             <CartaSeccion
               nombre={"¡Desayuno/Merienda!"}
               img={img1}
