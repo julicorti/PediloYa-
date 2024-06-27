@@ -6,18 +6,19 @@ import Products from "./components/Products/Products";
 function App() {
   return (
     <Router>
-           
-                <NavBar />
-            
-                <Routes>
-                    <Route path="/" exact element={<Inicio />} />
-                    <Route path="/desayuno" element={<Products />} />
-                    <Route path="/almuerzo" element={<Products />} />
-                    <Route path="/bebidas" element={<Products />} />
-                    <Route path="/golosinas" element={<Products />} />
-                </Routes>
-          
-        </Router>
+
+      <NavBar />
+
+      <Routes>
+        <Route path="/" exact element={<Inicio />} />
+        <Route path="/desayuno" element={<Products />} />
+        <Route path="/almuerzo" element={<Products />} />
+        <Route path="/bebidas" element={<Products />} />
+        <Route path="/golosinas" element={<Products />} />
+      
+      </Routes>
+
+    </Router>
   );
 }
 

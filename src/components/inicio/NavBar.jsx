@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import logo from "../../img/logo.png";
 import Mode from "./Mode";
 import "../../SASS/style.css";
-
+import { Link } from "react-router-dom";
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -67,28 +67,28 @@ const NavBar = () => {
               </a>
             </li>
             <li>
-              <a
+              <Link to="/productos"><a
                 href="#"
                 className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
               >
                 Productos
-              </a>
+              </a></Link>
             </li>
             <li>
-              <a
+            <Link to="/menu"><a
                 href="#"
                 className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
               >
                 Menu del día
-              </a>
+              </a></Link>
             </li>
             <li>
-              <a
+            <Link to="/sobrenosotros"><a
                 href="#"
                 className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
               >
                 Sobre nosotros
-              </a>
+              </a></Link>
             </li>
           </ul>
         </div>
