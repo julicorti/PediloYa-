@@ -8,7 +8,7 @@
   flex-wrap: wrap;
   flex-direction: row;
   .cajaProds {
-    height: 70vh;
+    height: 90vh;
     width: 100%;
     background-color: #ffffff;
     
@@ -17,11 +17,7 @@
     align-items: center;
     overflow-y: hidden;
     flex-wrap: wrap;
-    gap: 15px;
-    .dark {
-      background-color: #333333;
-      color: #ffffff;
-    }
+
     .cartaSeccion {
       height: 500px;
       width: 600px;
@@ -63,6 +59,10 @@
           font-weight: 700;
           margin-top: 10px;
           font-weight: bold;
+          color: black;
+        }
+        p{
+          color: black;
         }
         a {
           display: flex;

@@ -35,7 +35,7 @@ const CartaPrueba = ({nombre, stock, precio, img, desc}) =>{
                     </svg>
                   </div>
                   <p className="card-footer">
-                    Precio: {precio} | stock: {stock}
+                    Precio: {precio} | Stock: {stock}
                   </p>
                 </div>
               </div>

@@ -13,8 +13,8 @@ const Carousel = () => {
         className="relative w-full h-full overflow-hidden"
         data-carousel="slide"
       >
-        <div className="relative h-full overflow-hidden rounded-lg">
-          <div className="blur-md hidden duration-700 ease-in-out" data-carousel-item>
+        <div className="relative h-full overflow-hidden rounded-lg" id='secImg'>
+          <div className="blur-md hidden duration-700 ease-in-out" data-carousel-item >
             <img
               src={image2}
               className="absolute block w-full h-full object-cover "
@@ -28,13 +28,13 @@ const Carousel = () => {
             </div>
           </div>
 
-          <div className="hidden duration-700 ease-in-out" data-carousel-item>
+          <div className="hidden duration-700 ease-in-out" data-carousel-item id='secImg'>
             <img
               src={image3}
               className="absolute block w-full h-full object-cover blur-lg"
               alt="..."
             />
-            <div className="absolute inset-0 flex items-center justify-center text-white">
+            <div className="absolute inset-0 flex items-center justify-center text-white" >
               <div className="text-center">
                 <h2 className="font-bold">Buffet</h2>
                 <p className="text-lg">Tenemos los precios más baratos</p>
@@ -42,7 +42,7 @@ const Carousel = () => {
             </div>
           </div>
 
-          <div className="hidden duration-700 ease-in-out" data-carousel-item>
+          <div className="hidden duration-700 ease-in-out" data-carousel-item id='secImg'>
             <img
               src={image4}
               className="absolute block w-full h-full object-cover blur-lg"
@@ -56,7 +56,7 @@ const Carousel = () => {
             </div>
           </div>
 
-          <div className="hidden duration-700 ease-in-out" data-carousel-item>
+          <div className="hidden duration-700 ease-in-out" data-carousel-item id='secImg'>
             <img
               src={image5}
               className="absolute block w-full h-full object-cover blur-lg"
@@ -70,7 +70,7 @@ const Carousel = () => {
             </div>
           </div>
 
-          <div className="hidden duration-700 ease-in-out" data-carousel-item>
+          <div className="hidden duration-700 ease-in-out" data-carousel-item id='secImg'>
             <img
               src={image6}
               className="absolute block w-full h-full object-cover blur-lg"
