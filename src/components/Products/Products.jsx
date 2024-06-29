@@ -1,27 +1,26 @@
 import "../../SASS/style.css";
 import img1 from '../../img/comida/PASTAFROLA.jpg';
-import CartaPrueba from './cartaPrueba';
+import Producto from "./producto";
 const Products = () => {
     return (
         <div className="pag">
+        <div className="tex">
+            <h1>Productos</h1> 
 
-            <h1>Productos</h1>
+        </div>
+
+  
 
 
             <div className="cajaProductos">
 
-                <CartaPrueba nombre='Pastafrola' img={img1} stock="50" precio="50" desc="Pastafrola de membrillo" />
-                <CartaPrueba nombre='Pastafrola' img={img1} stock="50" precio="50" desc="Pastafrola de membrillo" />
-                <CartaPrueba nombre='Pastafrola' img={img1} stock="50" precio="50" desc="Pastafrola de membrillo" />
-                <CartaPrueba nombre='Pastafrola' img={img1} stock="50" precio="50" desc="Pastafrola de membrillo" />
-                <CartaPrueba nombre='Pastafrola' img={img1} stock="50" precio="50" desc="Pastafrola de membrillo" />
-                <CartaPrueba nombre='Pastafrola' img={img1} stock="50" precio="50" desc="Pastafrola de membrillo" />
-                <CartaPrueba nombre='Pastafrola' img={img1} stock="50" precio="50" desc="Pastafrola de membrillo" />
-                <CartaPrueba nombre='Pastafrola' img={img1} stock="50" precio="50" desc="Pastafrola de membrillo" />
-                <CartaPrueba nombre='Pastafrola' img={img1} stock="50" precio="50" desc="Pastafrola de membrillo" />
-                <CartaPrueba nombre='Pastafrola' img={img1} stock="50" precio="50" desc="Pastafrola de membrillo" />
-
-
+     
+                <Producto img={img1} nombre="Pastafrola" desc="Pastafrola de membrillo" precio="$90.05"/>
+                <Producto img={img1} nombre="Pastafrola" desc="Pastafrola de membrillo" precio="$90.05"/>
+                <Producto img={img1} nombre="Pastafrola" desc="Pastafrola de membrillo" precio="$90.05"/>
+                <Producto img={img1} nombre="Pastafrola" desc="Pastafrola de membrillo" precio="$90.05"/>
+                <Producto img={img1} nombre="Pastafrola" desc="Pastafrola de membrillo" precio="$90.05"/>
+                <Producto img={img1} nombre="Pastafrola" desc="Pastafrola de membrillo" precio="$90.05"/>
 
             </div>
         </div>

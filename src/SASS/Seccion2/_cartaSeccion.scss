@@ -1,84 +1,122 @@
 .seccionProd {
   height: 100vh;
   width: 100%;
-  background-color: #ffffff;
+  background-color: #ffffff80;
   display: flex;
   justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
   flex-direction: row;
+  .dark {
+    background-color: #333333;
+    color: #ffffff;
+  }
   .cajaProds {
-    height: 90vh;
-    width: 100%;
-    background-color: #ffffff;
-    
+    height: 100%;
+    width: 80%;
+    background-color: #ffffff80;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-evenly;
     overflow-y: hidden;
     flex-wrap: wrap;
+    flex-direction: row;
 
     .cartaSeccion {
-      height: 500px;
-      width: 600px;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;      position: relative;
+      height: 250px;
+      width: 250px; // Ajustado para que sea más similar a la imagen de referencia
       background-size: cover;
       background-position: center;
       display: flex;
+      margin-top: 40px;
       flex-direction: column;
-      background-color: rgb(255, 255, 255);
-      justify-content: flex-start;
+      background-color: #fdfdfd;
+      justify-content: center;
       align-items: center;
-      backdrop-filter: blur(4px);
+
       transition: all 400ms ease;
-      box-shadow: 6px 0px 77px -3px rgba(0, 0, 0, 0.1);
-      h1 {
-        font-size: 20px;
-      }
+      border-radius:20px ;
 
-      img {
-        width: 100%;
-        height: 50%;
-        object-fit: cover;
-      }
+      
+        img {
+          width: 80%;
+          border-radius:20px ;
+          height: 150px; // Ajustado para que la imagen ocupe la mitad superior de la carta
+          object-fit: contain;
+        background-color: #ffffff;
+         
+        }
 
-      &::before {
-        content: "";
-        inset: 0;
-        z-index: -1;
-        position: absolute;
-        backdrop-filter: blur(4px);
-      }
+
       .contenido {
         display: flex;
-        justify-content: space-evenly;
-        height: 100%;
+        justify-content: center;
         align-items: center;
         flex-direction: column;
+        padding: 10px;
+        text-align: center;
+
         h1 {
-          font-size: 30px;
-          font-weight: 700;
-          margin-top: 10px;
+          font-size: 14px; // Ajustado para que sea más pequeño
           font-weight: bold;
           color: black;
         }
-        p{
+
+        p {
+          font-size: 10px; // Ajustado para que sea más pequeño
           color: black;
+          margin: 5px 0;
         }
+
         a {
           display: flex;
           justify-content: center;
           align-items: center;
           background-color: rgb(0, 0, 0);
           color: white;
-          height: 40px;
-          width: 200px;
+          height: 30px; // Ajustado para que sea más pequeño
+          width:100px; // Ajustado para que sea más pequeño
           text-align: center;
-          border-radius: 20px;
+          border-radius: 15px;
+          text-decoration: none;
           transition: 500ms ease;
-          &:hover{
+          margin-top: 10px;
+
+          &:hover {
             box-shadow: 0px 0px 5px black;
             scale: 1.02;
-           
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .seccionProd {
+    .cajaProds {
+      .carta-container {
+        .cartaSeccion {
+          width: 100px; // Ajustado para que se vea bien en móviles
+          height: 100px; // Ajustado para que se vea bien en móviles
+          
+          img {
+            height: 50px; // Ajustado para que la imagen ocupe la mitad superior de la carta
+          }
+
+          .contenido {
+            h1 {
+              font-size: 12px; // Ajustado para que sea más pequeño
+            }
+
+            p {
+              font-size: 8px; // Ajustado para que sea más pequeño
+            }
+
+            a {
+              height: 20px; // Ajustado para que sea más pequeño
+              width: 80px; // Ajustado para que sea más pequeño
+            }
           }
         }
       }

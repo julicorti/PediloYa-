@@ -14,7 +14,7 @@ const NavBar = () => {
     <nav className="bg-white border-gray-200 dark:bg-gray-900 fixed top-0 left-0 w-full z-50">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4" id="navBar">
         <a href="#" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <img src={logo} className="h-8 rounded-lg" alt="Logo" />
+          <Link to="/"><img src={logo} className="h-8 rounded-lg" alt="Logo" /></Link>
           <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
             Pedilo Ya!
           </span>
