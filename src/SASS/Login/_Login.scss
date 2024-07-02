@@ -1,0 +1,42 @@
+.paginaLogin{
+    height: 100vh;    background-color: #f2f2f2;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &.dark {
+       background-color: #1C1C27;
+       color: #ffffff;
+     }
+    .cajaLogin{
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        background-color: #181414;
+        width: 30%;
+        height: 60%;
+        border-radius: 20px;
+        flex-direction: column;
+        box-shadow: 0 15px 25px rgba(0,0,0,.6);
+        h1{
+            font-size: 50px;
+           color: white;
+        }
+        p{
+            color: white;
+            font-size: 12px;
+        }
+        .inputs{
+            width: 70%;
+            
+        }
+    }
+}
+@media(max-width: 1050px){
+    .paginaLogin{
+    .cajaLogin{
+        width: 100%;
+    }
+}
+}
+

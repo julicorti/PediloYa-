@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { FaSun, FaMoon } from 'react-icons/fa';
-
+import { DarkModeContext } from '../context/modeContext';
+import { useContext } from 'react';
 const Mode = () => {
-  const [darkMode, setDarkMode] = useState(false);
+  const { darkMode, toggleDarkMode } = useContext(DarkModeContext);
+
+/*   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     // Verifica el estado guardado en localStorage para el modo oscuro
@@ -22,7 +25,7 @@ const Mode = () => {
       document.documentElement.classList.remove('dark');
       localStorage.setItem('dark-mode', 'disabled');
     }
-  };
+  }; */
 
   return (
     <div className="mode-switch">

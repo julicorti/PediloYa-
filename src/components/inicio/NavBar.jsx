@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import logo from "../../img/logo.png";
 import Mode from "./Mode";
 import "../../SASS/style.css";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -12,15 +12,21 @@ const NavBar = () => {
 
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-900 fixed top-0 left-0 w-full z-50">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4" id="navBar">
+      <div
+        className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
+        id="navBar"
+      >
         <a href="#" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <Link to="/"><img src={logo} className="h-8 rounded-lg" alt="Logo" /></Link>
+          <Link to="/">
+            <img src={logo} className="h-8 rounded-lg" alt="Logo" />
+          </Link>
           <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
             Pedilo Ya!
           </span>
         </a>
         <div className="flex items-center space-x-3 md:order-2">
-          <button id="pedilo"
+          <button
+            id="pedilo"
             type="button"
             className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
           >
@@ -53,42 +59,42 @@ const NavBar = () => {
           </button>
         </div>
         <div
-          className={`items-center justify-center w-full md:flex md:w-auto md:order-1 ${isOpen ? 'block' : 'hidden'}`}
+          className={`items-center justify-center w-full md:flex md:w-auto md:order-1 ${
+            isOpen ? "block" : "hidden"
+          }`}
           id="navbar-user"
         >
           <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
             <li>
-              <a
-                href="#"
+              <NavLink
+                exact
+                to="/"
                 className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                aria-current="page"
               >
                 Inicio
-              </a>
+              </NavLink>
             </li>
             <li>
-              <Link to="/productos"><a
-                href="#"
+              <NavLink
+                to="/productos"
                 className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
               >
                 Productos
-              </a></Link>
+              </NavLink>
             </li>
             <li>
-            <Link to="/menu"><a
-                href="#"
+              <NavLink
+                to="/menu"
                 className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
               >
                 Menu del día
-              </a></Link>
+              </NavLink>
             </li>
             <li>
-            <Link to="/sobrenosotros"><a
-                href="#"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-              >
+            <NavLink to="/sobrenosotros"                 className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+            >
                 Sobre nosotros
-              </a></Link>
+              </NavLink>
             </li>
           </ul>
         </div>

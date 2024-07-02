@@ -3,6 +3,8 @@ import NavBar from "./components/inicio/NavBar";
 import Inicio from "./components/inicio/Inicio";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; // Asegúrate de importar BrowserRouter
 import Products from "./components/Products/Products";
+import Login from "./components/Login/login";
+import Register from "./components/Login/Register/Register";
 function App() {
   return (
     <Router>
@@ -15,7 +17,9 @@ function App() {
         <Route path="/almuerzo" element={<Products />} />
         <Route path="/bebidas" element={<Products />} />
         <Route path="/golosinas" element={<Products />} />
-      
+        <Route path="/login" element={<Login />} />
+        <Route path="/Register" element={<Register />} />
+
       </Routes>
 
     </Router>
