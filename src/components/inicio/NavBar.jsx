@@ -3,6 +3,7 @@ import logo from "../../img/logo.png";
 import Mode from "./Mode";
 import "../../SASS/style.css";
 import { Link, NavLink } from "react-router-dom";
+
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -11,7 +12,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="bg-white border-gray-200 dark:bg-gray-900 fixed top-0 left-0 w-full z-50">
+    <nav className="bg-white border-gray-200 dark:bg-gray-900 fixed top-0 left-0 w-full z-50 shadow-md">
       <div
         className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
         id="navBar"
@@ -91,8 +92,10 @@ const NavBar = () => {
               </NavLink>
             </li>
             <li>
-            <NavLink to="/sobrenosotros"                 className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-            >
+              <NavLink
+                to="/sobrenosotros"
+                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+              >
                 Sobre nosotros
               </NavLink>
             </li>

@@ -1,4 +1,7 @@
+import { DarkModeContext } from "../context/modeContext";
+import { useContext } from "react";
 const CartaMenu = ({ nombre, desc, precio, img }) => {
+  const { darkMode, toggleDarkMode } = useContext(DarkModeContext);
   return (
     <div>
       <div id="carta" class="w-60 h-80 bg-gray-50 p-3 flex flex-col gap-1 rounded-2xl overflow-hidden">
@@ -6,7 +9,7 @@ const CartaMenu = ({ nombre, desc, precio, img }) => {
         <div class="flex flex-col gap-4">
           <div class="flex flex-row justify-between">
             <div class="flex flex-col">
-              <span class="text-xl font-bold">{nombre}</span>
+              <span class={`text-xl font-bold ${darkMode ? "dark" : "light"}`}>{nombre}</span>
               <p class="text-xs text-gray-700">{desc}</p>
             </div>
             <span class="font-bold  text-blue-600">{precio}</span>

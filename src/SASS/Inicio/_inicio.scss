@@ -1,7 +1,97 @@
-.pagina {
-
+@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');.pagina {
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100vh;
- 
+  background-color: #f4ede7;
+  position: relative; /* Agregado para posicionamiento relativo */
+  .cajaInicio {
+    width: 100%;
+    height: 100vh;
+    .circulo {
+      width: 50%;
+      height: 95%;
+      background-color: #5d7097;
+      clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 25% 100%, 0% 50%);
+      position: absolute;
+      top: 5%;
+      right: 0;
+    }
+
+    .hero {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 50px;
+      height: 100vh;
+      overflow: hidden;
+
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        background-color: #5d7097;
+      }
+
+      &::before {
+        width: 400px;
+        height: 400px;
+        top: -100px;
+        left: -100px;
+      }
+
+      .hero-text {
+        max-width: 40%;
+        height: 80%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        z-index: 1;
+        h1 {
+          font-size: 70px;
+          color: #283c63;
+          font-family: "Poppins", sans-serif;        }
+          font-weight: 600;
+
+        p {
+          color: #283c63;
+          margin: 20px 0;
+        }
+
+        button {
+          padding: 15px 30px;
+          margin: 10px 10px 10px 0;
+          border: none;
+          cursor: pointer;
+          font-weight: 500;
+
+          &.order-btn {
+            background-color: #283c63;
+            color: #fff;
+          }
+
+          &.explore-btn {
+            background-color: transparent;
+            color: #283c63;
+            border: 2px solid #283c63;
+          }
+        }
+      }
+
+      .hero-image {
+        max-width: 40%;
+        z-index: 1;
+        display: flex;
+        img {
+          width: 100%;
+        }
+      }
+    }
+  }
 }
 
 .seccion2 {
@@ -16,11 +106,9 @@
 .main-content {
   background-color: #ffffff;
   color: #000000;
-
 }
 
 /* Estilo para el modo oscuro */
-
 .mode-button {
   background-color: transparent;
   border: none;
@@ -40,27 +128,24 @@
 .sun-icon,
 .moon-icon {
   font-size: 1.5rem;
-  /* Ajusta el tamaño según sea necesario */
   transition: transform 0.3s ease, color 0.3s ease;
-  /* Agrega transición para el color */
 }
 
 .dark-sun {
-  color: #FFD700;
-  /* Color dorado para el sol en modo oscuro */
+  color: #ffd700;
 }
 
 .mode-button.dark .sun-icon {
   transform: rotate(180deg);
 }
 
-
 @media (max-width: 600px) {
   #navBar {
     span {
       font-size: 15px;
     }
-    #pedilo{
+
+    #pedilo {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -68,5 +153,4 @@
       text-align: center;
     }
   }
-
 }
