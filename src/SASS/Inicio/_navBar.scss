@@ -4,3 +4,27 @@
 #navT{
   width: 100vw;
 }
+.mode-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.mode-button:hover {
+  transform: scale(1.1); /* Efecto de zoom al hacer hover */
+}
+
+.sun-icon,
+.moon-icon {
+  font-size: 24px;
+  transition: color 0.3s ease; /* Transición suave en el color */
+}
+
+.dark-sun {
+  color: #FFD700; /* Color amarillo para el sol en modo oscuro */
+}

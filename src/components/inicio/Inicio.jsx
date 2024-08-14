@@ -2,12 +2,15 @@ import React from "react";
 import "../../SASS/style.css";
 import CartaSeccion from "../InicioProductos/cartaSeccion";
 import img1 from "../../img/comida/dona.avif";
-import img2 from "../../img/comida/pizza.png";
+import img2 from "../../img/comida/meidalunaJQ.jpg";
 import img3 from "../../img/comida/cocacola.webp";
 import img4 from "../../img/comida/golosinas.webp";
 import img5 from "../../img/comida/milanesa.jpg";
 import img6 from "../../img/comida/ñoquis.webp";
 import img7 from "../../img/comida/sangucheB.jpg";
+import img8 from "../../img/burgalogo.png";
+import img9 from "../../img/fritaslogo.jpg";
+
 import Footer from "./Footer";
 import { DarkModeContext } from "../context/modeContext";
 import { useContext } from "react";
@@ -18,16 +21,20 @@ const Inicio = () => {
 
   return (
     <div className="main-content">
-        <Carousel></Carousel>
+      <Carousel></Carousel>
       <div className="pagina">
-        <div className="cajaInicio">
-        </div>
+        <div className="cajaInicio"></div>
       </div>
       <div className={`seccion2 ${darkMode ? "dark" : "light"}`}>
+        <div className="imagen-container">
+          <img src={img8} alt="Imagen móvil" className="mobile-only" />
+          <img src={img9} alt="Imagen móvil" className="mobile-only" />
+        </div>
+
         <div className="titulo-seccion">
-          <hr className="linea" />
-          <h3 className={`titulo ${darkMode ? "dark" : "light"}`}>Categorías</h3>
-          <hr className="linea" />
+          <h3 className={`titulo ${darkMode ? "dark" : "light"}`}>
+            Categorías
+          </h3>
         </div>
         <div className={`seccionProd ${darkMode ? "dark" : "light"}`}>
           <div className={`cajaProds ${darkMode ? "dark" : "light"}`}>
@@ -81,7 +88,6 @@ const Inicio = () => {
             desc="Ñoquis con salsa de tomate"
             nombre="Ñoquis"
           />
-      
         </div>
       </div>
       <Footer />

@@ -9,11 +9,12 @@
   &.dark {
     background-color: #1c1c27;
     color: #ffffff;
+    
   }
   .cajaProds {
     height: 100vh;
 
-    width: 90%;
+    width: 95%;
     background-color: #ffffff80;
     display: flex;
     justify-content: space-between;
@@ -24,6 +25,7 @@
     &.dark {
       background-color: #1c1c27;
       color: #ffffff;
+
     }
     .cartaSeccion {
       -webkit-box-shadow: 1px 1px 9px 0px rgba(133, 133, 133, 1);
@@ -33,6 +35,7 @@
       width: 400px; // Ajustado para que sea más similar a la imagen de referencia
       background-size: cover;
       background-position: center;
+      
       display: flex;
       margin-top: 40px;
       flex-direction: column;
@@ -40,9 +43,13 @@
       justify-content: center;
       align-items: center;
       transition: all 400ms ease;
+      
       &.dark {
         background-color: #2b2d38;
         color: #ffffff;
+        -webkit-box-shadow: 1px 1px 18px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 1px 1px 18px 0px rgba(0,0,0,0.75);
+box-shadow: 1px 1px 18px 0px rgba(0,0,0,0.75);
       }
 
       img {
@@ -89,12 +96,7 @@
           text-decoration: none;
           transition: 500ms ease;
           margin-top: 10px;
-          &.dark {
-            background-color: #ffffff;
-            color: #000000;
-            box-shadow: rgb(0, 0, 0) 0px 13px 27px -5px,
-              rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-          }
+       
           &:hover {
             box-shadow: 0px 0px 5px black;
             scale: 1.02;
@@ -107,32 +109,23 @@
 
 @media (max-width: 600px) {
   .seccionProd {
-    .cajaProds {
-      .carta-container {
-        .cartaSeccion {
-          width: 100px; // Ajustado para que se vea bien en móviles
-          height: 100px; // Ajustado para que se vea bien en móviles
-
-          img {
-            height: 50px; // Ajustado para que la imagen ocupe la mitad superior de la carta
-          }
-
-          .contenido {
-            h1 {
-              font-size: 12px; // Ajustado para que sea más pequeño
-            }
-
-            p {
-              font-size: 8px; // Ajustado para que sea más pequeño
-            }
-
-            a {
-              height: 20px; // Ajustado para que sea más pequeño
-              width: 80px; // Ajustado para que sea más pequeño
-            }
-          }
-        }
-      }
-    }
+   height: max-content;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   &.dark {
+    background-color: #1c1c27;
+    color: #ffffff;
   }
+   .cajaProds{
+    height: max-content;
+    .cartaSeccion {
+      
+      width: 95vw;
+    }
+  
+
+   }
+}
+
 }
