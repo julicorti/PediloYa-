@@ -1,10 +1,10 @@
 import React from "react";
 import "../../SASS/style.css";
 import CartaSeccion from "../InicioProductos/cartaSeccion";
-import img1 from "../../img/comida/medialuna.jpg";
+import img1 from "../../img/comida/dona.avif";
 import img2 from "../../img/comida/pizza.png";
 import img3 from "../../img/comida/cocacola.webp";
-import img4 from "../../img/comida/rapsodia.png";
+import img4 from "../../img/comida/golosinas.webp";
 import img5 from "../../img/comida/milanesa.jpg";
 import img6 from "../../img/comida/ñoquis.webp";
 import img7 from "../../img/comida/sangucheB.jpg";
@@ -12,34 +12,15 @@ import Footer from "./Footer";
 import { DarkModeContext } from "../context/modeContext";
 import { useContext } from "react";
 import CartaMenu from "../Products/cartaMenu";
-import imgL from "../../img/logopedilo.png";
-
+import Carousel from "./Carousel";
 const Inicio = () => {
   const { darkMode, toggleDarkMode } = useContext(DarkModeContext);
 
   return (
     <div className="main-content">
+        <Carousel></Carousel>
       <div className="pagina">
-
         <div className="cajaInicio">
-      <div className="circulo"></div>
-      
-          <section className="hero">
-            <div className="hero-text">
-              <h1>SABOR Y CALIDAD EN CADA BOCADO</h1>
-              <p>
-                Aquí encontrará toda la comida de mejor calidad. Haga su pedido ahora para satisfacer su hambre.
-              </p>
-              <div >
-
-              <button className="order-btn">Ordenar Ahora</button>
-              <button className="explore-btn">Menu Del Dia</button>
-              </div>
-            </div>
-            <div className="hero-image">
-              <img src={imgL} alt="Food Image" />
-            </div>
-          </section>
         </div>
       </div>
       <div className={`seccion2 ${darkMode ? "dark" : "light"}`}>
@@ -100,18 +81,7 @@ const Inicio = () => {
             desc="Ñoquis con salsa de tomate"
             nombre="Ñoquis"
           />
-          <CartaMenu
-            img={img7}
-            precio="25.50"
-            desc="Sanguche de bondiola"
-            nombre="Bondiola"
-          />
-          <CartaMenu
-            img={img5}
-            precio="25.50"
-            desc="Milanesa con papas fritas"
-            nombre="Milanesa"
-          />
+      
         </div>
       </div>
       <Footer />

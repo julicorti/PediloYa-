@@ -1,5 +1,4 @@
 @charset "UTF-8";
-@import url("https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
@@ -7,166 +6,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #f4ede7;
-  position: relative; /* Agregado para posicionamiento relativo */
-}
-.pagina .cajaInicio {
-  width: 100%;
-  height: 100vh;
-}
-.pagina .cajaInicio .circulo {
-  width: 50%;
-  height: 95%;
-  background-color: #5d7097;
-  -webkit-clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 25% 100%, 0% 50%);
-          clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 25% 100%, 0% 50%);
-  position: absolute;
-  top: 5%;
-  right: 0;
-}
-.pagina .cajaInicio .hero {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding: 50px;
-  height: 100vh;
-  overflow: hidden;
-}
-.pagina .cajaInicio .hero::before, .pagina .cajaInicio .hero::after {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  background-color: #5d7097;
-}
-.pagina .cajaInicio .hero::before {
-  width: 400px;
-  height: 400px;
-  top: -100px;
-  left: -100px;
-}
-.pagina .cajaInicio .hero .hero-text {
-  max-width: 40%;
-  height: 80%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  z-index: 1;
-  font-weight: 600;
-}
-.pagina .cajaInicio .hero .hero-text h1 {
-  font-size: 70px;
-  color: #283c63;
-  font-family: "Poppins", sans-serif;
-}
-.pagina .cajaInicio .hero .hero-text p {
-  color: #283c63;
-  margin: 20px 0;
-}
-.pagina .cajaInicio .hero .hero-text button {
-  padding: 15px 30px;
-  margin: 10px 10px 10px 0;
-  border: none;
-  cursor: pointer;
-  font-weight: 500;
-}
-.pagina .cajaInicio .hero .hero-text button.order-btn {
-  background-color: #283c63;
-  color: #fff;
-}
-.pagina .cajaInicio .hero .hero-text button.explore-btn {
-  background-color: transparent;
-  color: #283c63;
-  border: 2px solid #283c63;
-}
-.pagina .cajaInicio .hero .hero-image {
-  max-width: 40%;
-  z-index: 1;
-  display: flex;
-}
-.pagina .cajaInicio .hero .hero-image img {
-  width: 100%;
-}
-
-.seccion2 {
-  height: 100vh;
-}
-.seccion2 img {
-  width: 20vw;
-}
-
-/* Estilo para el modo claro */
-.main-content {
-  background-color: #ffffff;
-  color: #000000;
-}
-
-/* Estilo para el modo oscuro */
-.mode-button {
-  background-color: transparent;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-.mode-button.dark {
-  transform: rotate(180deg);
-}
-
-.mode-button.light {
-  transform: rotate(0deg);
-}
-
-.sun-icon,
-.moon-icon {
-  font-size: 1.5rem;
-  transition: transform 0.3s ease, color 0.3s ease;
-}
-
-.dark-sun {
-  color: #ffd700;
-}
-
-.mode-button.dark .sun-icon {
-  transform: rotate(180deg);
-}
-
-@media (max-width: 600px) {
-  #navBar span {
-    font-size: 15px;
-  }
-  #navBar #pedilo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 40px;
-    text-align: center;
-  }
-}
-h2 {
-  font-size: 100px;
-  text-shadow: 0 0 5px black;
-}
-
-#secImg {
-  -webkit-backdrop-filter: blur(4px);
-          backdrop-filter: blur(4px);
-}
-#secImg::before {
-  content: "";
-  inset: 0;
-  position: absolute;
-  z-index: -1;
-  -webkit-backdrop-filter: blur(4px);
-          backdrop-filter: blur(4px);
+  background-size: cover;
 }
 
 .seccion2 {
   width: 100%;
-  height: 50vh;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -228,7 +72,6 @@ h2 {
 }
 
 .seccionProd {
-  height: 100vh;
   width: 100%;
   background-color: rgba(255, 255, 255, 0.5019607843);
   display: flex;
@@ -238,48 +81,47 @@ h2 {
   flex-direction: row;
 }
 .seccionProd.dark {
-  background-color: #1C1C27;
+  background-color: #1c1c27;
   color: #ffffff;
 }
 .seccionProd .cajaProds {
-  height: 100%;
-  width: 80%;
+  height: 100vh;
+  width: 90%;
   background-color: rgba(255, 255, 255, 0.5019607843);
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   overflow-y: hidden;
   flex-wrap: wrap;
+  align-items: center;
   flex-direction: row;
 }
 .seccionProd .cajaProds.dark {
-  background-color: #1C1C27;
+  background-color: #1c1c27;
   color: #ffffff;
 }
 .seccionProd .cajaProds .cartaSeccion {
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+  box-shadow: 1px 1px 9px 0px rgb(133, 133, 133);
   height: 300px;
-  width: 350px;
+  width: 400px;
   background-size: cover;
   background-position: center;
   display: flex;
   margin-top: 40px;
   flex-direction: column;
   background-color: #fdfdfd;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
   transition: all 400ms ease;
-  border-radius: 20px;
 }
 .seccionProd .cajaProds .cartaSeccion.dark {
-  background-color: #2B2D38;
+  background-color: #2b2d38;
   color: #ffffff;
 }
 .seccionProd .cajaProds .cartaSeccion img {
-  width: 80%;
-  border-radius: 20px;
-  height: 150px;
-  -o-object-fit: contain;
-     object-fit: contain;
+  width: 100%;
+  height: 70%;
+  -o-object-fit: cover;
+     object-fit: cover;
   background-color: #ffffff;
 }
 .seccionProd .cajaProds .cartaSeccion .contenido {
@@ -348,7 +190,8 @@ h2 {
   }
 }
 .seccionMenu {
-  height: 50vh;
+  margin-top: 50px;
+  height: 60vh;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -365,6 +208,7 @@ h2 {
   color: #62a0d3; /* Cambiá esto al color que prefieras para la palabra "Menu" */
 }
 .seccionMenu .h4 {
+  margin-top: 50px;
   color: #000000;
   font-size: 50px;
   padding: 10px;
@@ -376,7 +220,7 @@ h2 {
 }
 .seccionMenu .cajaMenu {
   width: 100%;
-  height: 80vh;
+  height: 50vh;
   display: flex;
   align-items: center;
   padding: 10px;
@@ -834,4 +678,9 @@ h2 {
   font-size: 17px;
   color: #9b9b9b;
   pointer-events: none;
+}
+
+/* style.css o style.scss */
+#navT {
+  width: 100vw;
 }/*# sourceMappingURL=style.css.map */
