@@ -1,14 +1,23 @@
-import React, { useState } from "react";
-import logo from "../../img/logo.png";
+import React, { useState, useContext } from "react";
+import logoLight from "../../img/logo.png";
+import logoDark from "../../img/logodark.png";
 import Mode from "./Mode";
 import "../../SASS/style.css";
 import { Link, NavLink } from "react-router-dom";
+import { DarkModeContext } from "../context/modeContext";
 
 const NavBar = () => {
+  const { darkMode } = useContext(DarkModeContext);
+
   const [isOpen, setIsOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
   return (
@@ -19,11 +28,12 @@ const NavBar = () => {
       >
         <a href="#" className="flex items-center space-x-3 rtl:space-x-reverse">
           <Link to="/">
-            <img src={logo} className="h-8 rounded-lg" alt="Logo" />
+            <img
+              src={darkMode ? logoDark : logoLight}
+              alt="Logo"
+              className="w-32 h-5 object-contain"
+            />
           </Link>
-          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-            Pedilo Ya!
-          </span>
         </a>
         <div className="flex items-center space-x-3 md:order-2">
           <button
@@ -75,13 +85,49 @@ const NavBar = () => {
                 Inicio
               </NavLink>
             </li>
-            <li>
+            <li className="relative group">
               <NavLink
-                to="/productos"
+                to="#"
                 className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
               >
                 Productos
               </NavLink>
+              <div className="absolute hidden group-hover:block bg-white border border-gray-200 rounded-md shadow-lg dark:bg-gray-800 dark:border-gray-700 w-48 z-10">
+                <ul className="py-1">
+                  <li>
+                    <NavLink
+                      to="/desayuno-merienda"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
+                    >
+                      Desayuno/Merienda
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to="/golosinas"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
+                    >
+                      Golosinas
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to="/almuerzo-cena"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
+                    >
+                      Almuerzo/Cena
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to="/bebidas"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
+                    >
+                      Bebidas
+                    </NavLink>
+                  </li>
+                </ul>
+              </div>
             </li>
             <li>
               <NavLink

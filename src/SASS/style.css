@@ -1,5 +1,6 @@
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Anek+Devanagari:wght@100..800&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 .pagina {
@@ -44,6 +45,7 @@
   width: 95%;
   margin: 20px 0;
   font-weight: bold;
+  font-family: "Anek Devanagari", sans-serif;
 }
 .seccion2 .titulo-seccion .titulo {
   padding: 0 10px;
@@ -166,7 +168,7 @@
   scale: 1.02;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1024px) {
   .seccionProd {
     height: -moz-max-content;
     height: max-content;
@@ -176,14 +178,28 @@
   }
   .seccionProd.dark {
     background-color: #1c1c27;
-    color: #ffffff;
+    color: #020202;
   }
   .seccionProd .cajaProds {
     height: -moz-max-content;
     height: max-content;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   .seccionProd .cajaProds .cartaSeccion {
-    width: 95vw;
+    width: 70vw;
+    height: 40vh;
+  }
+  .seccionProd .cajaProds .cartaSeccion .contenido {
+    height: 100%;
+  }
+  .seccionProd .cajaProds .cartaSeccion .contenido .h1 {
+    font-size: 20px;
+  }
+  .seccionProd .cajaProds .cartaSeccion .contenido .btn-c {
+    width: 80%;
+    height: 40px;
+    font-size: 20px;
   }
 }
 .seccionMenu {
@@ -257,6 +273,28 @@
   }
   .seccionMenu .cajaMenu #carta {
     width: 80vw;
+  }
+  .seccionMenu .cajaMenu #carta img {
+    width: 100%;
+  }
+}
+@media (max-width: 1024px) {
+  .seccionMenu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: -moz-max-content;
+    height: max-content;
+  }
+  .seccionMenu .cajaMenu {
+    height: -moz-max-content;
+    height: max-content;
+    display: flex;
+    justify-content: center;
+  }
+  .seccionMenu .cajaMenu #carta {
+    width: 40vw;
+    height: 25vh;
   }
   .seccionMenu .cajaMenu #carta img {
     width: 100%;
@@ -702,32 +740,51 @@
   pointer-events: none;
 }
 
-/* style.css o style.scss */
-#navT {
-  width: 100vw;
+/* style.css */
+/* Estilos generales para el menú desplegable */
+.group:hover .group-hover\:block {
+  display: block;
 }
 
-.mode-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  cursor: pointer;
-  outline: none;
-  transition: transform 0.3s ease, color 0.3s ease;
+.navbar-dropdown {
+  display: none;
+  position: absolute;
+  left: 0;
+  margin-top: 2px;
+  width: 200px;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.375rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-.mode-button:hover {
-  transform: scale(1.1); /* Efecto de zoom al hacer hover */
+.navbar-dropdown a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: #1a202c;
+  text-decoration: none;
 }
 
-.sun-icon,
-.moon-icon {
-  font-size: 24px;
-  transition: color 0.3s ease; /* Transición suave en el color */
+.navbar-dropdown a:hover {
+  background-color: #f7fafc;
+  color: #2d3748;
 }
 
-.dark-sun {
-  color: #FFD700; /* Color amarillo para el sol en modo oscuro */
+.dark .navbar-dropdown {
+  background-color: #2d3748;
+  border-color: #4a5568;
+}
+
+.dark .navbar-dropdown a {
+  color: #edf2f7;
+}
+
+.dark .navbar-dropdown a:hover {
+  background-color: #4a5568;
+  color: #f7fafc;
+}
+
+/* Asegúrate de que el dropdown esté por encima de otros elementos */
+.navbar-dropdown {
+  z-index: 10;
 }/*# sourceMappingURL=style.css.map */

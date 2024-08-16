@@ -83,3 +83,26 @@
 }
 
 }
+@media (max-width: 1024px) {
+  .seccionMenu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: max-content;
+    
+    .cajaMenu{
+      height: max-content;
+      display: flex;
+      justify-content: center;
+      #carta{
+        width: 40vw;
+        height: 25vh;
+        img{
+          width: 100%;
+        }
+        
+        }
+    }
+}
+
+}

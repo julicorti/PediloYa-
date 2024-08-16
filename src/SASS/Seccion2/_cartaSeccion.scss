@@ -9,7 +9,6 @@
   &.dark {
     background-color: #1c1c27;
     color: #ffffff;
-    
   }
   .cajaProds {
     height: 100vh;
@@ -25,7 +24,6 @@
     &.dark {
       background-color: #1c1c27;
       color: #ffffff;
-
     }
     .cartaSeccion {
       -webkit-box-shadow: 1px 1px 9px 0px rgba(133, 133, 133, 1);
@@ -35,7 +33,7 @@
       width: 400px; // Ajustado para que sea más similar a la imagen de referencia
       background-size: cover;
       background-position: center;
-      
+
       display: flex;
       margin-top: 40px;
       flex-direction: column;
@@ -43,13 +41,13 @@
       justify-content: center;
       align-items: center;
       transition: all 400ms ease;
-      
+
       &.dark {
         background-color: #2b2d38;
         color: #ffffff;
-        -webkit-box-shadow: 1px 1px 18px 0px rgba(0,0,0,0.75);
--moz-box-shadow: 1px 1px 18px 0px rgba(0,0,0,0.75);
-box-shadow: 1px 1px 18px 0px rgba(0,0,0,0.75);
+        -webkit-box-shadow: 1px 1px 18px 0px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 1px 1px 18px 0px rgba(0, 0, 0, 0.75);
+        box-shadow: 1px 1px 18px 0px rgba(0, 0, 0, 0.75);
       }
 
       img {
@@ -96,7 +94,7 @@ box-shadow: 1px 1px 18px 0px rgba(0,0,0,0.75);
           text-decoration: none;
           transition: 500ms ease;
           margin-top: 10px;
-       
+
           &:hover {
             box-shadow: 0px 0px 5px black;
             scale: 1.02;
@@ -107,25 +105,36 @@ box-shadow: 1px 1px 18px 0px rgba(0,0,0,0.75);
   }
 }
 
-@media (max-width: 600px) {
+
+@media (max-width: 1024px) {
   .seccionProd {
-   height: max-content;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   &.dark {
-    background-color: #1c1c27;
-    color: #ffffff;
-  }
-   .cajaProds{
     height: max-content;
-    .cartaSeccion {
-      
-      width: 95vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &.dark {
+      background-color: #1c1c27;
+      color: #020202;
     }
-  
-
-   }
-}
-
+    .cajaProds {
+      height: max-content;
+      flex-wrap: wrap;
+      justify-content: center;
+      .cartaSeccion {
+        width: 70vw;
+        height: 40vh;
+        .contenido {
+          height: 100%;
+          .h1 {
+            font-size: 20px;
+          }
+          .btn-c {
+            width: 80%;
+            height: 40px;
+            font-size: 20px;
+          }
+        }
+      }
+    }
+  }
 }
