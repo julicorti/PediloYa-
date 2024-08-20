@@ -20,6 +20,7 @@
     overflow-y: hidden;
     flex-wrap: wrap;
     align-items: center;
+    margin-top: 10px;
     flex-direction: row;
     &.dark {
       background-color: #1c1c27;
@@ -105,7 +106,35 @@
   }
 }
 
-
+@media (max-width: 1366px) {
+  .seccionProd {
+    height: max-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    .cajaProds {
+      height: max-content;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      .cartaSeccion {
+        width: 40vw;
+        height: 60vh;
+        .contenido {
+          height: 100%;
+          .h1 {
+            font-size: 20px;
+          }
+          .btn-c {
+            width: 80%;
+            height: 40px;
+            font-size: 20px;
+          }
+        }
+      }
+    }
+  }
+}
 @media (max-width: 1024px) {
   .seccionProd {
     height: max-content;

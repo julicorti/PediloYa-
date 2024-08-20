@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import img from "../../img/comidafondo.jpg";
-import img2 from "../../img/menu2.webp";
-
+import img2 from "../../img/buffetfoto.jpg";
+import "../../SASS/style.css";
+ 
 const Carousel = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -54,13 +55,14 @@ const Carousel = () => {
                             opacity: index === currentIndex ? 1 : 0
                         }}
                     >
-                        <img 
+                        <img id='img'
                             src={src} 
                             alt={`Slide ${index + 1}`} 
                             style={{
                                 width: '100%',
                                 height: '100%',
-                                objectFit: 'cover'
+                                objectFit: 'cover',
+                                backgroundSize: 'cover'
                             }} 
                         />
                     </div>
