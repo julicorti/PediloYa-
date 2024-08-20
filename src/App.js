@@ -4,6 +4,8 @@ import Inicio from "./components/inicio/Inicio";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; // Asegúrate de importar BrowserRouter
 import Products from "./components/Products/Products";
 import Login from "./components/Login/login";
+
+import ContactUs from "./components/Contactanos/ContactUs";
 import Register from "./components/Login/Register/Register";
 function App() {
   return (
@@ -19,6 +21,7 @@ function App() {
         <Route path="/golosinas" element={<Products />} />
         <Route path="/login" element={<Login />} />
         <Route path="/Register" element={<Register />} />
+        <Route path="/ContactUs" element={<ContactUs />} />
 
       </Routes>
 
