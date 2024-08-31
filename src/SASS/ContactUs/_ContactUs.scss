@@ -1,28 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 .pageC {
   height: 100vh;
   width: 100%;
   background-color: #e7f0ff;
   display: flex;
  justify-content: center;
+align-items: center;
   .pre{
     height: 90vh;
     width: 90%;
     display: flex;
 
-    justify-content: space-evenly;
+    justify-content: space-around;
     align-items: center;
     flex-direction: row;
+   
       .box2{
         height: 400px;
         width:  400px;
+    
+        .seccionesCajas{
+          margin-top: 30px;
+          height: 300px;
+          width: 42vw;
+          display: flex;
+          justify-content: space-around;
+          flex-direction: row;
+          
+          .caja{
+            overflow: hidden;
+            flex-wrap: wrap;
+            display: flex;
+            width: 300px;
+            flex-direction: column;
+       
+            h4{
+              font-weight: bold;
+              font-size: 15px;
+              
+            }
+            p{
+
+              font-size: 10px;
+            }
+          }
+        }
         h1{
-            font-size: 50px;
+            font-size: 70px;
+            font-family: "Inter", sans-serif;
+            font-weight: 500;
         }
         p{
-            font-size: 10px;
+            font-size: 12px;
         }
     
       }
 
   }
+}
+.pre2{
+  height: 100vh;
+  background-color: #FFFFFF;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  #mapa{
+    border-radius: 20px;
+  }
+  .contenido{
+    width: 550px;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    h2{
+      font-size: 30px;
+      
+    }
+    h3{
+      font-weight: bold;
+      font-size: 50px;
+    }
+    h4{
+      font-weight: bold;
+    }
+    p{
+font-size: 15px;
+margin-top: 5px;
+    }
+  }
+ 
 }
