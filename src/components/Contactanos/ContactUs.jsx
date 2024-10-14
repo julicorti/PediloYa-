@@ -1,9 +1,8 @@
-import { DarkModeContext } from "../context/modeContext";
-import { useContext } from "react";
+
 import "../../SASS/style.css";
+
 import ContactForm from "./ContactForm";
 const ContactUs = ({ nombre, desc, precio, img }) => {
-  const { darkMode, toggleDarkMode } = useContext(DarkModeContext);
   return (
     <div>
       <div className="pageC">

@@ -1,7 +1,6 @@
 import "../../SASS/style.css";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import CartaMenu from "../Products/cartaMenu";
+
 import { DarkModeContext } from "../context/modeContext";
 
 import { useContext } from "react";
