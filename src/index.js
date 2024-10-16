@@ -1,10 +1,13 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import App from "./App"; // Asegúrate de importar tu componente principal
+import { createRoot } from "react-dom/client"; // Cambia a createRoot
+import App from "./App";
 import { DarkModeProvider } from "./components/context/modeContext";
-ReactDOM.render(
+
+const container = document.getElementById("root");
+const root = createRoot(container); // Crea el root usando createRoot
+
+root.render(
   <DarkModeProvider>
     <App />
-  </DarkModeProvider>,
-  document.getElementById("root")
+  </DarkModeProvider>
 );

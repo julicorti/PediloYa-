@@ -12,6 +12,8 @@ app.use(cors());
 app.use(express.json()); // Para procesar JSON
 app.use(morgan("dev")); // Middleware para el logging
 app.use(express.static(path.join(__dirname, 'Products'))); // Archivos estáticos
+app.use('/public', express.static('public'));
+app.use(express.static('public'));
 
 app.set("port", 4000);
 app.listen(app.get("port"), () => {
@@ -50,18 +52,44 @@ app.get('/producto', async (req, res) => {
 });
 
 // Obtener producto por ID
-app.get('/producto/:id', async (req, res) => {
-    const productId = req.params.id;
-    try {
-        const [rows] = await pool.query('SELECT * FROM producto WHERE id = ?', [productId]);
-        if (rows.length === 0) {
-            return res.status(404).send({ message: 'Producto no encontrado' });
-        }
-        res.send(rows[0]);
-    } catch (error) {
-        return res.status(500).send({ message: 'Error al obtener el producto' });
-    }
+/* app.get('/productos/categoria/:categoriaId', async (req, res) => {
+  const categoriaId = req.params.categoriaId;
+  try {
+      const [rows] = await pool.query(`
+          SELECT p.* 
+          FROM producto p 
+          JOIN producto_categoria pc ON p.id = pc.producto_id 
+          WHERE pc.categoria_id = ?`, 
+          [categoriaId]
+      );
+      if (rows.length === 0) {
+          return res.status(404).send({ message: 'No se encontraron productos para esta categoría' });
+      }
+      res.send(rows);
+  } catch (error) {
+      return res.status(500).send({ message: 'Error al obtener los productos' });
+  }
 });
+ */
+app.get('/productos/categoria/:categoriaId', async (req, res) => {
+  const categoriaId = req.params.categoriaId;
+  try {
+      const [rows] = await pool.query(`
+          SELECT p.*, c.nombre AS categoria_nombre, p.imagen 
+          FROM producto p 
+          JOIN categoria c ON p.id_categoria = c.id 
+          WHERE p.id_categoria = ?`, 
+          [categoriaId]
+      );
+      if (rows.length === 0) {
+          return res.status(404).send({ message: 'No se encontraron productos para esta categoría' });
+      }
+      res.send(rows);
+  } catch (error) {
+      return res.status(500).send({ message: 'Error al obtener los productos' });
+  }
+});
+
 
  app.delete('/producto/:id', verificarAdmin, (req, res) => {
    const productId = req.params.id;
