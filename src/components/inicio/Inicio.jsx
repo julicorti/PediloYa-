@@ -5,9 +5,7 @@ import img1 from "../../img/comida/dona.avif";
 import img2 from "../../img/comida/meidalunaJQ.jpg";
 import img3 from "../../img/comida/cocacola.webp";
 import img4 from "../../img/comida/golosinas.webp";
-import img5 from "../../img/comida/milanesa.jpg";
-import img6 from "../../img/comida/ñoquis.webp";
-import img7 from "../../img/comida/sangucheB.jpg";
+
 import img8 from "../../img/burgalogo.png";
 import img9 from "../../img/fritaslogo.jpg";
 
@@ -60,36 +58,11 @@ const Inicio = () => {
           <span className="colorido">Menu</span> del dia
         </h4>
         <div className={`cajaMenu ${darkMode ? "dark" : "light"}`}>
-          <CartaMenu
-            img={img5}
-            precio="25.50"
-            desc="Milanesa con papas fritas"
-            nombre="Milanesa"
+          <CartaMenu categoriaId={9} 
+  
+      
           />
-          <CartaMenu
-            img={img6}
-            precio="25.50"
-            desc="Ñoquis con salsa de tomate"
-            nombre="Ñoquis"
-          />
-          <CartaMenu
-            img={img7}
-            precio="25.50"
-            desc="Sanguche de bondiola"
-            nombre="Bondiola"
-          />
-          <CartaMenu
-            img={img5}
-            precio="25.50"
-            desc="Milanesa con papas fritas"
-            nombre="Milanesa"
-          />
-          <CartaMenu
-            img={img6}
-            precio="25.50"
-            desc="Ñoquis con salsa de tomate"
-            nombre="Ñoquis"
-          />
+        
         </div>
       </div>
       <Footer />

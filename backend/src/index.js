@@ -2,16 +2,17 @@ const express = require("express");
 const morgan = require("morgan");
 const pool = require('./database'); // Asegúrate de que la ruta sea correcta
 const path = require('path');
-const cors = require('cors');
 const jwt = require('jsonwebtoken'); // Importa jsonwebtoken
 const bcrypt = require('bcrypt'); // Importa bcrypt
-
 // Configuración inicial
 const app = express();
+const cors = require('cors');
 app.use(cors());
+
 app.use(express.json()); // Para procesar JSON
 app.use(morgan("dev")); // Middleware para el logging
 app.use(express.static(path.join(__dirname, 'Products'))); // Archivos estáticos
+
 app.use('/public', express.static('public'));
 app.use(express.static('public'));
 
@@ -231,7 +232,7 @@ app.post('/usuario', async (req, res) => {
 
  //CARRITO
 
- app.post('/carrito', (req, res) => {
+/*  app.post('/carrito', (req, res) => {
   const { usuario_id } = req.body;
 
   // Validar que se haya proporcionado el ID del usuario
@@ -251,6 +252,38 @@ app.post('/usuario', async (req, res) => {
     }
 
     res.status(201).send({ message: 'Carrito creado exitosamente.', carritoId: results.insertId });
+  });
+}); */
+app.post('/pedido', (req, res) => {
+  const { usuario_id, productos } = req.body;
+
+  if (!usuario_id) {
+    return res.status(400).send({ message: 'El ID del usuario es obligatorio.' });
+  }
+
+  const fechaCreacion = new Date().toISOString().slice(0, 10);
+
+  // Consulta para crear el carrito
+  const queryCarrito = `INSERT INTO pedido (usuario_id, fecha_creacion) VALUES (?, ?)`;
+
+  connection.query(queryCarrito, [usuario_id, fechaCreacion], (error, results) => {
+    if (error) {
+      return res.status(500).send({ message: 'Error al crear el carrito.' });
+    }
+
+    const carritoId = results.insertId;
+
+    // Consulta para insertar productos en el carrito
+    const queryProductos = `INSERT INTO pedido_producto (carrito_id, producto_id, cantidad) VALUES ?`;
+    const values = productos.map(producto => [carritoId, producto.id, producto.cantidad]);
+
+    connection.query(queryProductos, [values], (error) => {
+      if (error) {
+        return res.status(500).send({ message: 'Error al agregar productos al carrito.' });
+      }
+
+      res.status(201).send({ message: 'Carrito y productos agregados exitosamente.' });
+    });
   });
 });
 
@@ -378,11 +411,12 @@ app.delete('/carrito/:id/producto/:productoId', (req, res) => {
 
 
 //Método Obtener pedidos
+// Obtener pedidos con filtrado y paginación
 app.get('/pedidos', (req, res) => {
   const cantidad = req.query.cantidad ? parseInt(req.query.cantidad) : 10; // Por defecto 10
   const estado = req.query.estado; // Opcional, para filtrar por estado
   const fecha = req.query.fecha; // Opcional, para filtrar por fecha
-  
+
   // Construcción de la consulta SQL con los filtros opcionales
   let query = `SELECT id, usuario_id, estado, fecha, precio FROM pedidos`;
   const queryParams = [];
@@ -411,9 +445,30 @@ app.get('/pedidos', (req, res) => {
     res.status(200).send(results);
   });
 });
+app.post('/pedido', (req, res) => {
+  const { usuario_id, estado, fecha, precio } = req.body;
+  console.log(req.body)
 
-//Método obtener productos de un pedido
+  // Verificar que se reciban todos los datos necesarios
+  if (!usuario_id || !estado || !fecha || !precio) {
+    return res.status(400).send({ message: 'Faltan datos para crear el pedido.' });
+  }
 
+  // Consulta para insertar el nuevo pedido
+  const query = `
+    INSERT INTO pedidos (usuario_id, estado, fecha, precio)
+    VALUES (?, ?, ?, ?)`;
+  
+  connection.query(query, [usuario_id, estado, fecha, precio], (error, results) => {
+    if (error) {
+      return res.status(500).send({ message: 'Error al guardar el pedido.' });
+    }
+
+    // Retornar el ID del nuevo pedido como respuesta
+    res.status(201).send({ id: results.insertId });
+  });
+});
+// Obtener productos de un pedido
 app.get('/pedido/:id/productos', (req, res) => {
   const pedidoId = req.params.id;
 
@@ -438,8 +493,7 @@ app.get('/pedido/:id/productos', (req, res) => {
   });
 });
 
-//obtener pedido por id
-
+// Obtener pedido por ID
 app.get('/pedido/:id', (req, res) => {
   const pedidoId = req.params.id;
 
@@ -463,8 +517,7 @@ app.get('/pedido/:id', (req, res) => {
   });
 });
 
-//actualizar estado de un pedido
-
+// Actualizar estado de un pedido
 app.put('/pedido/:id/estado', (req, res) => {
   const pedidoId = req.params.id;
   const { estado } = req.body;
@@ -495,7 +548,7 @@ app.put('/pedido/:id/estado', (req, res) => {
   });
 });
 
-//eliminar un pedido
+// Eliminar un pedido
 app.delete('/pedido/:id', (req, res) => {
   const pedidoId = req.params.id;
 

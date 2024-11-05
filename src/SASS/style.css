@@ -282,6 +282,19 @@
 .seccionMenu .cajaMenu.dark {
   color: black;
 }
+.seccionMenu .cajaMenu .product-image {
+  width: 100%; /* Ancho fijo */
+  height: 160px; /* Alto fijo */
+  -o-object-fit: cover;
+     object-fit: cover; /* Asegura que la imagen cubra el área de manera proporcional */
+  border-radius: 10px; /* Añade esquinas redondeadas */
+}
+.seccionMenu .cajaMenu #name {
+  display: flex;
+  justify-content: flex-start;
+  text-align: center;
+  font-size: 18px;
+}
 .seccionMenu .cajaMenu #carta {
   border-radius: 20px;
   width: 250px;
@@ -381,46 +394,67 @@
   height: 50vh;
 }
 .pag .item-producto {
-  width: 250px;
-  height: 300px;
+  width: 260px;
   background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  border-radius: 12px;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
-.pag .imagen-placeholder {
-  height: 100px;
+.pag .item-producto:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+.pag .item-producto .imagen-placeholder {
+  height: 180px;
   background-color: #f0f0f0;
-}
-.pag .p-4 {
-  padding: 10px; /* Reducir el padding */
-}
-.pag .p-4 img {
-  width: 100%;
-  height: 50%;
-  -o-object-fit: contain;
-     object-fit: contain;
-  filter: drop-shadow(0 0 5px);
-}
-.pag .p-4 .contenido {
-  width: 100%;
-  height: 30px;
   display: flex;
   align-items: center;
-  flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: center;
 }
-.pag h2 {
-  font-size: 14px; /* Reducir tamaño de la fuente */
-  font-weight: bold;
+.pag .item-producto .imagen-placeholder img {
+  width: 100%;
+  height: auto;
+  -o-object-fit: cover;
+     object-fit: cover;
+  transition: transform 0.3s;
 }
-.pag p {
-  font-size: 12px; /* Reducir tamaño de la fuente */
-  color: #555;
+.pag .item-producto .p-4 {
+  padding: 16px;
+}
+.pag .item-producto .p-4 h2 {
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+.pag .item-producto .p-4 p {
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  color: #777;
+  margin: 4px 0;
+}
+.pag .item-producto .p-4 p.text-gray-800 {
+  color: #2d3748;
+  font-weight: 500;
+}
+.pag .item-producto .p-4 button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4a90e2;
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.pag .item-producto .p-4 button:hover {
+  background-color: #357ABD;
 }
 
 @media (max-width: 600px) {
@@ -1058,4 +1092,32 @@
 .contact-form__phone-group .contact-form__input--phone:focus,
 .contact-form__phone-group .contact-form__select:focus {
   outline: none;
+}
+
+.paginaC {
+  background-color: rgba(216, 216, 216, 0.921);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+}
+.paginaC .cart {
+  background-color: rgb(255, 255, 255);
+  height: 60vh;
+  width: 50vw;
+  border-radius: 15px;
+}
+.paginaC .cart .detalle {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+.paginaC .cart .detalle .detalle2 {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: rgba(235, 236, 236, 0.486);
+  margin-top: 10px;
 }/*# sourceMappingURL=style.css.map */

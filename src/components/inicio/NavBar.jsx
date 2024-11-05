@@ -5,34 +5,24 @@ import Mode from "./Mode";
 import "../../SASS/style.css";
 import { Link, NavLink } from "react-router-dom";
 import { DarkModeContext } from "../context/modeContext";
+import { CartContext } from "../context/CartContext";
 
 const NavBar = () => {
   const { darkMode } = useContext(DarkModeContext);
-
   const [isOpen, setIsOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { cart } = useContext(CartContext); 
+  const cartCount = cart.length;
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-900 fixed top-0 left-0 w-full z-50 shadow-md">
-      <div
-        className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
-        id="navBar"
-      >
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4" id="navBar">
         <div className="flex items-center space-x-3 rtl:space-x-reverse">
           <Link to="/">
-            <img
-              src={darkMode ? logoDark : logoLight}
-              alt="Logo"
-              className="w-32 h-5 object-contain"
-            />
+            <img src={darkMode ? logoDark : logoLight} alt="Logo" className="w-32 h-5 object-contain" />
           </Link>
         </div>
         <div className="flex items-center space-x-3 md:order-2">
@@ -59,22 +49,11 @@ const NavBar = () => {
               fill="none"
               viewBox="0 0 17 14"
             >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M1 1h15M1 7h15M1 13h15"
-              />
+              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15" />
             </svg>
           </button>
         </div>
-        <div
-          className={`items-center justify-center w-full md:flex md:w-auto md:order-1 ${
-            isOpen ? "block" : "hidden"
-          }`}
-          id="navbar-user"
-        >
+        <div className={`items-center justify-center w-full md:flex md:w-auto md:order-1 ${isOpen ? "block" : "hidden"}`} id="navbar-user">
           <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
             <li>
               <NavLink
@@ -83,50 +62,6 @@ const NavBar = () => {
               >
                 Inicio
               </NavLink>
-            </li>
-            <li className="relative group">
-              <NavLink
-                to="#"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-              >
-                Productos
-              </NavLink>
-              <div className="absolute hidden group-hover:block bg-white border border-gray-200 rounded-md shadow-lg dark:bg-gray-800 dark:border-gray-700 w-48 z-10">
-                <ul className="py-1">
-                  <li>
-                    <NavLink
-                      to="/desayuno-merienda"
-                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
-                    >
-                      Desayuno/Merienda
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      to="/golosinas"
-                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
-                    >
-                      Golosinas
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      to="/almuerzo-cena"
-                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
-                    >
-                      Almuerzo/Cena
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      to="/bebidas"
-                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
-                    >
-                      Bebidas
-                    </NavLink>
-                  </li>
-                </ul>
-              </div>
             </li>
             <li>
               <NavLink
@@ -142,6 +77,14 @@ const NavBar = () => {
                 className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
               >
                 Contactanos
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/cart"
+                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+              >
+                Carrito ({cartCount})
               </NavLink>
             </li>
           </ul>

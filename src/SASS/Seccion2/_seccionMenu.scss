@@ -46,10 +46,23 @@
           color: black;
          
         }
+        .product-image {
+          width: 100%; /* Ancho fijo */
+          height: 160px; /* Alto fijo */
+          object-fit: cover; /* Asegura que la imagen cubra el área de manera proporcional */
+          border-radius: 10px; /* Añade esquinas redondeadas */
+        }
+        #name{
+          display: flex;
+          justify-content: flex-start;
+          text-align: center;
+          font-size: 18px;
+        }
          #carta{
             border-radius: 20px;
             width: 250px;
- 
+            
+           
          }
         img{
             height: 100%;

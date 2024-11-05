@@ -47,52 +47,74 @@
   }
 
   .item-producto {
-    width: 250px; 
-    height: 300px; 
+    width: 260px;
     background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    border-radius: 12px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     text-align: center;
-   
-  }
-
-  .imagen-placeholder {
-    height: 100px; 
-    background-color: #f0f0f0;
-  }
-
-  .p-4 {
-   
-    padding: 10px; /* Reducir el padding */
-    
-    img{
-      width: 100%;
-      height: 50%;
-      object-fit: contain;
-      filter: drop-shadow(0 0 5px);
+    transition: transform 0.3s, box-shadow 0.3s;
+  
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     }
-    .contenido{
-      width: 100%;
-      height: 30px;
+  
+    .imagen-placeholder {
+      height: 180px;
+      background-color: #f0f0f0;
       display: flex;
       align-items: center;
-      flex-direction: row;
-      justify-content: space-evenly;
+      justify-content: center;
+      img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        transition: transform 0.3s;
+      }
     }
-  }
-
-  h2 {
-    font-size: 14px; /* Reducir tamaño de la fuente */
-    font-weight: bold;
-  }
-
-  p {
-    font-size: 12px; /* Reducir tamaño de la fuente */
-    color: #555;
+  
+    .p-4 {
+      padding: 16px;
+      
+      h2 {
+        font-family: "Poppins", sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+      }
+  
+      p {
+        font-family: "Poppins", sans-serif;
+        font-size: 14px;
+        color: #777;
+        margin: 4px 0;
+  
+        &.text-gray-800 {
+          color: #2d3748;
+          font-weight: 500;
+        }
+      }
+  
+      button {
+        width: 100%;
+        padding: 10px;
+        background-color: #4a90e2;
+        color: #fff;
+        font-family: "Poppins", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+  
+        &:hover {
+          background-color: #357ABD;
+        }
+      }
+    }
   }
 }
 
