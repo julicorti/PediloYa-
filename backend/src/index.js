@@ -1,213 +1,257 @@
 const express = require("express");
 const morgan = require("morgan");
-const pool = require('./database'); // Asegúrate de que la ruta sea correcta
-const path = require('path');
-const jwt = require('jsonwebtoken'); // Importa jsonwebtoken
-const bcrypt = require('bcrypt'); // Importa bcrypt
-// Configuración inicial
-const app = express();
+const database = require("./database");
 const cors = require('cors');
-app.use(cors());
+const bcrypt = require('bcrypt');
+const jwt = require("jsonwebtoken")
 
-app.use(express.json()); // Para procesar JSON
-app.use(morgan("dev")); // Middleware para el logging
-app.use(express.static(path.join(__dirname, 'Products'))); // Archivos estáticos
 
-app.use('/public', express.static('public'));
-app.use(express.static('public'));
-
+//config inicial
+const app = express();
 app.set("port", 4000);
-app.listen(app.get("port"), () => {
-    console.log("Escuchando en el puerto: " + app.get("port"));
-});
+app.listen(app.get("port"));
+console.log("escuchando al puerto :) " + app.get("port"));
+
+
+
+//middlewares
+app.use(morgan("dev"));
+app.use(cors());
+app.use(express.json()); // Para parsear JSON
+
 
 // Middleware de autenticación y verificación de rol
 function verificarAdmin(req, res, next) {
-    const token = req.headers['authorization'];
-    if (!token) {
-        return res.status(403).send({ message: 'Token no proporcionado.' });
+  const token = req.headers['authorization'];
+
+  if (!token) {
+    return res.status(403).send({ message: 'Token no proporcionado.' });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(500).send({ message: 'Error al verificar el token.' });
     }
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-        if (err) {
-            return res.status(500).send({ message: 'Error al verificar el token.' });
-        }
-        if (decoded.role !== 'admin') {
-            return res.status(403).send({ message: 'No autorizado. Solo los administradores pueden realizar esta acción.' });
-        }
-        req.userId = decoded.id;
-        next();
-    });
+
+    if (decoded.role !== 'admin') {
+      return res.status(403).send({ message: 'No autorizado. Solo los administradores pueden realizar esta acción.' });
+    }
+
+    req.userId = decoded.id;
+    next();
+  });
 }
 
-// Rutas
 
-// Productos
-app.get('/producto', async (req, res) => {
-    try {
-        const [rows] = await pool.query('SELECT * FROM producto');
-        res.json(rows);
-    } catch (error) {
-        console.error('Error al obtener productos:', error);
-        res.status(500).json({ error: 'Error al obtener productos' });
+//rutas
+app.get('/ping', async (req, res) => {
+  const connection = await database.getconnection();
+  connection.query('SELECT 1', (error, results) => {
+      if (error) {
+          console.error('Error al hacer ping a la base de datos:', error);
+          return res.status(500).send({ message: 'Error al hacer ping a la base de datos.' });
+      }
+      res.send({ message: 'Pong!', results });
+  });
+});
+
+app.get('/usuarios', async (req, res) => {
+  const connection = await database.getconnection();
+  connection.query('CALL sp_leer_usuarios()', (error, results) => {
+      if (error) {
+          console.error('Error al obtener usuarios:', error);
+          return res.status(500).send({ message: 'Error al obtener usuarios.' });
+      }
+      res.send(results[0]); // Asegúrate de que esta ruta esté activa
+  });
+});
+
+//PRODUCTOS
+
+app.get("/menu", async (req, res) => {
+  const connection = await database.getconnection();
+  const result = await connection.query("call sp_leer_productos()");
+  console.log(result);
+})
+
+/*app.get("/producto/:id", async (req, res) =>{
+   const productId = req.params.id;
+   const connection = await database.getconnection();
+   const result = await connection.query("SELECT * from producto where id=;");
+   console.log(result); 
+} )*/
+
+app.get('/producto/:id', (req, res) => {
+  const productId = req.params.id;
+
+  connection.query('SELECT * FROM productos WHERE id = ?', [productId], (error, results) => {
+    if (error) {
+      return res.status(500).send({ message: 'Error al obtener el producto' });
     }
+    if (results.length === 0) {
+      return res.status(404).send({ message: 'Producto no encontrado' });
+    }
+    res.send(results[0]);
+  });
 });
 
-// Obtener producto por ID
-/* app.get('/productos/categoria/:categoriaId', async (req, res) => {
-  const categoriaId = req.params.categoriaId;
-  try {
-      const [rows] = await pool.query(`
-          SELECT p.* 
-          FROM producto p 
-          JOIN producto_categoria pc ON p.id = pc.producto_id 
-          WHERE pc.categoria_id = ?`, 
-          [categoriaId]
-      );
-      if (rows.length === 0) {
-          return res.status(404).send({ message: 'No se encontraron productos para esta categoría' });
-      }
-      res.send(rows);
-  } catch (error) {
-      return res.status(500).send({ message: 'Error al obtener los productos' });
+app.delete('/producto/:id', verificarAdmin, (req, res) => {
+  const productId = req.params.id;
+
+  connection.query('call sp_eliminar_producto(?)', [productId], (error, results) => {
+    if (error) {
+      return res.status(500).send({ message: 'Error al eliminar el producto.' });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).send({ message: 'Producto no encontrado.' });
+    }
+
+    res.send({ message: 'Producto eliminado correctamente.' });
+  });
+});
+
+app.put('/producto/:id', verificarAdmin, (req, res) => {
+  const productId = req.params.id;
+  const { nombre, descripcion, precio, stock } = req.body;
+
+  // Consulta para actualizar el producto
+  const query = `call sp_actualizar_producto(?, ?, ?, ?, ?)`;
+
+  connection.query(query, [productId, precio, nombre, stock, descripcion], (error, results) => {
+    if (error) {
+      return res.status(500).send({ message: 'Error al actualizar el producto.' });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).send({ message: 'Producto no encontrado.' });
+    }
+
+    res.send({ message: 'Producto actualizado correctamente.' });
+  });
+});
+
+app.post('/producto', verificarAdmin, (req, res) => {
+  const { nombre, fecha_ingreso, categoria, cantidad, precio, descripcion, imagen } = req.body;
+
+  // Validar que todos los campos requeridos estén presentes
+  if (!nombre || !fecha_ingreso || !categoria || !cantidad || !precio || !descripcion || !imagen) {
+    return res.status(400).send({ message: 'Todos los campos son obligatorios.' });
   }
+
+  // Consulta para insertar el nuevo producto
+  const query = `call sp_crear_producto(?, ?, ?, ?, ?, ?, ?)`;
+
+  connection.query(query, [nombre, fecha_ingreso, categoria, cantidad, precio, descripcion, imagen], (error, results) => {
+    if (error) {
+      return res.status(500).send({ message: 'Error al agregar el producto.' });
+    }
+
+    res.status(201).send({ message: 'Producto agregado exitosamente.', productoId: results.insertId });
+  });
 });
- */
-app.get('/productos/categoria/:categoriaId', async (req, res) => {
-  const categoriaId = req.params.categoriaId;
-  try {
-      const [rows] = await pool.query(`
-          SELECT p.*, c.nombre AS categoria_nombre, p.imagen 
-          FROM producto p 
-          JOIN categoria c ON p.id_categoria = c.id 
-          WHERE p.id_categoria = ?`, 
-          [categoriaId]
-      );
-      if (rows.length === 0) {
-          return res.status(404).send({ message: 'No se encontraron productos para esta categoría' });
-      }
-      res.send(rows);
-  } catch (error) {
-      return res.status(500).send({ message: 'Error al obtener los productos' });
-  }
-});
-
-
- app.delete('/producto/:id', verificarAdmin, (req, res) => {
-   const productId = req.params.id;
- 
-   connection.query('DELETE FROM productos WHERE id = ?', [productId], (error, results) => {
-     if (error) {
-       return res.status(500).send({ message: 'Error al eliminar el producto.' });
-     }
- 
-     if (results.affectedRows === 0) {
-       return res.status(404).send({ message: 'Producto no encontrado.' });
-     }
- 
-     res.send({ message: 'Producto eliminado correctamente.' });
-   });
- });
-
- app.put('/producto/:id', verificarAdmin, (req, res) => {
-   const productId = req.params.id;
-   const { nombre, descripcion, precio, stock } = req.body;
- 
-   // Consulta para actualizar el producto
-   const query = `UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, stock = ? WHERE id = ?`;
- 
-   connection.query(query, [nombre, descripcion, precio, stock, productId], (error, results) => {
-     if (error) {
-       return res.status(500).send({ message: 'Error al actualizar el producto.' });
-     }
- 
-     if (results.affectedRows === 0) {
-       return res.status(404).send({ message: 'Producto no encontrado.' });
-     }
- 
-     res.send({ message: 'Producto actualizado correctamente.' });
-   });
- });
- 
- app.post('/producto', verificarAdmin, (req, res) => {
-   const { nombre, fecha_ingreso, categoria, cantidad, precio, descripcion, imagen } = req.body;
- 
-   // Validar que todos los campos requeridos estén presentes
-   if (!nombre || !fecha_ingreso || !categoria || !cantidad || !precio || !descripcion || !imagen) {
-     return res.status(400).send({ message: 'Todos los campos son obligatorios.' });
-   }
- 
-   // Consulta para insertar el nuevo producto
-   const query = `INSERT INTO productos (nombre, fecha_ingreso, categoria, cantidad, precio, descripcion, imagen)
-                  VALUES (?, ?, ?, ?, ?, ?, ?)`;
- 
-   connection.query(query, [nombre, fecha_ingreso, categoria, cantidad, precio, descripcion, imagen], (error, results) => {
-     if (error) {
-       return res.status(500).send({ message: 'Error al agregar el producto.' });
-     }
- 
-     res.status(201).send({ message: 'Producto agregado exitosamente.', productoId: results.insertId });
-   });
- });
 
 //PERFIL
 
 app.post('/usuario', async (req, res) => {
-   const { nombre, email, contrasena, direccion, telefono } = req.body;
- 
-   // Validar que los campos requeridos estén presentes
-   if (!nombre || !email || !contrasena) {
-     return res.status(400).send({ message: 'Nombre, email y contraseña son obligatorios.' });
-   }
- 
-   // Hash de la contraseña
-   try {
-     const hashedPassword = await bcrypt.hash(contrasena, 10);
- 
-     // Fecha de registro
-     const fechaRegistro = new Date().toISOString().slice(0, 10);
- 
-     // Consulta para insertar el nuevo usuario
-     const query = `INSERT INTO usuarios (nombre, email, contrasena, direccion, telefono, fecha_registro)
-                    VALUES (?, ?, ?, ?, ?, ?)`;
- 
-     connection.query(query, [nombre, email, hashedPassword, direccion, telefono, fechaRegistro], (error, results) => {
-       if (error) {
-         // Si el email ya existe, enviamos un error
-         if (error.code === 'ER_DUP_ENTRY') {
-           return res.status(409).send({ message: 'El email ya está registrado.' });
-         }
-         return res.status(500).send({ message: 'Error al crear el usuario.' });
-       }
- 
-       res.status(201).send({ message: 'Usuario creado exitosamente.', usuarioId: results.insertId });
-     });
-   } catch (error) {
-     res.status(500).send({ message: 'Error al procesar la contraseña.' });
-   }
- });
+  const { nombre, contrasena, email } = req.body;
+  const idrol = 4;
 
- app.get('/usuario/:id', (req, res) => {
-   const usuarioId = req.params.id;
- 
-   // Consulta para seleccionar el usuario por su ID
-   const query = 'SELECT * FROM usuarios WHERE id = ?';
- 
-   connection.query(query, [usuarioId], (error, results) => {
-     if (error) {
-       return res.status(500).send({ message: 'Error al recuperar el perfil del usuario.' });
-     }
- 
-     if (results.length === 0) {
-       return res.status(404).send({ message: 'Usuario no encontrado.' });
-     }
- 
-     // Retornar la información del usuario
-     res.status(200).send(results[0]);
-   });
- });
+  if (!nombre || !contrasena || !email) {
+    return res.status(400).send({ message: 'Todos los campos son requeridos.' });
+  }
 
- //obtener perfil
- app.get('/perfil/:id', (req, res) => {
+  try {
+    console.log(contrasena)
+    const hashedPassword = await bcrypt.hash(contrasena, 10); // Cifrar la contraseña96
+    console.log(hashedPassword)
+    const connection = await database.getconnection(); // Obtén la conexión
+    const [result] = await connection.promise().query(
+      'CALL sp_agregar_usuario(?, ?, ?, ?)',
+      [nombre, hashedPassword, idrol, email]
+    );
+
+    const token = jwt.sign({ userId: result.insertId }, 'secretkey');
+
+
+    res.status(201).send({ message: 'Usuario creado exitosamente.', usuarioId: result.insertId });
+  } catch (error) {
+    console.error('Error al crear usuario:', error);
+    res.status(500).send({ message: 'Error al crear el usuario.' });
+  }
+});
+
+app.get("/hola", async (req,res)=>{
+  console.log("Voy a codificar")
+  let code = "1234"
+  let hashed = await bcrypt.hash(code, 10)
+  let result = await bcrypt.compare("1234", hashed)
+  console.log(result)
+
+  res.send("gai")
+})
+
+app.post('/login', async (req, res) => {
+  const { email, contrasena } = req.body;
+  if (!email || !contrasena) {
+    return res.status(400).send({ message: 'Correo y contraseña son requeridos.' });
+  }
+  
+  try {
+    const connection = await database.getconnection();
+    const [rows] = await connection.promise().query(
+      'SELECT id, nombre, contrasena FROM usuario WHERE email = ?',
+      [email]
+    );
+    
+    if (rows.length === 0) {
+      return res.status(401).send({ message: 'Correo o contraseña incorrectos.' });
+    }
+    
+    const usuario = rows[0];
+    
+    let contrasenaCorrecta = await bcrypt.compare(contrasena, usuario.contrasena)
+    if (!contrasenaCorrecta) {
+      return res.status(401).send({ message: 'Correo o contraseña incorrectos.' });
+    }
+    const token = jwt.sign({ id: usuario.id, nombre: usuario.nombre }, 'secretkey');
+    console.log(usuario)
+
+    res.status(200).json({ token, nombre: usuario.nombre });
+  } catch (error) {
+    console.error('Error al iniciar sesión:', error);
+    res.status(500).send({ message: 'Error en el servidor.' });
+  }
+});
+
+
+
+app.get('/usuario/:id', async (req, res) => {
+  let connection;
+  const usuarioId = req.params.id;
+  try {
+    connection = await database.getconnection();
+    const query = 'call sp_leer_usuario_por_id(?)';
+    connection.query(query, [usuarioId], (error, results) => {
+  
+      if (results.length === 0) {
+        return res.status(404).send({ message: 'Usuario no encontrado.' });
+      }
+  
+      // Retornar la información del usuario
+      res.status(200).send(results[0]);
+    });
+  } catch(error){
+    return res.status(500).send({ message: 'Error al recuperar el perfil del usuario.' });
+  }  
+  // Consulta para seleccionar el usuario por su ID
+  
+
+  
+});
+
+//obtener perfil
+/*app.get('/perfil/:id', (req, res) => {
   const usuarioId = req.params.id;
 
   // Consulta para obtener los detalles del perfil
@@ -226,67 +270,82 @@ app.post('/usuario', async (req, res) => {
     res.status(200).send(results[0]);
   });
 });
-
+*/
 //
 
 
- //CARRITO
+//pedido
+app.post('/pedido', async (req, res) => {
+  let connection;
+  const { usuario_id, precio, estadoId } = req.body;
 
-/*  app.post('/carrito', (req, res) => {
-  const { usuario_id } = req.body;
+  try {
+    // Establecer conexión a la base de datos
+    connection = await database.getConnection();
 
-  // Validar que se haya proporcionado el ID del usuario
-  if (!usuario_id) {
-    return res.status(400).send({ message: 'El ID del usuario es obligatorio.' });
-  }
-
-  // Fecha de creación del carrito
-  const fechaCreacion = new Date().toISOString().slice(0, 10);
-
-  // Consulta para crear el carrito
-  const query = `INSERT INTO carritos (usuario_id, fecha_creacion) VALUES (?, ?)`;
-
-  connection.query(query, [usuario_id, fechaCreacion], (error, results) => {
-    if (error) {
-      return res.status(500).send({ message: 'Error al crear el carrito.' });
-    }
-
-    res.status(201).send({ message: 'Carrito creado exitosamente.', carritoId: results.insertId });
-  });
-}); */
-app.post('/pedido', (req, res) => {
-  const { usuario_id, productos } = req.body;
-
-  if (!usuario_id) {
-    return res.status(400).send({ message: 'El ID del usuario es obligatorio.' });
-  }
-
-  const fechaCreacion = new Date().toISOString().slice(0, 10);
-
-  // Consulta para crear el carrito
-  const queryCarrito = `INSERT INTO pedido (usuario_id, fecha_creacion) VALUES (?, ?)`;
-
-  connection.query(queryCarrito, [usuario_id, fechaCreacion], (error, results) => {
-    if (error) {
-      return res.status(500).send({ message: 'Error al crear el carrito.' });
-    }
-
-    const carritoId = results.insertId;
-
-    // Consulta para insertar productos en el carrito
-    const queryProductos = `INSERT INTO pedido_producto (carrito_id, producto_id, cantidad) VALUES ?`;
-    const values = productos.map(producto => [carritoId, producto.id, producto.cantidad]);
-
-    connection.query(queryProductos, [values], (error) => {
+    // Llamar al procedimiento almacenado para crear un nuevo pedido
+    const query = 'CALL sp_crear_pedido(?, ?, ?)';
+    connection.query(query, [usuario_id, precio, estadoId], (error, results) => {
       if (error) {
-        return res.status(500).send({ message: 'Error al agregar productos al carrito.' });
+        console.error(error);
+        return res.status(500).send({ message: 'Error al crear el pedido.' });
       }
 
-      res.status(201).send({ message: 'Carrito y productos agregados exitosamente.' });
-    });
-  });
-});
+      // Verificar si el procedimiento almacenado retornó un ID de pedido válido
+      if (results.length === 0 || !results[0].pedido_id) {
+        return res.status(400).send({ message: 'No se pudo crear el pedido.' });
+      }
 
+      // Retornar la respuesta con el ID del pedido creado
+      res.status(200).send({
+        message: 'Pedido creado exitosamente.',
+        pedido_id: results[0].pedido_id
+      });
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({ message: 'Error al procesar la solicitud.' });
+  } finally {
+    if (connection) connection.release();
+  }
+});
+app.post('/pedido/confirmarPedido', async (req, res) => {
+  const { usuario_id, productos } = req.body;
+
+  // Validación de los datos recibidos
+  if (!usuario_id || !productos || productos.length === 0) {
+    return res.status(400).send({ message: 'Datos incompletos para confirmar el pedido' });
+  }
+
+  try {
+    // Insertar el pedido en la tabla `pedido`
+    const queryPedido = 'INSERT INTO pedido (usuario_id, fecha) VALUES (?, NOW())';
+    db.query(queryPedido, [usuario_id], (err, result) => {
+      if (err) {
+        console.error('Error al insertar el pedido:', err);
+        return res.status(500).send({ message: 'Error al guardar el pedido' });
+      }
+
+      const pedidoId = result.insertId;  // ID del pedido recién insertado
+
+      // Insertar los productos en la tabla `pedido_producto`
+      const queryProductos = 'INSERT INTO pedido_producto (pedido_id, producto_id, cantidad) VALUES ?';
+      const valoresProductos = productos.map(producto => [pedidoId, producto.id, producto.cantidad]);
+
+      db.query(queryProductos, [valoresProductos], (err) => {
+        if (err) {
+          console.error('Error al insertar productos en el pedido:', err);
+          return res.status(500).send({ message: 'Error al guardar los productos' });
+        }
+
+        res.status(200).send({ message: 'Pedido confirmado con éxito', pedidoId });
+      });
+    });
+  } catch (error) {
+    console.error('Error inesperado:', error);
+    res.status(500).send({ message: 'Error al confirmar el pedido' });
+  }
+});
 //obtener carrito
 app.get('/carrito/:id', (req, res) => {
   const carritoId = req.params.id;
@@ -312,8 +371,8 @@ app.get('/carrito/:id', (req, res) => {
   });
 });
 
-// carrito por ID
-app.get('/carrito/:id', (req, res) => {
+// pedido por ID
+app.get('/pedido/:id', (req, res) => {
   const carritoId = req.params.id;
 
   // Consulta para obtener los detalles del carrito específico
@@ -339,11 +398,11 @@ app.get('/carrito/:id', (req, res) => {
 });
 
 //agregar producto
-app.post('/carrito/:id/producto', (req, res) => {
+app.post('/pedido/:id/producto', (req, res) => {
   const carritoId = req.params.id;
   const { productoId, cantidad } = req.body;
 
-  // Primero, verifica si el producto ya está en el carrito
+  // Primero, verifica si el producto ya está en el pedido
   const checkQuery = `
     SELECT cantidad FROM carrito_productos 
     WHERE carrito_id = ? AND producto_id = ?`;
@@ -383,15 +442,13 @@ app.post('/carrito/:id/producto', (req, res) => {
   });
 });
 
-//eliminar producto
-app.delete('/carrito/:id/producto/:productoId', (req, res) => {
+//eliminar producto terminar**************************************************************************
+app.delete('/pedido/:id/producto/:productoId', (req, res) => {
   const carritoId = req.params.id;
   const productoId = req.params.productoId;
 
   // Consulta para eliminar el producto del carrito
-  const deleteQuery = `
-    DELETE FROM carrito_productos 
-    WHERE carrito_id = ? AND producto_id = ?`;
+  const deleteQuery = `call sp_eliminar_pedido_producto(?)`;
 
   connection.query(deleteQuery, [carritoId, productoId], (error, results) => {
     if (error) {
@@ -411,14 +468,13 @@ app.delete('/carrito/:id/producto/:productoId', (req, res) => {
 
 
 //Método Obtener pedidos
-// Obtener pedidos con filtrado y paginación
 app.get('/pedidos', (req, res) => {
   const cantidad = req.query.cantidad ? parseInt(req.query.cantidad) : 10; // Por defecto 10
   const estado = req.query.estado; // Opcional, para filtrar por estado
   const fecha = req.query.fecha; // Opcional, para filtrar por fecha
 
   // Construcción de la consulta SQL con los filtros opcionales
-  let query = `SELECT id, usuario_id, estado, fecha, precio FROM pedidos`;
+  let query = `call sp_leer_pedidos()`;
   const queryParams = [];
 
   if (estado || fecha) {
@@ -445,39 +501,14 @@ app.get('/pedidos', (req, res) => {
     res.status(200).send(results);
   });
 });
-app.post('/pedido', (req, res) => {
-  const { usuario_id, estado, fecha, precio } = req.body;
-  console.log(req.body)
 
-  // Verificar que se reciban todos los datos necesarios
-  if (!usuario_id || !estado || !fecha || !precio) {
-    return res.status(400).send({ message: 'Faltan datos para crear el pedido.' });
-  }
+//Método obtener productos de un pedido ***********************************************************************
 
-  // Consulta para insertar el nuevo pedido
-  const query = `
-    INSERT INTO pedidos (usuario_id, estado, fecha, precio)
-    VALUES (?, ?, ?, ?)`;
-  
-  connection.query(query, [usuario_id, estado, fecha, precio], (error, results) => {
-    if (error) {
-      return res.status(500).send({ message: 'Error al guardar el pedido.' });
-    }
-
-    // Retornar el ID del nuevo pedido como respuesta
-    res.status(201).send({ id: results.insertId });
-  });
-});
-// Obtener productos de un pedido
 app.get('/pedido/:id/productos', (req, res) => {
   const pedidoId = req.params.id;
 
   // Consulta para obtener los productos de un pedido
-  const query = `
-    SELECT p.id, p.nombre, p.descripcion, p.precio, p.imagen, pp.cantidad 
-    FROM pedido_productos pp
-    JOIN productos p ON pp.producto_id = p.id
-    WHERE pp.pedido_id = ?`;
+  const query = `call sp_leer_pedidos_productos(?)`;
 
   connection.query(query, [pedidoId], (error, results) => {
     if (error) {
@@ -493,7 +524,8 @@ app.get('/pedido/:id/productos', (req, res) => {
   });
 });
 
-// Obtener pedido por ID
+//obtener pedido por id **************************************************************************************************************
+
 app.get('/pedido/:id', (req, res) => {
   const pedidoId = req.params.id;
 
@@ -517,7 +549,8 @@ app.get('/pedido/:id', (req, res) => {
   });
 });
 
-// Actualizar estado de un pedido
+//actualizar estado de un pedido
+
 app.put('/pedido/:id/estado', (req, res) => {
   const pedidoId = req.params.id;
   const { estado } = req.body;
@@ -529,10 +562,7 @@ app.put('/pedido/:id/estado', (req, res) => {
   }
 
   // Consulta para actualizar el estado del pedido
-  const query = `
-    UPDATE pedidos
-    SET estado = ?
-    WHERE id = ?`;
+  const query = `call sp_actualizar_estado_pedido(?, ?)`;
 
   connection.query(query, [estado, pedidoId], (error, results) => {
     if (error) {
@@ -548,12 +578,12 @@ app.put('/pedido/:id/estado', (req, res) => {
   });
 });
 
-// Eliminar un pedido
+//eliminar un pedido
 app.delete('/pedido/:id', (req, res) => {
   const pedidoId = req.params.id;
 
   // Consulta para eliminar el pedido (productos relacionados se eliminan automáticamente gracias a ON DELETE CASCADE)
-  const query = `DELETE FROM pedidos WHERE id = ?`;
+  const query = `call sp_eliminar_pedido(?)`;
 
   connection.query(query, [pedidoId], (error, results) => {
     if (error) {
@@ -569,122 +599,4 @@ app.delete('/pedido/:id', (req, res) => {
   });
 });
 
-//MENU DEL DIA
-
-//agregar plato al menu del dia
-app.post('/menu-dia', (req, res) => {
-  const { nombre, descripcion, precio, fecha } = req.body;
-
-  // Consulta para insertar un nuevo plato en la tabla de platos
-  const queryPlato = `INSERT INTO platos (nombre, descripcion, precio) VALUES (?, ?, ?)`;
-
-  connection.query(queryPlato, [nombre, descripcion, precio], (error, results) => {
-    if (error) {
-      return res.status(500).send({ message: 'Error al agregar el plato.' });
-    }
-
-    const platoId = results.insertId;
-
-    // Consulta para agregar el plato al menú del día para la fecha especificada
-    const queryMenuDia = `INSERT INTO menu_dia (fecha, plato_id) VALUES (?, ?)`;
-
-    connection.query(queryMenuDia, [fecha, platoId], (error, results) => {
-      if (error) {
-        return res.status(500).send({ message: 'Error al agregar el plato al menú del día.' });
-      }
-
-      // Retornar éxito de la operación
-      res.status(200).send({ success: true, message: 'Plato agregado al menú del día correctamente.' });
-    });
-  });
-});
-
-// Ruta para obtener los platos del menú del día basados en ventas o reseñas
-app.get('/menu-dia', (req, res) => {
-  const { fecha, ordenarPor } = req.query; // "ventas" o "reseñas"
-
-  let query = `
-    SELECT p.id, p.nombre, p.descripcion, p.precio, 
-    SUM(v.cantidad) AS total_ventas, AVG(r.calificacion) AS promedio_reseñas
-    FROM platos p
-    JOIN menu_dia m ON p.id = m.plato_id
-    LEFT JOIN ventas v ON p.id = v.plato_id
-    LEFT JOIN reseñas r ON p.id = r.plato_id
-    WHERE m.fecha = ?
-    GROUP BY p.id
-  `;
-
-  // Ordenar por cantidad de ventas o calificaciones de reseñas
-  if (ordenarPor === 'ventas') {
-    query += ` ORDER BY total_ventas DESC`;
-  } else if (ordenarPor === 'reseñas') {
-    query += ` ORDER BY promedio_reseñas DESC`;
-  }
-
-  connection.query(query, [fecha], (error, results) => {
-    if (error) {
-      return res.status(500).send({ message: 'Error al obtener los platos del menú del día.' });
-    }
-
-    // Devolver los platos del menú del día
-    res.status(200).send(results);
-  });
-});
-
-// Ruta para eliminar un plato específico del menú del día
-app.delete('/menu-dia/:fecha/:plato_id', (req, res) => {
-  const { fecha, plato_id } = req.params;
-
-  // Consulta para eliminar el plato del menú del día para la fecha específica
-  const query = `DELETE FROM menu_dia WHERE fecha = ? AND plato_id = ?`;
-
-  connection.query(query, [fecha, plato_id], (error, results) => {
-    if (error) {
-      return res.status(500).send({ message: 'Error al eliminar el plato del menú del día.' });
-    }
-
-    if (results.affectedRows === 0) {
-      return res.status(404).send({ message: 'No se encontró el plato para la fecha especificada.' });
-    }
-
-    // Retornar éxito si se eliminó correctamente
-    res.status(200).send({ success: true, message: 'Plato eliminado del menú del día correctamente.' });
-  });
-});
-
-// Ruta para obtener el menú semanal
-app.get('/menu-semanal', (req, res) => {
-  const { fecha_inicio, fecha_fin } = req.query; // Fechas de inicio y fin de la semana
-
-  // Consulta SQL para obtener los platos del menú para la semana
-  const query = `
-    SELECT m.fecha, p.nombre, p.descripcion, p.precio
-    FROM menu_dia m
-    JOIN platos p ON m.plato_id = p.id
-    WHERE m.fecha BETWEEN ? AND ?
-    ORDER BY m.fecha
-  `;
-
-  connection.query(query, [fecha_inicio, fecha_fin], (error, results) => {
-    if (error) {
-      return res.status(500).send({ message: 'Error al obtener el menú semanal.' });
-    }
-
-    // Agrupar los platos por fecha para generar una vista del menú semanal
-    const menuSemanal = results.reduce((acc, plato) => {
-      const fecha = plato.fecha.toISOString().split('T')[0]; // Formatear la fecha
-      if (!acc[fecha]) {
-        acc[fecha] = [];
-      }
-      acc[fecha].push({
-        nombre: plato.nombre,
-        descripcion: plato.descripcion,
-        precio: plato.precio
-      });
-      return acc;
-    }, {});
-
-    // Devolver el menú semanal agrupado por fecha
-    res.status(200).send(menuSemanal);
-  });
-});
+//SE ELIMINO TODO MENU DEL DIA POR SER CATEGORIA,NO TABLA, INNECESARIA TABLA

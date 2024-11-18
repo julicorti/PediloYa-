@@ -1,30 +1,37 @@
 import React, { useState, useContext } from "react";
+import { Link, NavLink } from "react-router-dom";
 import logoLight from "../../img/logo.png";
 import logoDark from "../../img/logodark.png";
 import Mode from "./Mode";
 import "../../SASS/style.css";
-import { Link, NavLink } from "react-router-dom";
 import { DarkModeContext } from "../context/modeContext";
 import { CartContext } from "../context/CartContext";
+import { AuthContext } from "../context/AuthContext";
 
-const NavBar = () => {
-  const { darkMode } = useContext(DarkModeContext);
-  const [isOpen, setIsOpen] = useState(false);
-  const { cart } = useContext(CartContext); 
-  const cartCount = cart.length;
+const NavBar = ({ onLogout }) => {
+  const { cart } = useContext(CartContext); // Consumir contexto del carrito
+  const { darkMode } = useContext(DarkModeContext); // Consumir contexto del modo oscuro
+  const [isOpen, setIsOpen] = useState(false); // Estado para el menú móvil
+  const cartCount = cart.length; // Contar los ítems del carrito
+  const { user, logout } = useContext(AuthContext); // Consumir el contexto de autenticación
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
+    setIsOpen(!isOpen); // Alternar visibilidad del menú
   };
+
+  
 
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-900 fixed top-0 left-0 w-full z-50 shadow-md">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4" id="navBar">
+        {/* Logo */}
         <div className="flex items-center space-x-3 rtl:space-x-reverse">
           <Link to="/">
             <img src={darkMode ? logoDark : logoLight} alt="Logo" className="w-32 h-5 object-contain" />
           </Link>
         </div>
+
+        {/* Botones a la derecha */}
         <div className="flex items-center space-x-3 md:order-2">
           <button
             id="pedilo"
@@ -53,6 +60,8 @@ const NavBar = () => {
             </svg>
           </button>
         </div>
+
+        {/* Menú de navegación */}
         <div className={`items-center justify-center w-full md:flex md:w-auto md:order-1 ${isOpen ? "block" : "hidden"}`} id="navbar-user">
           <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
             <li>
@@ -79,6 +88,7 @@ const NavBar = () => {
                 Contactanos
               </NavLink>
             </li>
+            
             <li>
               <NavLink
                 to="/cart"
@@ -86,6 +96,15 @@ const NavBar = () => {
               >
                 Carrito ({cartCount})
               </NavLink>
+            </li>
+            <li>
+              {/* Botón de cerrar sesión */}
+              <button
+                onClick={logout}
+                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+              >
+                Cerrar sesión
+              </button>
             </li>
           </ul>
         </div>

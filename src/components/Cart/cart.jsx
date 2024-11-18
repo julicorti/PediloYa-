@@ -1,79 +1,74 @@
-import React, { useContext } from "react";
-import { CartContext } from "../context/CartContext";
 import "../../SASS/style.css";
+import { CartContext } from "../context/CartContext";
+import React, { useContext,useState, useEffect } from 'react'; // Importa React y los hooks
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';  // Cambiar a useNavigate
 
 const Cart = () => {
-  const { cart } = useContext(CartContext); // Obtiene los productos del carrito
+  const [productos, setProductos] = useState([]);
+  const [usuario, setUsuario] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [mensaje, setMensaje] = useState('');
+  const navigate = useNavigate();  // Usamos useNavigate para redirigir
 
-  const confirmarCompra = () => {
-    const usuarioId = 1; // Asume que tienes un ID de usuario, cámbialo según tu lógica
-    const total = cart.reduce(
-      (total, producto) => total + producto.precio * producto.cantidad,
-      0
-    );
+  useEffect(() => {
+    obtenerProductosCarrito();
+    obtenerDatosUsuario();
+  }, []);
 
-    const pedido = {
-      usuario_id: usuarioId,
-      estado: "pendiente", // Cambia esto si es necesario
-      fecha: new Date().toISOString().slice(0, 19).replace("T", " "), // Formato de fecha
-      precio: total,
-    };
+  const obtenerProductosCarrito = async () => {
+    try {
+      const response = await axios.get('http://localhost:4000/carrito');
+      setProductos(response.data);
+    } catch (error) {
+      console.error('Error al obtener productos', error);
+    }
+  };
 
-    fetch("http://localhost:4000/pedido", {  // Cambia aquí para apuntar al puerto correcto
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(pedido),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Error al guardar el pedido");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        alert("Compra confirmada con éxito: " + data.id);
-        // Aquí puedes agregar lógica adicional, como limpiar el carrito o redirigir al usuario
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        alert("Error al confirmar la compra.");
-      });
+  const obtenerDatosUsuario = async () => {
+    try {
+      const response = await axios.get('http://localhost:4000/usuario');
+      setUsuario(response.data);
+    } catch (error) {
+      console.error('Error al obtener datos del usuario', error);
+    }
+  };
+
+  const confirmarPedido = async () => {
+    if (!usuario || productos.length === 0) {
+      setMensaje('No hay productos en el carrito o no se ha encontrado el usuario.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const pedido = {
+        usuario_id: usuario.id,
+        productos: productos.map((producto) => ({
+          id: producto.id,
+          cantidad: producto.cantidad,
+          precio: producto.precio,
+        })),
+      };
+
+      const response = await axios.post('http://localhost:4000/pedido/confirmarPedido', pedido);
+      setMensaje(response.data.mensaje);
+      navigate('/confirmacion');  // Redirigir usando navigate
+    } catch (error) {
+      console.error('Error al confirmar el pedido', error);
+      setMensaje('Hubo un error al confirmar el pedido.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="paginaC">
-      <h2>Tu Carrito</h2>
-      <div className="cart">
-        {cart.length === 0 ? (
-          <p>No hay productos en el carrito.</p>
-        ) : (
-          <div className="detalle">
-            {cart.map((producto) => (
-              <div key={producto.id} className="detalle2">
-                <h3 className="font-bold">{producto.nombre}</h3>
-                <p>Precio: ${producto.precio}</p>
-                <p>Cantidad: x{producto.cantidad}</p>
-                <p>${producto.precio * producto.cantidad}</p>
-              </div>
-            ))}
-            <div className="total">
-              <h3>
-                Total: $
-                {cart.reduce(
-                  (total, producto) =>
-                    total + producto.precio * producto.cantidad,
-                  0
-                )}
-              </h3>
-            </div>
-            <button onClick={confirmarCompra} className="btn-confirmar">
-              Confirmar Compra
-            </button>
-          </div>
-        )}
-      </div>
+    <div>
+      <h2>Confirmar Pedido</h2>
+      <button onClick={confirmarPedido} disabled={loading}>
+        {loading ? 'Procesando...' : 'Confirmar Pedido'}
+      </button>
+      {mensaje && <p>{mensaje}</p>}
     </div>
   );
 };

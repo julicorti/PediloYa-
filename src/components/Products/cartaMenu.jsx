@@ -1,4 +1,3 @@
-// components/Products/CartaMenu.jsx
 import { DarkModeContext } from "../context/modeContext";
 import { CartContext } from "../context/CartContext";
 import { useContext, useState, useEffect } from "react";
@@ -8,36 +7,37 @@ import Swal from "sweetalert2"; // Importa SweetAlert
 const CartaMenu = ({ categoriaId }) => {
   const { darkMode } = useContext(DarkModeContext);
   const { agregarAlCarrito } = useContext(CartContext); // Obtiene la función del contexto
+
+  // Definir estado y efectos fuera de condicionales
   const [productos, setProductos] = useState([]);
   const [error, setError] = useState(null);
 
+  // Efecto para obtener productos
   useEffect(() => {
     const fetchProductos = async () => {
       try {
         const response = await axios.get(
           `http://localhost:4000/productos/categoria/${categoriaId}`
         );
-        console.log("Productos obtenidos:", response.data);
         setProductos(response.data);
       } catch (err) {
-        console.error("Error al obtener productos:", err);
         setError("Error al obtener productos");
       }
     };
 
     fetchProductos();
-  }, [categoriaId]);
+  }, [categoriaId]); // Dependencia de categoriaId
 
   const handleAddToCart = (producto) => {
-    agregarAlCarrito({ ...producto, cantidad: 1 }); // Llama a la función
+    agregarAlCarrito({ ...producto, cantidad: 1 });
     Swal.fire({
       icon: 'success',
       title: 'Producto Agregado',
       text: `${producto.nombre} ha sido agregado al carrito.`,
       confirmButtonText: 'OK',
-      background: '#f8f9fa', // Cambia el color de fondo
-      color: '#333', // Cambia el color del texto
-      timer: 2000, // Desaparece automáticamente después de 2 segundos
+      background: '#f8f9fa',
+      color: '#333',
+      timer: 2000,
     });
   };
 
@@ -50,9 +50,7 @@ const CartaMenu = ({ categoriaId }) => {
             producto.cantidad_stock > 0 && (
               <div
                 key={producto.id}
-                className={`w-64 p-4 rounded-xl shadow-lg transition-all duration-300 ${
-                  darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"
-                }`}
+                className={`w-64 p-4 rounded-xl shadow-lg transition-all duration-300 ${darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"}`}
               >
                 <div
                   className="imagen-placeholder h-48 bg-cover bg-center mb-4"

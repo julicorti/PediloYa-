@@ -1,41 +1,89 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import NavBar from "./components/inicio/NavBar";
 import Inicio from "./components/inicio/Inicio";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Products from "./components/Products/Products";
 import Login from "./components/Login/login";
-import { CartContext, CartProvider } from './components/context/CartContext';
-import ContactUs from "./components/Contactanos/ContactUs";
 import Register from "./components/Login/Register/Register";
+import ContactUs from "./components/Contactanos/ContactUs";
 import Cart from "./components/Cart/cart.jsx";
-import Producto from "./components/Products/producto.jsx";
+import ListaUsuarios from "./components/Admin/lista_usuarios.jsx";
+import ProtectedRoute from "./protectedRoute.jsx";
+import { AuthProvider } from "./components/context/AuthContext.jsx";
+// Importa el CartContext y el CartProvider
+import { CartProvider } from './components/context/CartContext.jsx';
+import { AuthContext } from "./components/context/AuthContext.jsx";
 
 function App() {
   return (
-    <CartProvider> {/* Envuelve todo en CartProvider */}
-      <Router>
-        <NavBar />
-
-        <Routes>
-          <Route path="/" exact element={<Inicio />} />
-          {/* <Route path="/desayuno" element={<Products />} />
-          <Route path="/almuerzo" element={<Products />} />
-          <Route path="/bebidas" element={<Products />} />
-          <Route path="/golosinas" element={<Products />} /> */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/producto" element={<Products />} />
-          <Route path="/productos/categoria/:categoriaId" element={<Products />} />
-          <Route path="/Register" element={<Register />} />
-          <Route path="/ContactUs" element={<ContactUs />} />
-          <Route path="/cart" element={<Cart />} /> {/* Ruta para el carrito */}
-        <Route path="/productos/categoria/:categoriaId" element={<Producto />} /> {/* Ruta para productos por categoría */}
-
-        </Routes>
-      
-
-      </Router>
-    </CartProvider>
+    <Router>
+      <AuthProvider>
+        <CartProvider>
+          <NavBarContainer />
+          <Routes>
+            {/* Rutas públicas */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            {/* Rutas protegidas */}
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Inicio />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/productos/categoria/:categoriaId"
+              element={
+                <ProtectedRoute>
+                  <Products />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/cart"
+              element={
+                <ProtectedRoute>
+                  <Cart />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/lista_usuarios"
+              element={
+                <ProtectedRoute>
+                  <ListaUsuarios />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/contactus"
+              element={
+                <ProtectedRoute>
+                  <ContactUs />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </CartProvider>
+      </AuthProvider>
+    </Router>
   );
+}
+
+// Contenedor del NavBar
+function NavBarContainer() {
+  const location = useLocation();
+  const { isAuthenticated } = useContext(AuthContext);
+
+  // Rutas donde el NavBar debe ocultarse
+  const noNavBarRoutes = ["/login", "/register"];
+
+  // Ocultar NavBar si la ruta actual está en noNavBarRoutes
+  const hideNavBar = noNavBarRoutes.some((route) => route === location.pathname);
+
+  return !hideNavBar && isAuthenticated ? <NavBar /> : null;
 }
 
 export default App;
