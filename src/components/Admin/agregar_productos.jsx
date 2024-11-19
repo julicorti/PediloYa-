@@ -100,8 +100,6 @@ const AgregarProductos = () => {
   return (
     <div className="contenedor">
       <header>
-        <h1>Gestión de Productos</h1>
-        <button className="btn-cerrar">Cerrar</button>
       </header>
 
       <div className="formulario-producto">

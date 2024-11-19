@@ -54,7 +54,16 @@ const NavBar = ({ onLogout }) => {
           >
             Pedí y Retirá
           </button>
-          <Mode />
+          <button
+           onClick = {logout}
+            id="pedilo"
+            type="button"
+        class="btn btn-secondary"
+          >
+          Cerrar sesión
+          </button>
+              
+              <Mode />
           <button
             onClick={toggleMenu}
             type="button"
@@ -86,14 +95,7 @@ const NavBar = ({ onLogout }) => {
                 Inicio
               </NavLink>
             </li>
-            <li>
-              <NavLink
-                to="/menu"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-              >
-                Menu del día
-              </NavLink>
-            </li>
+            
             <li>
               <NavLink
                 to="/ContactUs"
@@ -111,14 +113,7 @@ const NavBar = ({ onLogout }) => {
                 Carrito ({cartCount})
               </NavLink>
             </li>
-            <li>
-              <button
-                onClick = {logout}
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-              >
-                Cerrar Sesion
-              </button>
-            </li>
+            
             <li>
               {user.rol === 3 ?
                 <li>
@@ -145,6 +140,20 @@ const NavBar = ({ onLogout }) => {
               }
             
             </li>
+            <li>
+              {user.rol === 3 ?
+                <li>
+                <NavLink
+                to="/pedidos"
+                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+              >
+                Pedidos
+              </NavLink>
+              </li> : <></>
+              }
+            
+            </li>
+            
           </ul>
         </div>
       </div>

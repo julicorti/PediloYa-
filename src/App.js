@@ -11,7 +11,7 @@ import ListaUsuarios from "./components/Admin/lista_usuarios.jsx";
 import ProtectedRoute from "./protectedRoute.jsx";
 import AdminRoute from "./adminRoute.jsx";
 import { AuthProvider } from "./components/context/AuthContext.jsx";
-
+import Pedidos from "./components/Admin/pedidos.jsx";
 import { CartProvider } from './components/context/CartContext.jsx';
 import { AuthContext } from "./components/context/AuthContext.jsx";
 import AgregarProductos from "./components/Admin/agregar_productos.jsx";
@@ -71,7 +71,16 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            
+            <Route
+              path="/pedidos"
+              element={
+                <ProtectedRoute>
+                  <AdminRoute>
+                  <Pedidos></Pedidos>
+                  </AdminRoute>
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/contactus"
               element={
