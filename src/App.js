@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, {  useContext } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import NavBar from "./components/inicio/NavBar";
 import Inicio from "./components/inicio/Inicio";
@@ -9,12 +9,14 @@ import ContactUs from "./components/Contactanos/ContactUs";
 import Cart from "./components/Cart/cart.jsx";
 import ListaUsuarios from "./components/Admin/lista_usuarios.jsx";
 import ProtectedRoute from "./protectedRoute.jsx";
+import AdminRoute from "./adminRoute.jsx";
 import { AuthProvider } from "./components/context/AuthContext.jsx";
-// Importa el CartContext y el CartProvider
+
 import { CartProvider } from './components/context/CartContext.jsx';
 import { AuthContext } from "./components/context/AuthContext.jsx";
-
+import AgregarProductos from "./components/Admin/agregar_productos.jsx";
 function App() {
+
   return (
     <Router>
       <AuthProvider>
@@ -53,10 +55,23 @@ function App() {
               path="/lista_usuarios"
               element={
                 <ProtectedRoute>
-                  <ListaUsuarios />
+                  <AdminRoute>
+                    <ListaUsuarios />
+                  </AdminRoute>
                 </ProtectedRoute>
               }
             />
+              <Route
+              path="/agregar_productos"
+              element={
+                <ProtectedRoute>
+                  <AdminRoute>
+                    <AgregarProductos />
+                  </AdminRoute>
+                </ProtectedRoute>
+              }
+            />
+            
             <Route
               path="/contactus"
               element={
@@ -75,14 +90,12 @@ function App() {
 // Contenedor del NavBar
 function NavBarContainer() {
   const location = useLocation();
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext); // Acceder al contexto
 
-  // Rutas donde el NavBar debe ocultarse
   const noNavBarRoutes = ["/login", "/register"];
-
-  // Ocultar NavBar si la ruta actual está en noNavBarRoutes
   const hideNavBar = noNavBarRoutes.some((route) => route === location.pathname);
 
+  // Si el usuario está autenticado y no está en las rutas de login/register, mostramos el NavBar
   return !hideNavBar && isAuthenticated ? <NavBar /> : null;
 }
 

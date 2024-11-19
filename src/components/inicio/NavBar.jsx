@@ -7,20 +7,34 @@ import "../../SASS/style.css";
 import { DarkModeContext } from "../context/modeContext";
 import { CartContext } from "../context/CartContext";
 import { AuthContext } from "../context/AuthContext";
-
+import { useEffect } from "react";
 const NavBar = ({ onLogout }) => {
   const { cart } = useContext(CartContext); // Consumir contexto del carrito
   const { darkMode } = useContext(DarkModeContext); // Consumir contexto del modo oscuro
   const [isOpen, setIsOpen] = useState(false); // Estado para el menú móvil
   const cartCount = cart.length; // Contar los ítems del carrito
-  const { user, logout } = useContext(AuthContext); // Consumir el contexto de autenticación
+  const { user, getUser, logout } = useContext(AuthContext); // Consumir el contexto de autenticación
+  const [userReady, setUserReady] = useState(false)
 
   const toggleMenu = () => {
     setIsOpen(!isOpen); // Alternar visibilidad del menú
   };
 
-  
+    
 
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token){
+      getUser();
+      setUserReady(true);
+    }
+    
+  }, []);
+
+  
+  if (!userReady) {
+    return <p>Cargando...</p>
+  }   
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-900 fixed top-0 left-0 w-full z-50 shadow-md">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4" id="navBar">
@@ -98,13 +112,38 @@ const NavBar = ({ onLogout }) => {
               </NavLink>
             </li>
             <li>
-              {/* Botón de cerrar sesión */}
               <button
-                onClick={logout}
+                onClick = {logout}
                 className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
               >
-                Cerrar sesión
+                Cerrar Sesion
               </button>
+            </li>
+            <li>
+              {user.rol === 3 ?
+                <li>
+                <NavLink
+                to="/lista_usuarios"
+                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+              >
+                Usuarios
+              </NavLink>
+              </li> : <></>
+              }
+            
+            </li>
+            <li>
+              {user.rol === 3 ?
+                <li>
+                <NavLink
+                to="/agregar_productos"
+                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+              >
+                Agregar Productos
+              </NavLink>
+              </li> : <></>
+              }
+            
             </li>
           </ul>
         </div>

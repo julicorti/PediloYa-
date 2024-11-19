@@ -14,22 +14,23 @@ const Products = () => {
 
     useEffect(() => {
         const fetchCategoriaNombre = async () => {
-            try {
-                const response = await axios.get(`http://localhost:4000/productos/categoria/${categoriaId}`);
-                console.log("Respuesta de la API:", response.data);
-                if (response.data.length > 0) {
-                    setCategoriaNombre(response.data[0].categoria_nombre);
-                }
-            } catch (error) {
-                console.error("Error al obtener el nombre de la categoría:", error);
-            } finally {
-                setLoading(false); // Cambiar el estado de carga a false
+          try {
+            const response = await axios.get(
+              `http://localhost:4000/productos/categoria/${categoriaId}`
+            );
+            if (response.data.length > 0) {
+              setCategoriaNombre(response.data[0].categoria_nombre); // Usar nombre desde la respuesta
             }
+          } catch (error) {
+            console.error("Error al obtener el nombre de la categoría:", error);
+          } finally {
+            setLoading(false);
+          }
         };
-    
+      
         fetchCategoriaNombre();
-    }, [categoriaId]);
-
+      }, [categoriaId]);
+      
     return (
         <div className={`pag ${darkMode ? "dark" : "light"}`}>
             <div id="btn-prod">

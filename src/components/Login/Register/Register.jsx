@@ -1,21 +1,17 @@
 import React, { useState, useContext, useEffect } from "react";
 import InputRegister from "./_inputRegister";
 import Send from "../send";
-import { Link, useNavigate } from "react-router-dom"; // Importa useNavigate
+import { Link, useNavigate } from "react-router-dom";
 import { DarkModeContext } from "../../context/modeContext";
+import { AuthContext } from "../../context/AuthContext"; // Importa el AuthContext
 
-const Register = ({ setIsAuthenticated }) => {
+const Register = () => {
   const { darkMode } = useContext(DarkModeContext);
+  const { login } = useContext(AuthContext); // Accede al login del contexto
   const [nombre, setNombre] = useState("");
   const [contrasena, setContrasena] = useState("");
   const [email, setEmail] = useState("");
   const navigate = useNavigate(); // Instancia de useNavigate
-
-  // Cargar estado inicial de autenticación desde localStorage
-  useEffect(() => {
-    const isLoggedIn = localStorage.getItem("isAuthenticated") === "true";
-    setIsAuthenticated(isLoggedIn);
-  }, [setIsAuthenticated]);
 
   const handleRegister = async (event) => {
     event.preventDefault();
@@ -38,8 +34,13 @@ const Register = ({ setIsAuthenticated }) => {
       if (response.ok) {
         const result = await response.json();
         alert(result.message || "Registro exitoso");
-        setIsAuthenticated(true); // Actualiza el estado de autenticación
-        localStorage.setItem("isAuthenticated", "true"); // Persistencia
+
+        // Llamamos a la función login del contexto para actualizar el estado de autenticación
+        login(result); // Suponiendo que el resultado contiene los datos del usuario
+
+        // Guardamos el estado de autenticación en el localStorage
+        localStorage.setItem("isAuthenticated", "true");
+
         navigate("/"); // Redirige a la página principal
       } else {
         const error = await response.json();

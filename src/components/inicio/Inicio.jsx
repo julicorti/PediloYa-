@@ -5,18 +5,19 @@ import img1 from "../../img/comida/dona.avif";
 import img2 from "../../img/comida/meidalunaJQ.jpg";
 import img3 from "../../img/comida/cocacola.webp";
 import img4 from "../../img/comida/golosinas.webp";
-
+import { useEffect, useState} from "react";
 import img8 from "../../img/burgalogo.png";
 import img9 from "../../img/fritaslogo.jpg";
-
+import { AuthContext } from "../context/AuthContext";
 import Footer from "./Footer";
 import { DarkModeContext } from "../context/modeContext";
 import { useContext } from "react";
 import CartaMenu from "../Products/cartaMenu";
 import Carousel from "./Carousel";
-const Inicio = () => {
-  const { darkMode, toggleDarkMode } = useContext(DarkModeContext);
 
+const Inicio = () => {
+  const { darkMode  } = useContext(DarkModeContext);
+  
   return (
     <div className="main-content">
       <Carousel></Carousel>
@@ -64,7 +65,10 @@ const Inicio = () => {
           />
         
         </div>
+        
       </div>
+      
+      
       <Footer />
     </div>
   );

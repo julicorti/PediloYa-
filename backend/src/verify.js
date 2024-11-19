@@ -1,3 +1,5 @@
+const jwt = require("jsonwebtoken")
+
 function verifyToken(req, res, next) {
     const token = req.header('Authorization')?.split(' ')[1];  // Obtener el token del header Authorization
     if (!token) {
@@ -9,6 +11,7 @@ function verifyToken(req, res, next) {
       req.user = decoded;  // Guardar la información decodificada del usuario en req.user
       next();  // Pasar al siguiente middleware o ruta
     } catch (err) {
+      console.error(err)
       res.status(400).send('Token no valido');
     }
   }

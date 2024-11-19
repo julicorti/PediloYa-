@@ -5,48 +5,53 @@ import Send from "./send";
 import { DarkModeContext } from "../context/modeContext";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
-const Login = ({ setIsAuthenticated }) => {
-  const { darkMode } = useContext(DarkModeContext);
 
-  // Estados para manejar los campos del formulario
+const Login = () => {
+  const { darkMode } = useContext(DarkModeContext);
+  const { login } = useContext(AuthContext); // Usa el login del contexto
+
   const [email, setEmail] = useState("");
   const [contrasena, setContrasena] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // Usar para redirigir después del login exitoso
+  const navigate = useNavigate();
 
-  const {login} = useContext(AuthContext)
-
-  // Función para manejar el login
   const handleLogin = async (e) => {
-    e.preventDefault(); // Prevenir el comportamiento por defecto de submit
-    
-    // Verificar que los valores de email y contrasena no están vacíos
+    e.preventDefault();
+  
     if (!email || !contrasena) {
       setError("El email y la contraseña son requeridos.");
-      return; // Detener la ejecución si faltan campos
+      return;
     }
-
+  
     try {
-      const response = await axios.post('http://localhost:4000/login', {
+      const response = await axios.post("http://localhost:4000/login", {
         email,
-        contrasena,
+        contrasena
       });
-      login(response.data)
-
-      setError(""); // Limpiar error si existía
-      
-      navigate('/'); // Redirigir al usuario al dashboard o página de inicio
+  
+      const userData = response.data;
+      login(userData); // Llama a la función del contexto para establecer el usuario
+  
+      setError("");
+      console.log(userData)
+      // Redirige según el rol
+      if (userData.rol === 3) {
+        navigate("/lista_usuarios");
+      } else {
+        navigate("/");
+      }
     } catch (error) {
       if (error.response) {
-        setError(error.response.data.message || 'Error en el servidor.');
+        setError(error.response.data.message || "Error en el servidor.");
       } else if (error.request) {
-        setError('No se pudo conectar con el servidor.');
+        setError("No se pudo conectar con el servidor.");
       } else {
-        setError('Ocurrió un error inesperado.');
+        setError("Ocurrió un error inesperado.");
       }
-      console.error('Error al hacer login:', error);
+      console.error("Error al hacer login:", error);
     }
   };
+  
 
   return (
     <div>

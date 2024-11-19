@@ -1191,4 +1191,214 @@
 }
 .contenedor .lista-usuarios .item-usuario .item-derecha div strong {
   color: #2a9d8f;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+  color: #333333;
+}
+
+.contenedor {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f4f4f4;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+.contenedor header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 15px;
+}
+.contenedor header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #ff7043;
+}
+.contenedor header .btn-cerrar {
+  padding: 8px 15px;
+  font-size: 1rem;
+  border-radius: 5px;
+}
+.contenedor header .btn-cerrar:hover {
+  background-color: #4d4d4d;
+}
+.contenedor .formulario-producto {
+  display: flex;
+  margin: 20px 0;
+}
+.contenedor .formulario-producto .formulario-izquierda {
+  flex: 1;
+  text-align: center;
+}
+.contenedor .formulario-producto .formulario-izquierda .imagen-placeholder {
+  width: 150px;
+  height: 150px;
+  background-color: #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  border-radius: 10px;
+  margin: 0 auto 10px auto;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+.contenedor .formulario-producto .formulario-izquierda input[type=file] {
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+.contenedor .formulario-producto .formulario-derecha {
+  flex: 2;
+  padding: 0 20px;
+}
+.contenedor .formulario-producto .formulario-derecha .grupo-formulario {
+  margin-bottom: 15px;
+}
+.contenedor .formulario-producto .formulario-derecha .grupo-formulario label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+.contenedor .formulario-producto .formulario-derecha .grupo-formulario input,
+.contenedor .formulario-producto .formulario-derecha .grupo-formulario select,
+.contenedor .formulario-producto .formulario-derecha .grupo-formulario textarea {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+}
+.contenedor .formulario-producto .formulario-derecha .grupo-formulario input:focus,
+.contenedor .formulario-producto .formulario-derecha .grupo-formulario select:focus,
+.contenedor .formulario-producto .formulario-derecha .grupo-formulario textarea:focus {
+  border-color: #ff7043;
+}
+.contenedor .formulario-producto .formulario-derecha .grupo-formulario textarea {
+  resize: none;
+  height: 80px;
+}
+.contenedor .botones {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+.contenedor .botones .btn {
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.contenedor .botones .btn-guardar {
+  background-color: #ff7043;
+  color: #f4f4f4;
+  border: none;
+}
+.contenedor .botones .btn-guardar:hover {
+  background-color: #ff4910;
+}
+.contenedor .botones .btn-descartar {
+  background-color: white;
+  color: #333333;
+  border: 1px solid #ddd;
+}
+.contenedor .botones .btn-descartar:hover {
+  background-color: #f7f7f7;
+}
+.contenedor .lista-productos {
+  margin-top: 20px;
+}
+.contenedor .lista-productos .item-producto {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  background-color: #f4f4f4;
+  transition: all 0.3s ease-in-out;
+}
+.contenedor .lista-productos .item-producto:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.contenedor .lista-productos .item-producto .item-izquierda {
+  display: flex;
+  align-items: center;
+}
+.contenedor .lista-productos .item-producto .item-izquierda .imagen-placeholder {
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  margin-right: 10px;
+  background-size: cover;
+  background-position: center;
+}
+.contenedor .lista-productos .item-producto .item-derecha {
+  flex: 2;
+  padding: 0 20px;
+}
+.contenedor .lista-productos .item-producto .item-derecha p {
+  margin: 5px 0;
+}
+.contenedor .lista-productos .item-producto .item-derecha p strong {
+  color: #ff7043;
+}
+.contenedor .lista-productos .item-producto .icono-editar button,
+.contenedor .lista-productos .item-producto .icono-eliminar button {
+  background-color: transparent;
+  border: none;
+  color: #ff7043;
+  cursor: pointer;
+}
+.contenedor .lista-productos .item-producto .icono-editar button:hover,
+.contenedor .lista-productos .item-producto .icono-eliminar button:hover {
+  text-decoration: underline;
+}
+.contenedor .lista-productos .item-producto .switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+.contenedor .lista-productos .item-producto .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.contenedor .lista-productos .item-producto .switch .slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ddd;
+  transition: all 0.3s ease-in-out;
+  border-radius: 20px;
+}
+.contenedor .lista-productos .item-producto .switch .slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #f4f4f4;
+  transition: all 0.3s ease-in-out;
+  border-radius: 50%;
+}
+.contenedor .lista-productos .item-producto .switch input:checked + .slider {
+  background-color: #ff7043;
+}
+.contenedor .lista-productos .item-producto .switch input:checked + .slider:before {
+  transform: translateX(18px);
 }/*# sourceMappingURL=style.css.map */

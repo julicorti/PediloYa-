@@ -4,6 +4,7 @@ const database = require("./database");
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken")
+const verifyToken = require("./verify")
 
 
 //config inicial
@@ -54,6 +55,13 @@ app.get('/ping', async (req, res) => {
       res.send({ message: 'Pong!', results });
   });
 });
+
+app.get('/getUser', verifyToken, async (req,res)=>{
+  
+  const token = req.header('Authorization')?.split(' ')[1]
+  let algo = jwt.decode(token, "secretkey")
+  res.json(algo);
+})
 
 app.get('/usuarios', async (req, res) => {
   const connection = await database.getconnection();
@@ -200,7 +208,7 @@ app.post('/login', async (req, res) => {
   try {
     const connection = await database.getconnection();
     const [rows] = await connection.promise().query(
-      'SELECT id, nombre, contrasena FROM usuario WHERE email = ?',
+      'SELECT id, rol ,nombre, contrasena FROM usuario WHERE email = ?',
       [email]
     );
     
@@ -214,10 +222,10 @@ app.post('/login', async (req, res) => {
     if (!contrasenaCorrecta) {
       return res.status(401).send({ message: 'Correo o contraseña incorrectos.' });
     }
-    const token = jwt.sign({ id: usuario.id, nombre: usuario.nombre }, 'secretkey');
+    const token = jwt.sign({ id: usuario.id, nombre: usuario.nombre, rol: usuario.rol }, 'secretkey');
     console.log(usuario)
 
-    res.status(200).json({ token, nombre: usuario.nombre });
+    res.status(200).json({ token, nombre: usuario.nombre, rol: usuario.rol});
   } catch (error) {
     console.error('Error al iniciar sesión:', error);
     res.status(500).send({ message: 'Error en el servidor.' });
