@@ -13,10 +13,12 @@ const Producto = ({ categoriaId }) => {
   useEffect(() => {
     const fetchProductos = async () => {
       try {
+        console.log("Cargando productos para categoriaId:", categoriaId); // Log para verificar el id
         const response = await axios.get(
           `http://localhost:4000/productos/categoria/${categoriaId}`
         );
-        setProductos(response.data);
+        console.log("Productos recibidos:", response.data); // Log para depuración
+        setProductos(response.data); // Asigna los productos al estado
       } catch (err) {
         console.error("Error al obtener productos:", err);
         setError("Error al obtener productos");
@@ -40,40 +42,49 @@ const Producto = ({ categoriaId }) => {
 
   return (
     <div>
-      {error && <p>{error}</p>}
-      <div id="lista-productos">
-        {productos.length > 0 ? (
-          productos.map((producto) =>
-            producto.cantidad_stock > 0 && (
-              <div key={producto.id} className="item-producto border rounded-lg shadow-lg overflow-hidden">
-                <div
-                  className="imagen-placeholder h-48 bg-cover bg-center"
-                  style={{
-                    backgroundImage: `url(http://localhost:4000${producto.imagen})`,
-                  }}
-                >
-                  {!producto.imagen ? "+" : ""}
-                </div>
-                <div className="p-4">
-                  <h2 className="font-bold text-xl">{producto.nombre || "Nombre no disponible"}</h2>
-                  <p className="text-gray-600">
-                    <strong>Stock:</strong> {producto.cantidad_stock}
-                  </p>
-                  <p className="text-gray-800 font-semibold">
-                    <strong>Precio: $</strong>
-                    {producto.precio}
-                  </p>
-                  <button onClick={() => handleAddToCart(producto)}>Agregar al Carrito</button>
-                </div>
+    {error && <p>{error}</p>} {/* Muestra error si lo hay */}
+    <div id="lista-productos">
+      {productos.length > 0 ? (
+        productos.map((producto) =>
+          producto.cantidad_stock > 0 ? ( // Solo renderiza si hay stock
+            <div
+              key={producto.id}
+              className="item-producto border rounded-lg shadow-lg overflow-hidden"
+            >
+              {/* Imagen del producto */}
+              <div
+                className="imagen-placeholder h-48 bg-cover bg-center"
+                style={{
+                  backgroundImage: `url(http://localhost:4000${producto.imagen})`,
+                }}
+              >
+                {!producto.imagen ? "+" : ""}
               </div>
-            )
-          )
-        ) : (
-          <p>No hay productos disponibles.</p>
-        )}
-      </div>
+              {/* Información del producto */}
+              <div className="p-4">
+                <h2 className="font-bold text-xl">
+                  {producto.nombre || "Nombre no disponible"}
+                </h2>
+                <p className="text-gray-600">
+                  <strong>Stock:</strong> {producto.cantidad_stock}
+                </p>
+                <p className="text-gray-800 font-semibold">
+                  <strong>Precio: $</strong>
+                  {producto.precio}
+                </p>
+                <button onClick={() => handleAddToCart(producto)}>
+                  Agregar al Carrito
+                </button>
+              </div>
+            </div>
+          ) : null
+        )
+      ) : (
+        <p>No hay productos disponibles.</p> // Mensaje si no hay productos
+      )}
     </div>
-  );
+  </div>
+);
 };
 
 export default Producto;

@@ -5,6 +5,7 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken")
 const verifyToken = require("./verify")
+const { getconnection } = require('./database'); // Si el archivo se llama db.js
 
 
 //config inicial
@@ -88,34 +89,72 @@ app.get("/menu", async (req, res) => {
    const result = await connection.query("SELECT * from producto where id=;");
    console.log(result); 
 } )*/
-
-app.get('/producto/:id', (req, res) => {
-  const productId = req.params.id;
-
-  connection.query('SELECT * FROM productos WHERE id = ?', [productId], (error, results) => {
-    if (error) {
-      return res.status(500).send({ message: 'Error al obtener el producto' });
-    }
-    if (results.length === 0) {
-      return res.status(404).send({ message: 'Producto no encontrado' });
-    }
-    res.send(results[0]);
+   app.get('/productos', async (req, res) => {
+    const connection = await database.getconnection();
+    connection.query('CALL sp_leer_productos()', (error, results) => {
+      if (error) {
+        console.error('Error al obtener productos:', error);
+        return res.status(500).send({ message: 'Error al obtener productos.' });
+      }
+      res.send(results[0]); // Deberías devolver los productos aquí
+    });
   });
+   app.get('/productos/categoria/:id', async (req, res) => {
+    const categoriaId = req.params.id;
+    console.log(categoriaId)
+    try {
+        const connection = await getconnection();
+        const query = `
+            SELECT p.*
+            FROM producto p
+            JOIN producto_categoria pc ON p.id = pc.id_producto
+            WHERE pc.id_categoria = ?;
+        `;
+        connection.execute(query, [categoriaId], (error, results) => {
+            if (error) {
+                console.error("Error al obtener productos por categoría:", error);
+                res.status(500).send("Error al obtener productos");
+                return;
+            }
+            
+            // Evitar que los resultados sean cacheados
+            res.setHeader('Cache-Control', 'no-store');
+            res.json(results);
+        });
+    } catch (error) {
+        console.error("Error al obtener la conexión:", error);
+        res.status(500).send("Error en la conexión con la base de datos");
+    }
 });
-
-app.delete('/producto/:id', verificarAdmin, (req, res) => {
+app.delete('/producto/:id', async (req, res) => {
   const productId = req.params.id;
+  const connection = await getconnection();
 
-  connection.query('call sp_eliminar_producto(?)', [productId], (error, results) => {
+  // Validamos si el ID del producto es un número válido
+  if (isNaN(productId) || productId <= 0) {
+    return res.status(400).send({ message: 'ID del producto inválido.' });
+  }
+
+  // Primero eliminamos los registros de producto_categoria que están asociados al producto
+  connection.query('DELETE FROM producto_categoria WHERE id_producto = ?', [productId], (error, results) => {
     if (error) {
-      return res.status(500).send({ message: 'Error al eliminar el producto.' });
+      console.error('Error al eliminar los registros de producto_categoria:', error);
+      return res.status(500).send({ message: 'Error al eliminar las relaciones de categoría.' });
     }
 
-    if (results.affectedRows === 0) {
-      return res.status(404).send({ message: 'Producto no encontrado.' });
-    }
+    // Ahora, eliminamos el producto
+    connection.query('DELETE FROM producto WHERE id = ?', [productId], (error, results) => {
+      if (error) {
+        console.error('Error al eliminar el producto:', error);
+        return res.status(500).send({ message: 'Error al eliminar el producto.' });
+      }
 
-    res.send({ message: 'Producto eliminado correctamente.' });
+      if (results.affectedRows === 0) {
+        return res.status(404).send({ message: 'Producto no encontrado.' });
+      }
+
+      res.send({ message: 'Producto eliminado correctamente.' });
+    });
   });
 });
 

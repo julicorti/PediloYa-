@@ -40,16 +40,16 @@ const Inicio = () => {
             <CartaSeccion
               nombre={"¡Desayuno/Merienda!"}
               img={img1}
-              ruta="/productos/categoria/2" 
+              ruta="/productos/categoria/4" 
               />
-            <CartaSeccion nombre={"¡Golosinas!"} img={img4}         ruta="/productos/categoria/7" 
+            <CartaSeccion nombre={"¡Golosinas!"} img={img4}         ruta="/productos/categoria/1" 
  />
             <CartaSeccion
               nombre={"¡Almuerzo/Cena!"}
               img={img2}
               ruta="/productos/categoria/6" 
             />
-            <CartaSeccion nombre={"¡Bebidas!"} img={img3}         ruta="/productos/categoria/8" 
+            <CartaSeccion nombre={"¡Bebidas!"} img={img3}         ruta="/productos/categoria/7" 
  />
           </div>
         </div>

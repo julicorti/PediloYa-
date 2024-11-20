@@ -1404,6 +1404,191 @@ body {
   transform: translateX(18px);
 }
 
+.tabla-productos {
+  margin-bottom: 20px;
+}
+.tabla-productos table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.tabla-productos table th, .tabla-productos table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ccc;
+}
+.tabla-productos table th {
+  background-color: #f4f4f4;
+}
+.tabla-productos table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+.tabla-productos table button {
+  padding: 5px 10px;
+  margin: 5px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+.tabla-productos table button:hover {
+  background-color: #0056b3;
+}
+
+.lista-productos {
+  max-width: 100%;
+  margin: 0 auto;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.lista-productos table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+}
+.lista-productos table th, .lista-productos table td {
+  padding: 12px 20px;
+  border-bottom: 1px solid #eee;
+}
+.lista-productos table th {
+  background-color: #f5f5f5;
+  color: #333;
+  font-weight: bold;
+}
+.lista-productos table tr:hover {
+  background-color: #f9f9f9;
+}
+.lista-productos table td {
+  vertical-align: middle;
+}
+.lista-productos table .imagen-placeholder {
+  width: 40px;
+  height: 40px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+}
+.lista-productos table button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+.lista-productos table button:hover {
+  background-color: #0056b3;
+}
+.lista-productos table button:first-of-type {
+  background-color: #f0ad4e;
+  margin-right: 5px;
+}
+.lista-productos table button:first-of-type:hover {
+  background-color: #ec971f;
+}
+.lista-productos table button:last-of-type {
+  background-color: #d9534f;
+}
+.lista-productos table button:last-of-type:hover {
+  background-color: #c9302c;
+}
+
+.formulario-producto {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 30px;
+}
+.formulario-producto .formulario-izquierda {
+  width: 30%;
+  position: relative;
+}
+.formulario-producto .formulario-izquierda .imagen-placeholder {
+  width: 100%;
+  height: 100px;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  color: #999;
+  border-radius: 8px;
+}
+.formulario-producto .formulario-izquierda input[type=file] {
+  position: absolute;
+  bottom: 5px;
+  left: 10px;
+  opacity: 0;
+  cursor: pointer;
+}
+.formulario-producto .formulario-derecha {
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.formulario-producto .formulario-derecha .grupo-formulario {
+  display: flex;
+  flex-direction: column;
+}
+.formulario-producto .formulario-derecha .grupo-formulario label {
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #333;
+}
+.formulario-producto .formulario-derecha .grupo-formulario input,
+.formulario-producto .formulario-derecha .grupo-formulario textarea,
+.formulario-producto .formulario-derecha .grupo-formulario select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+.formulario-producto .formulario-derecha .grupo-formulario input:focus,
+.formulario-producto .formulario-derecha .grupo-formulario textarea:focus,
+.formulario-producto .formulario-derecha .grupo-formulario select:focus {
+  border-color: #007bff;
+}
+.formulario-producto .formulario-derecha .grupo-formulario textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.botones {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 20px;
+}
+.botones .btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.botones .btn.btn-guardar {
+  background-color: #28a745;
+  color: white;
+}
+.botones .btn.btn-guardar:hover {
+  background-color: #218838;
+}
+.botones .btn.btn-descartar {
+  background-color: #dc3545;
+  color: white;
+}
+.botones .btn.btn-descartar:hover {
+  background-color: #c82333;
+}
+
 .app-container-pedidos {
   max-width: 1200px;
   margin: 0 auto;

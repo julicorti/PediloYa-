@@ -38,7 +38,7 @@ const Products = () => {
             </div>
             <div className="tex">
                 <h1 className={`h1 ${darkMode ? "dark" : "light"}`}>
-                    Sección: {loading ? "Cargando..." : categoriaNombre}
+                <h1>Sección: {loading ? "Cargando..." : categoriaNombre}</h1>
                 </h1>
             </div>
             <Producto categoriaId={categoriaId} /> {/* Pasamos la categoriaId al componente Producto */}
