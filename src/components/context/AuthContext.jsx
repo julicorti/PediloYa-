@@ -6,19 +6,21 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // Nuevo estado para controlar la carga inicial
-
-  useEffect(async () => {
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      setIsAuthenticated(true);
-
-      setUser({ ...token }); // Simula un usuario o carga más datos si los necesitas
-      
-    } else {
-      setIsAuthenticated(false);
-    }
-    setIsLoading(false); // La inicialización ha terminado
-  }, []);
+  useEffect(() => {
+    // Función asíncrona definida dentro del useEffect
+    const fetchUserData = async () => {
+      const token = localStorage.getItem("authToken");
+      if (token) {
+        setIsAuthenticated(true);
+        setUser({ ...token }); // Simula un usuario o carga más datos si los necesitas
+      } else {
+        setIsAuthenticated(false);
+      }
+      setIsLoading(false); // La inicialización ha terminado
+    };
+  
+    fetchUserData();  // Llamada a la función asíncrona
+  }, []);  // Dependencias del useEffect
 
   const getUser = async () => {
     const token = localStorage.getItem("authToken");

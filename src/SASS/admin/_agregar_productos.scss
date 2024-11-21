@@ -18,13 +18,12 @@ body {
 // Contenedor principal
 .contenedor {
   height: 100vh;
-  max-width: 1200px;
+  width: 90vw;
   margin: 20px auto;
   padding: 20px;
   background-color: $secondary-color;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-
   header {
     display: flex;
     justify-content: space-between;
@@ -469,4 +468,19 @@ body {
       }
     }
   }
+}
+.filtro-categoria {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.categorias-dropdown {
+  margin-top: 10px;
+}
+
+.categorias-dropdown select {
+  padding: 5px;
+  font-size: 16px;
 }

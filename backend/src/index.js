@@ -158,15 +158,19 @@ app.delete('/producto/:id', async (req, res) => {
   });
 });
 
-app.put('/producto/:id', verificarAdmin, (req, res) => {
-  const productId = req.params.id;
-  const { nombre, descripcion, precio, stock } = req.body;
+app.put('/producto/:id', async (req, res) => {
+  const productId = req.params.id; // Obtener el ID del producto
+  const { nombre, descripcion, precio, cantidad_stock } = req.body; // Obtener los datos del cuerpo de la solicitud
+
+  const connection = await getconnection(); // Obtener conexión a la base de datos
 
   // Consulta para actualizar el producto
-  const query = `call sp_actualizar_producto(?, ?, ?, ?, ?)`;
+  const query = 'UPDATE producto SET nombre = ?, precio = ?, cantidad_stock = ?, descripcion = ? WHERE id = ?';
 
-  connection.query(query, [productId, precio, nombre, stock, descripcion], (error, results) => {
+  // Ejecutar la consulta con los valores proporcionados
+  connection.query(query, [nombre, precio, cantidad_stock, descripcion, productId], (error, results) => {
     if (error) {
+      console.error('Error al ejecutar la consulta:', error);  // Imprimir el error en consola para mayor detalle
       return res.status(500).send({ message: 'Error al actualizar el producto.' });
     }
 
@@ -177,6 +181,7 @@ app.put('/producto/:id', verificarAdmin, (req, res) => {
     res.send({ message: 'Producto actualizado correctamente.' });
   });
 });
+
 
 app.post('/producto', verificarAdmin, (req, res) => {
   const { nombre, fecha_ingreso, categoria, cantidad, precio, descripcion, imagen } = req.body;

@@ -3,178 +3,136 @@ import axios from "axios";
 import "../../SASS/style.css";
 
 const AgregarProductos = () => {
-  const [productos, setProductos] = useState([]); // Todos los productos
-  const [productosFiltrados, setProductosFiltrados] = useState([]); // Productos filtrados
-  const [formulario, setFormulario] = useState({
-    categoriaId: "",
-    cantidad: "",
-    nombre: "",
-    precio: "",
-    descripcion: "",
-    imagenUrl: "",
-  });
-  const [editando, setEditando] = useState(false);
-  const [productoEditando, setProductoEditando] = useState(null);
-  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(""); // Estado para la categoría seleccionada
-  const [categorias, setCategorias] = useState([]); // Estado para las categorías
+  const [productos, setProductos] = useState([]);
+  const [categorias, setCategorias] = useState([]);
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(""); // Para filtrar por categoría
+  const [mostrarCategorias, setMostrarCategorias] = useState(false); // Controla si se muestra la lista de categorías
 
-  // Usar useEffect para obtener los productos y categorías desde el backend
+  const [editando, setEditando] = useState(null); // Estado para controlar qué producto se está editando
+  const [error, setError] = useState(""); // Para manejar errores
+
+  // Función para obtener todos los productos
+  const obtenerProductos = async () => {
+    try {
+      console.log("Cargando productos...");
+      const response = await axios.get("http://localhost:4000/productos");
+      console.log("Productos recibidos:", response.data);
+      setProductos(response.data);
+    } catch (err) {
+      console.error("Error al obtener productos:", err);
+      setError("Error al obtener productos");
+    }
+  };
+
+  // Función para obtener categorías
+  const obtenerCategorias = async () => {
+    try {
+      const response = await axios.get("http://localhost:4000/categorias");
+      setCategorias(response.data);
+    } catch (err) {
+      console.error("Error al obtener categorías:", err);
+      setError("Error al obtener categorías");
+    }
+  };
+
+  // Llamadas a obtener productos y categorías cuando el componente se monta
   useEffect(() => {
-    // Obtener productos
-    axios
-      .get("http://localhost:4000/productos")  // Cambiar la URL si es necesario
-      .then((response) => {
-        setProductos(response.data); // Asignar los productos a estado
-        setProductosFiltrados(response.data); // Inicialmente mostramos todos los productos
-      })
-      .catch((error) => {
-        console.error("Hubo un error al obtener los productos: ", error);
-      });
+    obtenerProductos();
+    obtenerCategorias();
+  }, []); // Solo se ejecuta una vez cuando el componente se monta
 
-    // Obtener categorías para el filtro
-    axios
-      .get("http://localhost:4000/categorias")  // Cambiar la URL si es necesario
-      .then((response) => {
-        setCategorias(response.data); // Asignar las categorías
-      })
-      .catch((error) => {
-        console.error("Hubo un error al obtener las categorías: ", error);
-      });
-  }, []); // Se ejecuta una sola vez al cargar el componente
-
-  // Función para filtrar productos por categoriaId
-  const filtrarProductos = (categoriaId) => {
-    if (categoriaId === "") {
-      setProductosFiltrados(productos); // Si no hay categoría seleccionada, mostrar todos los productos
-    } else {
-      // Filtrar productos según la categoría seleccionada
-      const productosFiltradosPorCategoria = productos.filter(
-        (producto) => producto.categoriaId === categoriaId
-      );
-      setProductosFiltrados(productosFiltradosPorCategoria);
-    }
-  };
-
-  // Función para manejar cambios en los inputs del formulario
-  const handleInputChange = (e) => {
-    const { id, value } = e.target;
-    setFormulario({ ...formulario, [id]: value });
-  };
-
-  // Función para manejar cambios de imagen
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setFormulario({ ...formulario, imagenUrl: e.target.result });
+  // Efecto para cargar productos según la categoría seleccionada
+  useEffect(() => {
+    if (categoriaSeleccionada) {
+      const obtenerCategorias = async () => {
+        try {
+          console.log("Cargando categorías...");
+          const response = await axios.get("http://localhost:4000/categorias");
+          console.log("Categorías recibidas:", response.data); // Asegúrate de que esto muestra un array de categorías
+          setCategorias(response.data);
+        } catch (err) {
+          console.error("Error al obtener categorías:", err);
+          setError("Error al obtener categorías");
+        }
       };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  // Función para guardar un nuevo producto o actualizar uno existente
-  const guardarProducto = () => {
-    const { categoriaId, cantidad, nombre, precio, descripcion, imagenUrl } = formulario;
-
-    if (!categoriaId || !cantidad || !nombre || !precio || !descripcion || (!imagenUrl && !editando)) {
-      alert("Por favor, complete todos los campos.");
-      return;
-    }
-
-    const nuevoProducto = {
-      ...formulario,
-      activo: true,
-    };
-
-    if (editando && productoEditando) {
-      const nuevosProductos = productos.map((prod) =>
-        prod === productoEditando ? nuevoProducto : prod
-      );
-      setProductos(nuevosProductos);
-      setProductoEditando(null); // Limpiar producto editando
-      setEditando(false);
-      filtrarProductos(categoriaSeleccionada); // Filtrar después de editar
+      
+      obtenerCategorias();
     } else {
-      setProductos([...productos, nuevoProducto]);
-      filtrarProductos(categoriaSeleccionada); // Filtrar después de agregar
+      obtenerProductos();
     }
+  }, [categoriaSeleccionada]); // Ejecuta solo si cambia la categoría
 
-    limpiarFormulario();
+  // Manejadores de cambios en el filtro de categoría
+  const handleCategoriaChange = (e) => {
+    setCategoriaSeleccionada(e.target.value);
+    setMostrarCategorias(false); // Cierra la lista de categorías después de seleccionar una
+  };
+  const toggleCategorias = () => {
+    setMostrarCategorias(!mostrarCategorias);
   };
 
-  // Función para limpiar el formulario después de guardar
-  const limpiarFormulario = () => {
-    setFormulario({
-      categoriaId: "",
-      cantidad: "",
-      nombre: "",
-      precio: "",
-      descripcion: "",
-      imagenUrl: "",
-    });
-    setEditando(false);
-    setProductoEditando(null);
+  // Manejadores de cambios en los campos de los productos
+  const handleInputChange = (e, productoId, campo) => {
+    const valorNuevo = e.target.value;
+    const productosActualizados = productos.map((producto) =>
+      producto.id === productoId ? { ...producto, [campo]: valorNuevo } : producto
+    );
+    setProductos(productosActualizados);
   };
 
-  // Función para eliminar un producto
+  // Función para guardar los cambios de un producto
+  const guardarCambios = (productoId) => {
+    const producto = productos.find((prod) => prod.id === productoId);
+    axios
+      .put(`http://localhost:4000/producto/${productoId}`, producto)
+      .then(() => {
+        alert("Producto actualizado correctamente.");
+        setEditando(null);
+      })
+      .catch((error) => {
+        console.error("Error al actualizar el producto:", error);
+        alert("Hubo un problema al actualizar el producto.");
+      });
+  };
+
   // Función para eliminar un producto
   const eliminarProducto = (productoId) => {
-    console.log("Eliminando producto con ID:", productoId); // Verifica que el ID esté correcto
     axios
       .delete(`http://localhost:4000/producto/${productoId}`)
-      .then((response) => {
-        console.log("Producto eliminado correctamente:", response.data);
-        
-        // Filtrar el producto eliminado de la lista de productos en el estado
-        const nuevosProductos = productos.filter((producto) => producto.id !== productoId);
-        
-        // Actualizar el estado de productos
-        setProductos(nuevosProductos); 
-  
-        // Si estás filtrando productos por categoría, re-aplicamos el filtro
-        filtrarProductos(categoriaSeleccionada);
-  
-        alert("Producto eliminado correctamente"); // Notificar al usuario
+      .then(() => {
+        setProductos(productos.filter((producto) => producto.id !== productoId));
       })
       .catch((error) => {
-        console.error("Error al eliminar el producto:", error);
-        alert("Hubo un problema al eliminar el producto"); // Mensaje de error
+        console.error("Hubo un error al eliminar el producto:", error);
       });
-  };
-  
-  // Función para editar un producto
-  const editarProducto = (producto) => {
-    setEditando(true);
-    setProductoEditando(producto);
-    setFormulario(producto);
-  };
-
-  // Función para manejar el cambio de categoría en el filtro
-  const handleCategoriaChange = (e) => {
-    const categoriaId = e.target.value;
-    setCategoriaSeleccionada(categoriaId);
-    filtrarProductos(categoriaId); // Filtrar productos al cambiar la categoría
   };
 
   return (
     <div className="contenedor">
       <div className="filtro-categoria">
-        <label htmlFor="categoriaId">Filtrar por categoría:</label>
-        <select
-          id="categoriaId"
-          value={categoriaSeleccionada}
-          onChange={handleCategoriaChange}
-        >
-          <option value="">Todas</option>
-          {/* Asegúrate de que categorías tiene más de una opción */}
-          {categorias.map((categoria) => (
-            <option key={categoria.id} value={categoria.id}>
-              {categoria.nombre}
-            </option>
-          ))}
-        </select>
+        <button onClick={toggleCategorias}>
+          {mostrarCategorias ? "Ocultar categorías" : "Filtrar por categoría"}
+        </button>
+        {mostrarCategorias && (
+          <div className="categorias-dropdown">
+            <label htmlFor="categoriaId">Selecciona una categoría:</label>
+            <select
+              id="categoriaId"
+              value={categoriaSeleccionada}
+              onChange={handleCategoriaChange}
+            >
+              <option value="">Todas</option>
+              {categorias.map((categoria) => (
+                <option key={categoria.id} value={categoria.id}>
+                  {categoria.nombre}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
+
+      {error && <div className="error">{error}</div>} {/* Mostrar error si lo hay */}
 
       <div className="lista-productos">
         <table>
@@ -190,60 +148,91 @@ const AgregarProductos = () => {
             </tr>
           </thead>
           <tbody>
-            {productosFiltrados.map((producto, index) => (
-              <tr key={index}>
+            {productos.map((producto) => (
+              <tr key={producto.id}>
                 <td>
                   <div
                     className="imagen-placeholder"
                     style={{ backgroundImage: `url(${producto.imagenUrl})` }}
                   ></div>
                 </td>
-                <td>{producto.nombre}</td>
-                <td>{producto.categoriaId}</td> {/* Mostrar el ID de la categoría */}
-                <td>{producto.cantidad_stock}</td>
-                <td>${producto.precio}</td>
-                <td>{producto.descripcion}</td>
                 <td>
-                  <button onClick={() => editarProducto(producto)}>Editar</button>
-                  <button onClick={() => eliminarProducto(producto.id)}>Eliminar</button>
+                  {editando === producto.id ? (
+                    <input
+                      type="text"
+                      value={producto.nombre}
+                      onChange={(e) => handleInputChange(e, producto.id, "nombre")}
+                    />
+                  ) : (
+                    producto.nombre
+                  )}
+                </td>
+                <td>
+                  {editando === producto.id ? (
+                    <select
+                      value={producto.id_categoria}
+                      onChange={(e) => handleInputChange(e, producto.id, "id_categoria")}
+                    >
+                      {categorias.map((categoria) => (
+                        <option key={categoria.id} value={categoria.id}>
+                          {categoria.nombre}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    categorias.find((cat) => cat.id === producto.categoriaId)?.nombre
+                  )}
+                </td>
+                <td>
+                  {editando === producto.id ? (
+                    <input
+                      type="number"
+                      value={producto.cantidad_stock}
+                      onChange={(e) => handleInputChange(e, producto.id, "cantidad_stock")}
+                    />
+                  ) : (
+                    producto.cantidad_stock
+                  )}
+                </td>
+                <td>
+                  {editando === producto.id ? (
+                    <input
+                      type="number"
+                      value={producto.precio}
+                      onChange={(e) => handleInputChange(e, producto.id, "precio")}
+                    />
+                  ) : (
+                    producto.precio
+                  )}
+                </td>
+                <td>
+                  {editando === producto.id ? (
+                    <input
+                      type="text"
+                      value={producto.descripcion}
+                      onChange={(e) => handleInputChange(e, producto.id, "descripcion")}
+                    />
+                  ) : (
+                    producto.descripcion
+                  )}
+                </td>
+                <td>
+                  {editando === producto.id ? (
+                    <>
+                      <button onClick={() => guardarCambios(producto.id)}>Guardar cambios</button>
+                      <button onClick={() => setEditando(null)}>Cancelar</button>
+                    </>
+                  ) : (
+                    <>
+                      <button onClick={() => setEditando(producto.id)}>Editar</button>
+                      <button onClick={() => eliminarProducto(producto.id)}>Eliminar</button>
+                    </>
+                  )}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-      </div>
-
-      {/* Formulario para agregar o editar productos */}
-      <div className="formulario-producto">
-        <div className="formulario-izquierda">
-          <div
-            className="imagen-placeholder"
-            style={{ backgroundImage: `url(${formulario.imagenUrl})` }}
-          >
-            {!formulario.imagenUrl && "+"}
-          </div>
-          <input type="file" id="imagen-producto" onChange={handleImageChange} />
-        </div>
-        <div className="formulario-derecha">
-          <div className="grupo-formulario">
-            <label htmlFor="categoriaId">Categoría</label>
-            <select
-              id="categoriaId"
-              value={formulario.categoriaId}
-              onChange={handleInputChange}
-            >
-              <option value="">Seleccione una categoría</option>
-              {categorias.map((categoria) => (
-                <option key={categoria.id} value={categoria.id}>
-                  {categoria.nombre}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Otros campos del formulario para nombre, cantidad, precio, etc. */}
-          <button onClick={guardarProducto}>Guardar Producto</button>
-        </div>
       </div>
     </div>
   );

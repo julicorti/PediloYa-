@@ -1203,7 +1203,7 @@ body {
 
 .contenedor {
   height: 100vh;
-  max-width: 1200px;
+  width: 90vw;
   margin: 20px auto;
   padding: 20px;
   background-color: #f4f4f4;
@@ -1587,6 +1587,22 @@ body {
 }
 .botones .btn.btn-descartar:hover {
   background-color: #c82333;
+}
+
+.filtro-categoria {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.categorias-dropdown {
+  margin-top: 10px;
+}
+
+.categorias-dropdown select {
+  padding: 5px;
+  font-size: 16px;
 }
 
 .app-container-pedidos {
