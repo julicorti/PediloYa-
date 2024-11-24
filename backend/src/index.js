@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const { Server } = require("socket.io");
 const http = require("http");
 const app = express();
-
+const nodemailer = require('nodemailer');
 const verifyToken = require("./verify");
 const { getconnection } = require("./database"); // Si el archivo se llama db.js
 const path = require("path");
@@ -50,6 +50,18 @@ io.on("connection", (socket) => {
 
 
 app.set("socketio", io);
+
+//mail
+const transporter = nodemailer.createTransport({
+  service: "gmail",               // true for 465, false for other ports
+     auth: {
+          user: 're.fast.noti@gmail.com',
+          pass: 'bddh ajig dswa aizg',
+       },
+  secure: true,
+  });
+
+
 
 // Importa y usa las rutas
 
@@ -411,21 +423,19 @@ app.post("/usuario", async (req, res) => {
     const connection = await database.getconnection(); // Obtén la conexión
     const [result] = await connection
       .promise()
-      .query("CALL sp_agregar_usuario(?, ?, ?, ?)", [
+      .query("INSERT INTO usuario (nombre, contrasena, rol, email) VALUES(?, ?, ?, ?)", [
         nombre,
         hashedPassword,
         idrol,
         email,
       ]);
+      console.log(result.insertId)
+    const token = jwt.sign(
+      { id: result.insertId, nombre: nombre, rol: idrol },
+      "secretkey"
+    );
+    res.status(200).json({ token ,nombre: nombre, rol: idrol });
 
-    const token = jwt.sign({ userId: result.insertId }, "secretkey");
-
-    res
-      .status(201)
-      .send({
-        message: "Usuario creado exitosamente.",
-        usuarioId: result.insertId,
-      });
   } catch (error) {
     console.error("Error al crear usuario:", error);
     res.status(500).send({ message: "Error al crear el usuario." });
@@ -433,7 +443,6 @@ app.post("/usuario", async (req, res) => {
 });
 
 app.get("/hola", async (req, res) => {
-  console.log("Voy a codificar");
   let code = "1234";
   let hashed = await bcrypt.hash(code, 10);
   let result = await bcrypt.compare("1234", hashed);
@@ -811,21 +820,74 @@ app.post("/pedido/:id/producto", (req, res) => {
 //eliminar producto terminar**************************************************************************
 app.delete("/pedido/:id", async (req, res) => {
   const pedidoId = req.params.id;
+
   const connection = await database.getconnection();
 
   try {
+    const queryUsuario = `SELECT id_usuario FROM pedido WHERE id = ?`;
+
+    connection.query(queryUsuario, [pedidoId], (error, results) => {
+      if (error) {
+        console.error("Error al obtener el usuario del pedido:", error);
+        return res.status(500).send({ message: "Error al obtener el usuario del pedido." });
+      }
+
+      if (results.length === 0) {
+        console.error("Pedido no encontrado.");
+        return res.status(404).send({ message: "Pedido no encontrado." });
+      }
+
+      const usuarioId = results[0].id_usuario;
+      const queryMail = `SELECT email FROM usuario WHERE id = ?`;
+
+      connection.query(queryMail, [usuarioId], (error, results) => {
+        if (error) {
+          console.error("Error al obtener el usuario del pedido:", error);
+          return res.status(500).send({ message: "Error al obtener el usuario del pedido." });
+        }
+  
+        if (results.length === 0) {
+          console.error("Pedido no encontrado.");
+          return res.status(404).send({ message: "Pedido no encontrado." });
+        }
+        const email = results[0].email;
+
     const query = `CALL sp_eliminar_pedido(?)`;
-    const [results] = await connection.execute(query, [pedidoId]);
 
-    const affectedRows = results?.[0]?.[0]?.affectedRows || 0;
-    if (affectedRows === 0) {
-      return res.status(404).send({ message: "Pedido no encontrado." });
-    }
+    connection.query(query, [pedidoId], (error, results) =>{
+      if (error) {
+        console.error("Error al obtener el usuario del pedido:", error);
+        return res.status(500).send({ message: "Error al obtener el usuario del pedido." });
+      }
+  
+      const htmlContent = `
+      <h1>Pedido Cancelado</h1>
+      <p>Tu pedido con ID <b>${pedidoId}</b> ha sido cancelado.</p>
 
-    io.emit("pedidoCancelado", { pedidoId });
+    `;
+    
 
-    res.status(200).send({ success: true, message: "Pedido eliminado correctamente." });
-  } catch (error) {
+    
+          const mailOptions = {
+            from: 're.fast.noti@gmail.com',
+            to: email,
+            subject: 'Pedido cancelado',
+            html: htmlContent,
+            
+          };
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Correo enviado: ' + info.response);
+            }
+          });
+    
+        res.status(200).send({ success: true, message: "Pedido eliminado correctamente." });
+      
+      });
+    });
+    });  } catch (error) {
     console.error("Error al eliminar el pedido:", error);
     res.status(500).send({ message: "Error al eliminar el pedido." });
   }
@@ -912,17 +974,16 @@ app.get("/pedido/:id", (req, res) => {
 //actualizar estado de un pedido
 
 // Actualizar estado de un pedido (Confirmar, Completar, Cancelar)
-app.put("/pedido/:id/estado", (req, res) => {
+app.put("/pedido/:id/estado", async(req, res) => {
   const pedidoId = req.params.id;
   const { estado } = req.body;
+  const connection = await database.getconnection();
 
-  // Verificar si el estado es válido
-  const estadosValidos = [ "completado", "cancelado"];
+  const estadosValidos = ["completado", "cancelado"];
   if (!estadosValidos.includes(estado)) {
-    return res.status(400).send({ message: "Estado no válido" });
+    return res.status(400).send({ message: "Estado no válido." });
   }
 
-  // Consulta para obtener el usuario asociado al pedido
   const queryUsuario = `SELECT id_usuario FROM pedido WHERE id = ?`;
 
   connection.query(queryUsuario, [pedidoId], (error, results) => {
@@ -934,34 +995,19 @@ app.put("/pedido/:id/estado", (req, res) => {
       return res.status(404).send({ message: "Pedido no encontrado." });
     }
 
-    const usuarioId = results[0].usuario_id;
-
-    // Lógica para actualizar el estado del pedido
-    const queryActualizar = `call sp_actualizar_estado_pedido(?, ?)`;
+    const queryActualizar = `CALL sp_actualizar_estado_pedido(?, ?)`;
 
     connection.query(queryActualizar, [estado, pedidoId], (error, results) => {
       if (error) {
         return res.status(500).send({ message: "Error al actualizar el estado del pedido." });
       }
 
-      if (results.affectedRows === 0) {
-        return res.status(404).send({ message: "Pedido no encontrado." });
-      }
+      res.status(200).send({
+        message: `Estado del pedido actualizado a ${estado}.`,
+        notificacion: `Tu pedido con ID: ${pedidoId} ha sido ${estado}.`,
 
-      // Notificar al usuario sobre el cambio de estado (simulación de notificación)
-      // Aquí podrías integrar un sistema de notificaciones, como WebSockets o Nodemailer
-
-      const mensajeNotificacion = `Tu pedido con ID: ${pedidoId} ha sido ${estado}.`;
-
-      // Emite una notificación al cliente usando WebSockets o envía un correo
-      // Si estás usando WebSockets:
-      // io.emit('notificacion', { usuarioId, mensaje: mensajeNotificacion });
-
-      // Si usas Nodemailer (requiere configuración adicional):
-      // sendEmail(usuarioId, "Estado de tu pedido actualizado", mensajeNotificacion);
-
-      // Responder con éxito
-      res.status(200).send({ message: `Estado del pedido actualizado a ${estado}.`, notificacion: mensajeNotificacion });
+      });
+      
     });
   });
 });

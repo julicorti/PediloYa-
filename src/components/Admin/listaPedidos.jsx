@@ -50,23 +50,35 @@ const ListaPedidos = ({ socket }) => {
   }, [socket]);
 
   const handleConfirmarPedido = async (pedidoId) => {
-    try {
-      const response = await axios.put(`http://localhost:4000/pedido/confirmar/${pedidoId}`);
-      if (response.status === 200) {
-        alert(`El pedido con ID ${pedidoId} ha sido confirmado.`);
-        socket.emit("pedidoConfirmado", { pedidoId }); // Notificar al cliente
-      } else {
-        alert("Hubo un error al confirmar el pedido.");
-      }
-    } catch (error) {
-      console.error("Error al confirmar el pedido:", error);
-      alert("Hubo un error al intentar confirmar el pedido.");
+  try {
+    const response = await axios.put(`http://localhost:4000/pedido/${pedidoId}/estado`, {
+      estado: "completado",
+    });
+
+    if (response.status === 200) {
+      alert(`El pedido con ID ${pedidoId} ha sido confirmado.`);
+      setPedidos((prevPedidos) =>
+        prevPedidos.map((pedido) =>
+          pedido.pedido_id === pedidoId
+            ? { ...pedido, estado_nombre: "completado" }
+            : pedido
+        )
+      );
+    } else {
+      alert("Hubo un error al confirmar el pedido.");
     }
-  };
+  } catch (error) {
+    console.error("Error al confirmar el pedido:", error);
+    alert("Hubo un error al intentar confirmar el pedido.");
+  }
+};
+
   
   const handleCancelPedido = async (pedidoId) => {
+    console.log("Borrando")
     try {
       const response = await axios.delete(`http://localhost:4000/pedido/${pedidoId}`);
+
       if (response.status === 200) {
         alert(`El pedido con ID ${pedidoId} fue cancelado.`);
       } else {

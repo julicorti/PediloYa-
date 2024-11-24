@@ -104,14 +104,14 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route
+           {/*  <Route
               path="/contactus"
               element={
                 <ProtectedRoute>
                   <ContactUs />
                 </ProtectedRoute>
               }
-            />
+            /> */}
           </Routes>
         </CartProvider>
       </AuthProvider>
