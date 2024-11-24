@@ -20,25 +20,29 @@ export const CartProvider = ({ children }) => {
 
   const agregarAlCarrito = (producto) => {
     setCart((prevCart) => {
-      // Buscar si el producto ya existe en el carrito
       const productoExistente = prevCart.find((item) => item.id === producto.id);
-      
       if (productoExistente) {
-        // Si el producto ya existe, solo aumentamos la cantidad
         return prevCart.map((item) =>
           item.id === producto.id
             ? { ...item, cantidad: item.cantidad + 1 }
             : item
         );
       }
-
-      // Si el producto no existe, lo agregamos con cantidad 1
       return [...prevCart, { ...producto, cantidad: 1 }];
     });
   };
 
+  // Nueva función: actualizar la cantidad de un producto
+  const updateQuantity = (id, cantidad) => {
+    setCart((prevCart) =>
+      prevCart.map((item) =>
+        item.id === id ? { ...item, cantidad: Math.max(0, cantidad) } : item
+      )
+    );
+  };
+
   return (
-    <CartContext.Provider value={{ cart, agregarAlCarrito }}>
+    <CartContext.Provider value={{ cart, agregarAlCarrito, updateQuantity, setCart }}>
       {children}
     </CartContext.Provider>
   );

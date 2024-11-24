@@ -26,19 +26,22 @@ const Login = () => {
     try {
       const response = await axios.post("http://localhost:4000/login", {
         email,
-        contrasena
+        contrasena,
       });
   
       const userData = response.data;
-      login(userData); // Llama a la función del contexto para establecer el usuario
+  
+      // Llama a la función login del contexto para guardar los datos del usuario
+      login(userData); // Guarda el usuario en el contexto y localStorage
   
       setError("");
-      console.log(userData)
+      console.log(userData); // Revisa los datos del usuario
+  
       // Redirige según el rol
       if (userData.rol === 3) {
-        navigate("/lista_usuarios");
+        navigate("/lista_usuarios"); // Redirige a la página de administración si es administrador
       } else {
-        navigate("/");
+        navigate("/"); // Redirige al home o al lugar correspondiente
       }
     } catch (error) {
       if (error.response) {

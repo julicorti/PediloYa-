@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
       const token = localStorage.getItem("authToken");
       if (token) {
         setIsAuthenticated(true);
-        setUser({ ...token }); // Simula un usuario o carga más datos si los necesitas
+        setUser({ ...user, token }); // Simula un usuario o carga más datos si los necesitas
       } else {
         setIsAuthenticated(false);
       }

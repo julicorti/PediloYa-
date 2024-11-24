@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../../SASS/style.css";
-
+import FormProducto from "./formulario";
 const AgregarProductos = () => {
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
@@ -115,13 +115,14 @@ const AgregarProductos = () => {
         </button>
         {mostrarCategorias && (
           <div className="categorias-dropdown">
-            <label htmlFor="categoriaId">Selecciona una categoría:</label>
             <select
               id="categoriaId"
               value={categoriaSeleccionada}
               onChange={handleCategoriaChange}
             >
               <option value="">Todas</option>
+           
+
               {categorias.map((categoria) => (
                 <option key={categoria.id} value={categoria.id}>
                   {categoria.nombre}
@@ -180,7 +181,7 @@ const AgregarProductos = () => {
                       ))}
                     </select>
                   ) : (
-                    categorias.find((cat) => cat.id === producto.categoriaId)?.nombre
+                    <>{producto.categoria}</>
                   )}
                 </td>
                 <td>
@@ -234,6 +235,10 @@ const AgregarProductos = () => {
           </tbody>
         </table>
       </div>
+      <div>
+
+      </div>
+
     </div>
   );
 };

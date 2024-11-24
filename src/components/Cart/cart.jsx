@@ -1,74 +1,127 @@
 import "../../SASS/style.css";
-import { CartContext } from "../context/CartContext";
-import React, { useContext,useState, useEffect } from 'react'; // Importa React y los hooks
+import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';  // Cambiar a useNavigate
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+import { CartContext } from "../context/CartContext";
 
 const Cart = () => {
-  const [productos, setProductos] = useState([]);
-  const [usuario, setUsuario] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [mensaje, setMensaje] = useState('');
-  const navigate = useNavigate();  // Usamos useNavigate para redirigir
+  const [mensaje, setMensaje] = useState("");
+  const { cart, setCart } = useContext(CartContext);
+  const { user, getUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    obtenerProductosCarrito();
-    obtenerDatosUsuario();
+    getUser();
   }, []);
 
-  const obtenerProductosCarrito = async () => {
+  const vaciarCarrito = async () => {
+    const token = localStorage.getItem("authToken"); // Usa la clave correcta
+  
+    if (!token) {
+      setMensaje("No se encontró un token de autenticación.");
+      return;
+    }
+  
     try {
-      const response = await axios.get('http://localhost:4000/carrito');
-      setProductos(response.data);
+      await axios.delete("http://localhost:4000/carrito/vaciar", {
+        headers: {
+          Authorization: `Bearer ${token}`, // Enviar el token en la cabecera
+        },
+      });
+  
+      setCart([]); // Vaciar el carrito
+      setMensaje("Carrito vaciado correctamente.");
     } catch (error) {
-      console.error('Error al obtener productos', error);
+      console.error("Error al vaciar el carrito", error);
+      setMensaje("Hubo un error al vaciar el carrito.");
     }
   };
-
-  const obtenerDatosUsuario = async () => {
-    try {
-      const response = await axios.get('http://localhost:4000/usuario');
-      setUsuario(response.data);
-    } catch (error) {
-      console.error('Error al obtener datos del usuario', error);
-    }
-  };
-
+  
+  
+  
   const confirmarPedido = async () => {
-    if (!usuario || productos.length === 0) {
-      setMensaje('No hay productos en el carrito o no se ha encontrado el usuario.');
+    if (!user || cart.length === 0) {
+      setMensaje(
+        "No hay productos en el carrito o no se ha encontrado el usuario."
+      );
       return;
     }
 
-    setLoading(true);
     try {
       const pedido = {
-        usuario_id: usuario.id,
-        productos: productos.map((producto) => ({
+        usuario_id: user.id,
+        productos: cart.map((producto) => ({
           id: producto.id,
           cantidad: producto.cantidad,
           precio: producto.precio,
         })),
       };
 
-      const response = await axios.post('http://localhost:4000/pedido/confirmarPedido', pedido);
+      const response = await axios.post(
+        "http://localhost:4000/pedido/confirmarPedido",
+        pedido
+      );
       setMensaje(response.data.mensaje);
-      navigate('/confirmacion');  // Redirigir usando navigate
+      setCart([]);
+      navigate("/confirmacion");
     } catch (error) {
-      console.error('Error al confirmar el pedido', error);
-      setMensaje('Hubo un error al confirmar el pedido.');
-    } finally {
-      setLoading(false);
+      console.error("Error al confirmar el pedido", error);
+      setMensaje("Hubo un error al confirmar el pedido.");
     }
   };
 
+  const eliminarProducto = (id) => {
+    setCart(cart.filter((producto) => producto.id !== id));
+  };
+
   return (
-    <div>
-      <h2>Confirmar Pedido</h2>
-      <button onClick={confirmarPedido} disabled={loading}>
-        {loading ? 'Procesando...' : 'Confirmar Pedido'}
-      </button>
-      {mensaje && <p>{mensaje}</p>}
+    <div className="cart-container">
+      <h2 className="cart-title">Carrito</h2>
+
+      {cart.length === 0 ? (
+        <p className="cart-empty-message">El carrito está vacío.</p>
+      ) : (
+        <div className="cart-products">
+          {cart.map((producto) => (
+            <div className="cart-item" key={producto.id}>
+              <img
+                src={`http://localhost:4000/${producto.imagen}`}
+                alt={producto.nombre}
+                className="cart-item-image"
+              />
+              <div className="cart-item-details">
+                <h3 className="cart-item-title">{producto.nombre}</h3>
+                <p className="cart-item-price">${producto.precio}</p>
+                <p className="cart-item-quantity">
+                  Cantidad: {producto.cantidad}
+                </p>
+                <button
+                  className="cart-item-remove"
+                  onClick={() => eliminarProducto(producto.id)}
+                >
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div className="cart-actions">
+        <button className="cart-action-button" onClick={vaciarCarrito}>
+          Vaciar Carrito
+        </button>
+        <button
+          className="cart-action-button"
+          onClick={confirmarPedido}
+          disabled={cart.length === 0}
+        >
+          Confirmar Pedido
+        </button>
+      </div>
+
+      {mensaje && <p className="cart-message">{mensaje}</p>}
     </div>
   );
 };

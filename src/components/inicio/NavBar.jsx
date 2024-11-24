@@ -8,6 +8,8 @@ import { DarkModeContext } from "../context/modeContext";
 import { CartContext } from "../context/CartContext";
 import { AuthContext } from "../context/AuthContext";
 import { useEffect } from "react";
+import { FaShoppingCart } from 'react-icons/fa'; // Importamos el ícono del carrito
+
 const NavBar = ({ onLogout }) => {
   const { cart } = useContext(CartContext); // Consumir contexto del carrito
   const { darkMode } = useContext(DarkModeContext); // Consumir contexto del modo oscuro
@@ -15,7 +17,7 @@ const NavBar = ({ onLogout }) => {
   const cartCount = cart.length; // Contar los ítems del carrito
   const { user, getUser, logout } = useContext(AuthContext); // Consumir el contexto de autenticación
   const [userReady, setUserReady] = useState(false)
-
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // Controlar visibilidad de
   const toggleMenu = () => {
     setIsOpen(!isOpen); // Alternar visibilidad del menú
   };
@@ -47,13 +49,9 @@ const NavBar = ({ onLogout }) => {
 
         {/* Botones a la derecha */}
         <div className="flex items-center space-x-3 md:order-2">
-          <button
-            id="pedilo"
-            type="button"
-            className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
-          >
-            Pedí y Retirá
-          </button>
+        <Mode />
+
+      
           <button
            onClick = {logout}
             id="pedilo"
@@ -63,7 +61,20 @@ const NavBar = ({ onLogout }) => {
           Cerrar sesión
           </button>
               
-              <Mode />
+              <NavLink
+            to="/cart"
+            className="relative flex items-center py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+          >
+            <FaShoppingCart size={24} className="mr-2" /> {/* Icono del carrito */}
+            {/* Mostrar el contador solo si hay productos en el carrito */}
+            {cartCount > 0 && (
+              <span className="absolute top-0 right-0 flex items-center justify-center w-5 h-5 text-xs text-white bg-red-600 rounded-full">
+                {cartCount}
+              </span>
+            )}
+            
+          </NavLink>
+
           <button
             onClick={toggleMenu}
             type="button"
@@ -105,14 +116,7 @@ const NavBar = ({ onLogout }) => {
               </NavLink>
             </li>
             
-            <li>
-              <NavLink
-                to="/cart"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-              >
-                Carrito ({cartCount})
-              </NavLink>
-            </li>
+        
             
             <li>
               {user.rol === 3 ?
@@ -127,18 +131,35 @@ const NavBar = ({ onLogout }) => {
               }
             
             </li>
-            <li>
-              {user.rol === 3 ?
-                <li>
-                <NavLink
-                to="/agregar_productos"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-              >
-               Productos
-              </NavLink>
-              </li> : <></>
-              }
-            
+            <li className="relative">
+              {user.rol === 3 ? (
+                <>
+                  {/* Opción de "Productos" */}
+                  <NavLink
+                    to="/agregar_productos"
+                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                    onClick={() => setIsMenuOpen(!isMenuOpen)} // Alternar visibilidad
+                  >
+                    Productos
+                  </NavLink>
+
+                  {/* Submenú "Agregar productos" */}
+                  <ul
+                    className={`absolute left-0 mt-2 w-48 bg-white border border-gray-100 rounded-lg shadow-lg ${isMenuOpen ? "block" : "hidden"}`}
+                  >
+                    <li>
+                      <NavLink
+                        to="/formulario"
+                        className="block py-2 px-3 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                      >
+                        Agregar Productos
+                      </NavLink>
+                    </li>
+                  </ul>
+                </>
+              ) : (
+                <></>
+              )}
             </li>
             <li>
               {user.rol === 3 ?

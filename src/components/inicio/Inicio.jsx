@@ -42,7 +42,7 @@ const Inicio = () => {
               img={img1}
               ruta="/productos/categoria/4" 
               />
-            <CartaSeccion nombre={"¡Golosinas!"} img={img4}         ruta="/productos/categoria/1" 
+            <CartaSeccion nombre={"¡Golosinas!"} img={img4}         ruta="/productos/categoria/5" 
  />
             <CartaSeccion
               nombre={"¡Almuerzo/Cena!"}
@@ -59,7 +59,7 @@ const Inicio = () => {
           <span className="colorido">Menu</span> del dia
         </h4>
         <div className={`cajaMenu ${darkMode ? "dark" : "light"}`}>
-          <CartaMenu categoriaId={9} 
+          <CartaMenu categoriaId={8} 
   
       
           />

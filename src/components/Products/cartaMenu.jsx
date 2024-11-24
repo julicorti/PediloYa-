@@ -55,7 +55,7 @@ const CartaMenu = ({ categoriaId }) => {
                 <div
                   className="imagen-placeholder h-48 bg-cover bg-center mb-4"
                   style={{
-                    backgroundImage: `url(http://localhost:4000${producto.imagen})`,
+                    backgroundImage: `url(http://localhost:4000/${producto.imagen})`,
                   }}
                 >
                   {!producto.imagen ? "+" : ""}
