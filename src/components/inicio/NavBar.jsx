@@ -123,6 +123,7 @@ const NavBar = ({ onLogout }) => {
               }
             
             </li>
+            
             <li className="relative">
               {user.rol === 3 ? (
                 <>
@@ -136,22 +137,26 @@ const NavBar = ({ onLogout }) => {
                   </NavLink>
 
                   {/* Submenú "Agregar productos" */}
-                  <ul
-                    className={`absolute left-0 mt-2 w-48 bg-white border border-gray-100 rounded-lg shadow-lg ${isMenuOpen ? "block" : "hidden"}`}
-                  >
-                    <li>
-                      <NavLink
-                        to="/formulario"
-                        className="block py-2 px-3 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                      >
-                        Agregar Productos
-                      </NavLink>
-                    </li>
-                  </ul>
+                  
+                  
                 </>
               ) : (
                 <></>
               )}
+            </li>
+            
+            <li>
+              {user.rol === 3 ?
+                <li>
+                <NavLink
+                to="/formulario"
+                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+              >
+                Crear Producto
+              </NavLink>
+              </li> : <></>
+              }
+            
             </li>
             <li>
               {user.rol === 3 ?

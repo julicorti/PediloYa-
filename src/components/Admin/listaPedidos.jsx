@@ -99,55 +99,62 @@ const ListaPedidos = ({ socket }) => {
   
   return (
     <div className="pedido-lista-container">
-      {loading ? (
-        <p>Cargando pedidos...</p>
-      ) : (
-        <>
-          <h2>Lista de Pedidos</h2>
-          {pedidos.length === 0 ? (
-            <p>No hay pedidos disponibles.</p>
-          ) : (
-            <table>
-              <thead>
-                <tr>
-                  <th>ID Pedido</th>
-                  <th>Precio Total</th>
-                  <th>Fecha</th>
-                  <th>Estado</th>
-                  <th>Productos</th>
-                  <th>Acciones</th>
+    {loading ? (
+      <p className="loading">Cargando pedidos...</p>
+    ) : (
+      <>
+        <h2>Lista de Pedidos</h2>
+        {pedidos.length === 0 ? (
+          <p className="no-pedidos">No hay pedidos disponibles.</p>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>ID Pedido</th>
+                <th>Precio Total</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Productos</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {pedidos.map((pedido) => (
+                <tr key={pedido.pedido_id}>
+                  <td>{pedido.pedido_id}</td>
+                  <td>${pedido.precio_total}</td>
+                  <td>{new Date(pedido.fecha).toLocaleDateString()}</td>
+                  <td>{pedido.estado_nombre}</td>
+                  <td>
+                    {pedido.productos.map((producto) => (
+                      <div key={producto.producto_id}>
+                        {producto.nombre} - {producto.cantidad} x ${producto.precio}
+                      </div>
+                    ))}
+                  </td>
+                  <td className="acciones">
+                    <button
+                      className="btn confirm"
+                      onClick={() => handleConfirmarPedido(pedido.pedido_id)}
+                    >
+                      Confirmar
+                    </button>
+                    <button
+                      className="btn cancel"
+                      onClick={() => handleCancelPedido(pedido.pedido_id)}
+                    >
+                      Cancelar
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {pedidos.map((pedido) => (
-                  <tr key={pedido.pedido_id}>
-                    <td>{pedido.pedido_id}</td>
-                    <td>${pedido.precio_total}</td>
-                    <td>{new Date(pedido.fecha).toLocaleDateString()}</td>
-                    <td>{pedido.estado_nombre}</td>
-                    <td>
-                      {pedido.productos.map((producto) => (
-                        <div key={producto.producto_id}>
-                          {producto.nombre} - {producto.cantidad} x ${producto.precio}
-                        </div>
-                      ))}
-                    </td>
-                    <td>
-                      <button onClick={() => handleConfirmarPedido(pedido.pedido_id)}>
-                        Confirmar
-                      </button>
-                      <button onClick={() => handleCancelPedido(pedido.pedido_id)}>
-                        Cancelar
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </>
-      )}
-    </div>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </>
+    )}
+  </div>
+  
   );
 }  
 

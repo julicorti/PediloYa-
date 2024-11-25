@@ -237,7 +237,7 @@ app.get("/productos/categoria/:id", async (req, res) => {
     res.status(500).send("Error en la conexión con la base de datos");
   }
 });
-app.delete("/producto/:id", async (req, res) => {
+/* app.delete("/producto/:id", async (req, res) => {
   const productId = req.params.id;
   const connection = await getconnection();
 
@@ -282,6 +282,21 @@ app.delete("/producto/:id", async (req, res) => {
       );
     }
   );
+}); */
+
+app.delete('/producto/:id', async (req, res) => {
+    const productId = req.params.id;
+
+    try {
+      const connection = await getconnection();
+
+         connection.execute('DELETE FROM pedido_producto WHERE id_producto = ?', [productId]);
+         connection.execute('DELETE FROM producto WHERE id = ?', [productId]);
+        res.status(200).send({ message: 'Producto eliminado correctamente' });
+    } catch (error) {
+        console.error('Error al eliminar el producto:', error);
+        res.status(500).send({ error: 'Error al eliminar el producto' });
+    }
 });
 
 app.put("/producto/:id", async (req, res) => {
@@ -899,7 +914,7 @@ app.delete("/pedido/:id", async (req, res) => {
 //Método Obtener pedidos
 
 //Método obtener productos de un pedido ***********************************************************************
-app.put("/pedido/cancelar/:id", async (req, res) => {
+/* app.put("/pedido/cancelar/:id", async (req, res) => {
   const pedidoId = req.params.id;
 
   // Paso 1: Obtener el usuario_id del pedido
@@ -931,7 +946,6 @@ app.put("/pedido/cancelar/:id", async (req, res) => {
         const mensajeNotificacion = `Tu pedido con ID: ${pedidoId} ha sido cancelado.`;
 
         // Emitir la notificación al cliente usando WebSockets (socket.io)
-        io.emit("notificacion", { usuarioId, mensaje: mensajeNotificacion });
 
         // Responder con éxito
         return res.status(200).send({ message: "Pedido cancelado y notificación enviada.", notificacion: mensajeNotificacion });
@@ -941,7 +955,7 @@ app.put("/pedido/cancelar/:id", async (req, res) => {
     });
   });
 });
-  
+   */
 
 
 
@@ -974,7 +988,7 @@ app.get("/pedido/:id", (req, res) => {
 //actualizar estado de un pedido
 
 // Actualizar estado de un pedido (Confirmar, Completar, Cancelar)
-app.put("/pedido/:id/estado", async(req, res) => {
+app.put("/pedido/:id/estado", async (req, res) => {
   const pedidoId = req.params.id;
   const { estado } = req.body;
   const connection = await database.getconnection();
@@ -984,32 +998,66 @@ app.put("/pedido/:id/estado", async(req, res) => {
     return res.status(400).send({ message: "Estado no válido." });
   }
 
-  const queryUsuario = `SELECT id_usuario FROM pedido WHERE id = ?`;
+  try {
+    // Consulta para obtener el correo del usuario directamente
+    const queryCorreo = `
+      SELECT u.email 
+      FROM pedido p 
+      JOIN usuario u ON p.id_usuario = u.id 
+      WHERE p.id = ?;
+    `;
 
-  connection.query(queryUsuario, [pedidoId], (error, results) => {
-    if (error) {
-      return res.status(500).send({ message: "Error al obtener el usuario del pedido." });
-    }
-
-    if (results.length === 0) {
-      return res.status(404).send({ message: "Pedido no encontrado." });
-    }
-
-    const queryActualizar = `CALL sp_actualizar_estado_pedido(?, ?)`;
-
-    connection.query(queryActualizar, [estado, pedidoId], (error, results) => {
+    connection.query(queryCorreo, [pedidoId], (error, results) => {
       if (error) {
-        return res.status(500).send({ message: "Error al actualizar el estado del pedido." });
+        console.error("Error al obtener el correo del usuario:", error);
+        return res.status(500).send({ message: "Error al obtener el correo del usuario." });
       }
 
-      res.status(200).send({
-        message: `Estado del pedido actualizado a ${estado}.`,
-        notificacion: `Tu pedido con ID: ${pedidoId} ha sido ${estado}.`,
+      if (results.length === 0) {
+        console.error("Pedido no encontrado.");
+        return res.status(404).send({ message: "Pedido no encontrado." });
+      }
 
+      const email = results[0].email;
+
+      // Actualizar el estado del pedido
+      const queryActualizar = `CALL sp_actualizar_estado_pedido(?, ?)`;
+      connection.query(queryActualizar, [estado, pedidoId], (error) => {
+        if (error) {
+          console.error("Error al actualizar el estado del pedido:", error);
+          return res.status(500).send({ message: "Error al actualizar el estado del pedido." });
+        }
+
+        // Enviar correo de notificación
+        const htmlContent = `
+          <h1>Pedido ${estado === "completado" ? "Confirmado" : "Cancelado"}</h1>
+          <p>Tu pedido con ID <b>${pedidoId}</b> ha sido ${estado}.</p>
+        `;
+        const mailOptions = {
+          from: "re.fast.noti@gmail.com",
+          to: email,
+          subject: `Pedido ${estado}`,
+          html: htmlContent,
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.error("Error al enviar el correo:", error);
+          } else {
+            console.log("Correo enviado: " + info.response);
+          }
+        });
+
+        res.status(200).send({
+          message: `Estado del pedido actualizado a ${estado}.`,
+          notificacion: `Tu pedido con ID: ${pedidoId} ha sido ${estado}.`,
+        });
       });
-      
     });
-  });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send({ message: "Error interno del servidor." });
+  }
 });
 
 

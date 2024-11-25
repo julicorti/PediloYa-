@@ -39,7 +39,6 @@ const FormProducto = ({ obtenerProductos }) => {
       obtenerProductos(); // Actualizar la lista de productos
     } catch (error) {
       console.error("Error al guardar el producto:", error);
-      alert("Hubo un problema al guardar el producto");
     }
   };
 

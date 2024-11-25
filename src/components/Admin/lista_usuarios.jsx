@@ -51,12 +51,7 @@ function ListaUsuarios() {
       <header>
         <h1>Lista de Usuarios</h1>
         <nav>
-          <ul className="menu">
-            <li><a href="/productos">Productos</a></li>
-            <li><a href="/pedidos">Pedidos</a></li>
-            <li><a href="/pedidos_cliente">Pedidos Cliente</a></li>
-            <li><a href="/lista_usuarios">Lista de Usuarios</a></li>
-          </ul>
+        
         </nav>
       </header>
       <div className="contenedor">

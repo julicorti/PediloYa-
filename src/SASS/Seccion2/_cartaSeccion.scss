@@ -1,5 +1,6 @@
 .seccionProd {
   width: 100%;
+  
   background-color: #ffffff80;
   display: flex;
   justify-content: space-around;
@@ -11,7 +12,7 @@
     color: #ffffff;
   }
   .cajaProds {
-    height: 100vh;
+    height: 50vh;
 
     width: 95%;
     background-color: #ffffff80;
@@ -27,11 +28,9 @@
       color: #ffffff;
     }
     .cartaSeccion {
-      -webkit-box-shadow: 1px 1px 9px 0px rgba(133, 133, 133, 1);
-      -moz-box-shadow: 1px 1px 9px 0px rgba(133, 133, 133, 1);
-      box-shadow: 1px 1px 9px 0px rgba(133, 133, 133, 1);
+ 
       height: 300px;
-      width: 400px; // Ajustado para que sea más similar a la imagen de referencia
+      width: 300px; // Ajustado para que sea más similar a la imagen de referencia
       background-size: cover;
       background-position: center;
 
@@ -42,7 +41,7 @@
       justify-content: center;
       align-items: center;
       transition: all 400ms ease;
-
+border-radius: 20px;
       &.dark {
         background-color: #2b2d38;
         color: #ffffff;
@@ -53,9 +52,11 @@
 
       img {
         width: 100%;
-        height: 70%; // Ajustado para que la imagen ocupe la mitad superior de la carta
+        height: 80%; // Ajustado para que la imagen ocupe la mitad superior de la carta
         object-fit: cover;
         background-color: #ffffff;
+        border-radius: 10px;
+
       }
 
       .contenido {

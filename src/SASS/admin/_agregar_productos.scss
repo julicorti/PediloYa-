@@ -95,59 +95,61 @@ body {
         select,
         textarea {
           width: 100%;
-          padding: 8px;
+          padding: 10px;
           font-size: 1rem;
-          border: 1px solid $border-color;
-          border-radius: 5px;
+          border: 2px solid $border-color; // Hacer el borde más visible
+          border-radius: 8px; // Bordes redondeados
           outline: none;
           transition: $transition;
-
+        
           &:focus {
-            border-color: $primary-color;
+            border-color: $primary-color; // Cambiar color del borde al foco
+            box-shadow: 0 0 5px rgba($primary-color, 0.5); // Agregar un ligero efecto de brillo
+          }
+        
+          &::placeholder {
+            color: lighten($accent-color, 30%); // Suavizar el color de placeholder
+            font-style: italic;
           }
         }
-
+        
         textarea {
           resize: none;
-          height: 80px;
+          height: 100px; // Ajustar altura
         }
-      }
+      }        
     }
   }
 
   // Botones
-  .botones {
-    display: flex;
-    justify-content: space-between;
-    margin: 20px 0;
-
-    .btn {
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: $transition;
-
-      &-guardar {
-        background-color: $primary-color;
-        color: $secondary-color;
-        border: none;
-
-        &:hover {
-          background-color: darken($primary-color, 10%);
-        }
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;  // Bordes redondeados
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: #0056b3;
+    }
+  
+    &:first-of-type {
+      background-color: #f0ad4e;
+      &:hover {
+        background-color: #ec971f;
       }
-
-      &-descartar {
-        background-color: lighten($border-color, 20%);
-        color: $accent-color;
-        border: 1px solid $border-color;
-
-        &:hover {
-          background-color: lighten($border-color, 10%);
-        }
+    }
+  
+    &:last-of-type {
+      background-color: #d9534f;
+      &:hover {
+        background-color: #c9302c;
       }
     }
   }
+  
 
   // Lista de productos
   .lista-productos {
@@ -258,40 +260,47 @@ body {
 
 .tabla-productos {
   margin-bottom: 20px;
-
   table {
     width: 100%;
     border-collapse: collapse;
-
+    margin: 20px 0;
+    border-top: 2px solid $primary-color; // Agregar borde superior
+  
     th, td {
-      padding: 10px;
+      padding: 12px 15px;
+      border: 1px solid $border-color;
       text-align: left;
-      border: 1px solid #ccc;
+    
+  
+  
+      &:first-child {
+        border-top-left-radius: 8px; // Bordes redondeados superiores
+      }
+  
+      &:last-child {
+        border-top-right-radius: 8px;
+      }
     }
-
+  
     th {
-      background-color: #f4f4f4;
-    }
-
-    tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-
-    button {
-      padding: 5px 10px;
-      margin: 5px;
-      cursor: pointer;
-      background-color: #007bff;
+      background-color: $primary-color;
       color: white;
-      border: none;
-      border-radius: 4px;
+      font-weight: bold;
     }
-
-    button:hover {
-      background-color: #0056b3;
+  
+    tr {
+      &:nth-child(even) {
+        background-color: $secondary-color; // Rayado alternativo
+      }
+  
+      &:hover {
+        background-color: lighten($primary-color, 40%);
+        cursor: pointer;
+      }
     }
   }
 }
+  
 .lista-productos {
   max-width: 100%;
   margin: 0 auto;
@@ -334,28 +343,33 @@ body {
     }
 
     button {
-      background-color: #007bff;
+      background-color: $primary-color;
       color: #fff;
-      border: none;
-      padding: 5px 10px;
+      border-radius: 5px;
+      padding: 8px 12px;
       font-size: 14px;
       cursor: pointer;
-      border-radius: 4px;
       transition: background-color 0.3s ease;
-
-      &:hover {
-        background-color: #0056b3;
-      }
-
-      &:first-of-type {
-        background-color: #f0ad4e;
-        margin-right: 5px;
-
+    
+      &.btn-guardar {
+        background-color: #28a745;
         &:hover {
-          background-color: #ec971f;
+          background-color: #218838;
         }
       }
-
+    
+      &.btn-descartar {
+        background-color: #dc3545;
+        &:hover {
+          background-color: #c82333;
+        }
+      }
+    
+      &:hover {
+        background-color: darken($primary-color, 10%);
+      }
+    
+    
       &:last-of-type {
         background-color: #d9534f;
 
@@ -373,29 +387,35 @@ body {
   gap: 15px;
   margin-top: 30px;
 
-  .formulario-izquierda {
-    width: 30%;
-    position: relative;
-
-    .imagen-placeholder {
-      width: 100%;
-      height: 100px;
-      background-color: #f0f0f0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 24px;
-      color: #999;
-      border-radius: 8px;
+  .formulario-izquierda input[type="file"] {
+    position: absolute;
+    bottom: 5px;
+    left: 10px;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  .grupo-formulario input,
+  .grupo-formulario select,
+  .grupo-formulario textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 2px solid $border-color;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s ease;
+  
+    &:focus {
+      border-color: $primary-color;
     }
-
-    input[type="file"] {
-      position: absolute;
-      bottom: 5px;
-      left: 10px;
-      opacity: 0;
-      cursor: pointer;
+  
+    &::placeholder {
+      color: lighten($accent-color, 30%);
+      font-style: italic;
     }
+  
+  
   }
 
   .formulario-derecha {
@@ -474,10 +494,18 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  #categoriaId{
+    border-radius: 20px;
+
+    option{
+      border-radius: 20px;
+    }
+  }
 }
 
 .categorias-dropdown {
   margin-top: 10px;
+ 
 }
 
 .categorias-dropdown select {

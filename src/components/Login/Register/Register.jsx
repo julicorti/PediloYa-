@@ -79,10 +79,13 @@ const Register = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
+          <div className="contenido-btn">
+          <Send to="/login" />
           <Link to="/login">
             <p>¿Ya tienes una cuenta? Inicia sesión</p>
           </Link>
-          <Send to="/login" />
+
+          </div>
         </form>
       </div>
     </div>

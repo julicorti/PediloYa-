@@ -2,20 +2,23 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../../SASS/style.css";
 import FormProducto from "./formulario";
+
 const AgregarProductos = () => {
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(""); // Para filtrar por categoría
   const [mostrarCategorias, setMostrarCategorias] = useState(false); // Controla si se muestra la lista de categorías
-
   const [editando, setEditando] = useState(null); // Estado para controlar qué producto se está editando
   const [error, setError] = useState(""); // Para manejar errores
 
   // Función para obtener todos los productos
-  const obtenerProductos = async () => {
+  const obtenerProductos = async (categoriaId = "") => {
     try {
       console.log("Cargando productos...");
-      const response = await axios.get("http://localhost:4000/productos");
+      const url = categoriaId
+        ? `http://localhost:4000/productos/categoria/${categoriaId}`
+        : "http://localhost:4000/productos"; // Filtrar productos por categoría
+      const response = await axios.get(url);
       console.log("Productos recibidos:", response.data);
       setProductos(response.data);
     } catch (err) {
@@ -37,28 +40,16 @@ const AgregarProductos = () => {
 
   // Llamadas a obtener productos y categorías cuando el componente se monta
   useEffect(() => {
-    obtenerProductos();
     obtenerCategorias();
+    obtenerProductos();
   }, []); // Solo se ejecuta una vez cuando el componente se monta
 
   // Efecto para cargar productos según la categoría seleccionada
   useEffect(() => {
     if (categoriaSeleccionada) {
-      const obtenerCategorias = async () => {
-        try {
-          console.log("Cargando categorías...");
-          const response = await axios.get("http://localhost:4000/categorias");
-          console.log("Categorías recibidas:", response.data); // Asegúrate de que esto muestra un array de categorías
-          setCategorias(response.data);
-        } catch (err) {
-          console.error("Error al obtener categorías:", err);
-          setError("Error al obtener categorías");
-        }
-      };
-      
-      obtenerCategorias();
+      obtenerProductos(categoriaSeleccionada);
     } else {
-      obtenerProductos();
+      obtenerProductos(); // Cargar todos los productos si no hay categoría seleccionada
     }
   }, [categoriaSeleccionada]); // Ejecuta solo si cambia la categoría
 
@@ -67,6 +58,7 @@ const AgregarProductos = () => {
     setCategoriaSeleccionada(e.target.value);
     setMostrarCategorias(false); // Cierra la lista de categorías después de seleccionar una
   };
+
   const toggleCategorias = () => {
     setMostrarCategorias(!mostrarCategorias);
   };
@@ -97,13 +89,17 @@ const AgregarProductos = () => {
 
   // Función para eliminar un producto
   const eliminarProducto = (productoId) => {
+    console.log("Intentando eliminar producto con ID:", productoId); // Agregar un log para depurar
+
     axios
       .delete(`http://localhost:4000/producto/${productoId}`)
       .then(() => {
+        console.log("Producto eliminado con éxito");
         setProductos(productos.filter((producto) => producto.id !== productoId));
       })
       .catch((error) => {
-        console.error("Hubo un error al eliminar el producto:", error);
+        console.error("Error al intentar eliminar el producto:", error.response || error);
+        alert("Hubo un problema al eliminar el producto.");
       });
   };
 
@@ -121,8 +117,6 @@ const AgregarProductos = () => {
               onChange={handleCategoriaChange}
             >
               <option value="">Todas</option>
-           
-
               {categorias.map((categoria) => (
                 <option key={categoria.id} value={categoria.id}>
                   {categoria.nombre}
@@ -136,43 +130,50 @@ const AgregarProductos = () => {
       {error && <div className="error">{error}</div>} {/* Mostrar error si lo hay */}
 
       <div className="lista-productos">
-        <table>
-          <thead>
+        <table className="min-w-full table-auto border-collapse">
+          <thead className="bg-gray-100">
             <tr>
-              <th>Imagen</th>
-              <th>Nombre</th>
-              <th>Categoría</th>
-              <th>Cantidad</th>
-              <th>Precio</th>
-              <th>Descripción</th>
-              <th>Acciones</th>
+              <th className="px-4 py-2 text-left">Imagen</th>
+              <th className="px-4 py-2 text-left">Nombre</th>
+              <th className="px-4 py-2 text-left">Categoría</th>
+              <th className="px-4 py-2 text-left">Cantidad</th>
+              <th className="px-4 py-2 text-left">Precio</th>
+              <th className="px-4 py-2 text-left">Descripción</th>
+              <th className="px-4 py-2 text-left">Acciones</th>
             </tr>
           </thead>
           <tbody>
             {productos.map((producto) => (
-              <tr key={producto.id}>
-                <td>
+              <tr key={producto.id} className="border-t">
+                <td className="px-4 py-2">
                   <div
                     className="imagen-placeholder"
-                    style={{ backgroundImage: `url(${producto.imagenUrl})` }}
-                  ></div>
+                    style={{ backgroundImage: `url(${producto.imagen})` }}
+                  >
+                    <img
+                      src={`http://localhost:4000/${producto.imagen}`}
+                      alt=""
+                    />
+                  </div>
                 </td>
-                <td>
+                <td className="px-4 py-2">
                   {editando === producto.id ? (
                     <input
                       type="text"
                       value={producto.nombre}
                       onChange={(e) => handleInputChange(e, producto.id, "nombre")}
+                      className="px-3 py-1 border rounded-md text-sm w-full"
                     />
                   ) : (
                     producto.nombre
                   )}
                 </td>
-                <td>
+                <td className="px-4 py-2">
                   {editando === producto.id ? (
                     <select
                       value={producto.id_categoria}
                       onChange={(e) => handleInputChange(e, producto.id, "id_categoria")}
+                      className="px-3 py-1 border rounded-md text-sm w-full"
                     >
                       {categorias.map((categoria) => (
                         <option key={categoria.id} value={categoria.id}>
@@ -184,49 +185,64 @@ const AgregarProductos = () => {
                     <>{producto.categoria}</>
                   )}
                 </td>
-                <td>
+                <td className="px-4 py-2">
                   {editando === producto.id ? (
                     <input
                       type="number"
                       value={producto.cantidad_stock}
                       onChange={(e) => handleInputChange(e, producto.id, "cantidad_stock")}
+                      className="px-3 py-1 border rounded-md text-sm w-full"
                     />
                   ) : (
                     producto.cantidad_stock
                   )}
                 </td>
-                <td>
+                <td className="px-4 py-2">
                   {editando === producto.id ? (
                     <input
                       type="number"
                       value={producto.precio}
                       onChange={(e) => handleInputChange(e, producto.id, "precio")}
+                      className="px-3 py-1 border rounded-md text-sm w-full"
                     />
                   ) : (
                     producto.precio
                   )}
                 </td>
-                <td>
+                <td className="px-4 py-2">
                   {editando === producto.id ? (
                     <input
                       type="text"
                       value={producto.descripcion}
                       onChange={(e) => handleInputChange(e, producto.id, "descripcion")}
+                      className="px-3 py-1 border rounded-md text-sm w-full"
                     />
                   ) : (
                     producto.descripcion
                   )}
                 </td>
-                <td>
+                <td className="px-4 py-2">
                   {editando === producto.id ? (
-                    <>
-                      <button onClick={() => guardarCambios(producto.id)}>Guardar cambios</button>
-                      <button onClick={() => setEditando(null)}>Cancelar</button>
-                    </>
+                    <button
+                      onClick={() => guardarCambios(producto.id)}
+                      className="px-4 py-1 bg-blue-500 text-white rounded-md"
+                    >
+                      Guardar
+                    </button>
                   ) : (
                     <>
-                      <button onClick={() => setEditando(producto.id)}>Editar</button>
-                      <button onClick={() => eliminarProducto(producto.id)}>Eliminar</button>
+                      <button
+                        onClick={() => setEditando(producto.id)}
+                        className="px-4 py-1 bg-yellow-500 text-white rounded-md"
+                      >
+                        Editar
+                      </button>
+                      <button
+                        onClick={() => eliminarProducto(producto.id)}
+                        className="px-4 py-1 bg-red-500 text-white rounded-md"
+                      >
+                        Eliminar
+                      </button>
                     </>
                   )}
                 </td>
@@ -235,10 +251,6 @@ const AgregarProductos = () => {
           </tbody>
         </table>
       </div>
-      <div>
-
-      </div>
-
     </div>
   );
 };

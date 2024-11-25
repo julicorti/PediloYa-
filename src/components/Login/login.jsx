@@ -77,7 +77,7 @@ const Login = () => {
               required
             />
             {error && <p className="error-message">{error}</p>}
-            <Send type="submit" />
+            <Send id="btn-lg" type="submit" />
           </form>
           <Link to="/register">
             <p>No tienes cuenta todavía? Regístrate</p>
