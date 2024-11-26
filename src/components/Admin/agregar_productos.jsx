@@ -130,127 +130,127 @@ const AgregarProductos = () => {
       {error && <div className="error">{error}</div>} {/* Mostrar error si lo hay */}
 
       <div className="lista-productos">
-        <table className="min-w-full table-auto border-collapse">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-4 py-2 text-left">Imagen</th>
-              <th className="px-4 py-2 text-left">Nombre</th>
-              <th className="px-4 py-2 text-left">Categoría</th>
-              <th className="px-4 py-2 text-left">Cantidad</th>
-              <th className="px-4 py-2 text-left">Precio</th>
-              <th className="px-4 py-2 text-left">Descripción</th>
-              <th className="px-4 py-2 text-left">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {productos.map((producto) => (
-              <tr key={producto.id} className="border-t">
-                <td className="px-4 py-2">
-                  <div
-                    className="imagen-placeholder"
-                    style={{ backgroundImage: `url(${producto.imagen})` }}
-                  >
-                    <img
-                      src={`http://localhost:4000/${producto.imagen}`}
-                      alt=""
-                    />
-                  </div>
-                </td>
-                <td className="px-4 py-2">
-                  {editando === producto.id ? (
-                    <input
-                      type="text"
-                      value={producto.nombre}
-                      onChange={(e) => handleInputChange(e, producto.id, "nombre")}
-                      className="px-3 py-1 border rounded-md text-sm w-full"
-                    />
-                  ) : (
-                    producto.nombre
-                  )}
-                </td>
-                <td className="px-4 py-2">
-                  {editando === producto.id ? (
-                    <select
-                      value={producto.id_categoria}
-                      onChange={(e) => handleInputChange(e, producto.id, "id_categoria")}
-                      className="px-3 py-1 border rounded-md text-sm w-full"
-                    >
-                      {categorias.map((categoria) => (
-                        <option key={categoria.id} value={categoria.id}>
-                          {categoria.nombre}
-                        </option>
-                      ))}
-                    </select>
-                  ) : (
-                    <>{producto.categoria}</>
-                  )}
-                </td>
-                <td className="px-4 py-2">
-                  {editando === producto.id ? (
-                    <input
-                      type="number"
-                      value={producto.cantidad_stock}
-                      onChange={(e) => handleInputChange(e, producto.id, "cantidad_stock")}
-                      className="px-3 py-1 border rounded-md text-sm w-full"
-                    />
-                  ) : (
-                    producto.cantidad_stock
-                  )}
-                </td>
-                <td className="px-4 py-2">
-                  {editando === producto.id ? (
-                    <input
-                      type="number"
-                      value={producto.precio}
-                      onChange={(e) => handleInputChange(e, producto.id, "precio")}
-                      className="px-3 py-1 border rounded-md text-sm w-full"
-                    />
-                  ) : (
-                    producto.precio
-                  )}
-                </td>
-                <td className="px-4 py-2">
-                  {editando === producto.id ? (
-                    <input
-                      type="text"
-                      value={producto.descripcion}
-                      onChange={(e) => handleInputChange(e, producto.id, "descripcion")}
-                      className="px-3 py-1 border rounded-md text-sm w-full"
-                    />
-                  ) : (
-                    producto.descripcion
-                  )}
-                </td>
-                <td className="px-4 py-2">
-                  {editando === producto.id ? (
-                    <button
-                      onClick={() => guardarCambios(producto.id)}
-                      className="px-4 py-1 bg-blue-500 text-white rounded-md"
-                    >
-                      Guardar
-                    </button>
-                  ) : (
-                    <>
-                      <button
-                        onClick={() => setEditando(producto.id)}
-                        className="px-4 py-1 bg-yellow-500 text-white rounded-md"
-                      >
-                        Editar
-                      </button>
-                      <button
-                        onClick={() => eliminarProducto(producto.id)}
-                        className="px-4 py-1 bg-red-500 text-white rounded-md"
-                      >
-                        Eliminar
-                      </button>
-                    </>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+  <table className="min-w-full table-auto border-collapse">
+    <thead className="bg-gray-100">
+      <tr>
+        <th className="px-4 py-2 text-left">Imagen</th>
+        <th className="px-4 py-2 text-left">Nombre</th>
+        <th className="px-4 py-2 text-left">Categoría</th>
+        <th className="px-4 py-2 text-left">Cantidad</th>
+        <th className="px-4 py-2 text-left">Precio</th>
+        <th className="px-4 py-2 text-left">Descripción</th>
+        <th className="px-4 py-2 text-left">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {productos.map((producto) => (
+        <tr key={producto.id} className="border-t">
+          <td className="px-4 py-2">
+            <div
+              className="imagen-placeholder"
+              style={{ backgroundImage: `url(${producto.imagen})` }}
+            >
+              <img
+                src={`http://localhost:4000/${producto.imagen}`}
+                alt=""
+              />
+            </div>
+          </td>
+          <td className="px-4 py-2">
+            {editando === producto.id ? (
+              <input
+                type="text"
+                value={producto.nombre}
+                onChange={(e) => handleInputChange(e, producto.id, "nombre")}
+                className="px-3 py-1 border rounded-md text-sm w-full"
+              />
+            ) : (
+              producto.nombre
+            )}
+          </td>
+          <td className="px-4 py-2">
+            {editando === producto.id ? (
+              <select
+                value={producto.id_categoria}
+                onChange={(e) => handleInputChange(e, producto.id, "id_categoria")}
+                className="px-3 py-1 border rounded-md text-sm w-full"
+              >
+                {categorias.map((categoria) => (
+                  <option key={categoria.id} value={categoria.id}>
+                    {categoria.nombre}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              producto.categoria
+            )}
+          </td>
+          <td className="px-4 py-2">
+            {editando === producto.id ? (
+              <input
+                type="number"
+                value={producto.cantidad_stock}
+                onChange={(e) => handleInputChange(e, producto.id, "cantidad_stock")}
+                className="px-3 py-1 border rounded-md text-sm w-full"
+              />
+            ) : (
+              producto.cantidad_stock
+            )}
+          </td>
+          <td className="px-4 py-2">
+            {editando === producto.id ? (
+              <input
+                type="number"
+                value={producto.precio}
+                onChange={(e) => handleInputChange(e, producto.id, "precio")}
+                className="px-3 py-1 border rounded-md text-sm w-full"
+              />
+            ) : (
+              producto.precio
+            )}
+          </td>
+          <td className="px-4 py-2">
+            {editando === producto.id ? (
+              <input
+                type="text"
+                value={producto.descripcion}
+                onChange={(e) => handleInputChange(e, producto.id, "descripcion")}
+                className="px-3 py-1 border rounded-md text-sm w-full"
+              />
+            ) : (
+              producto.descripcion
+            )}
+          </td>
+          <td className="botones px-4 py-2">
+            {editando === producto.id ? (
+              <button
+                onClick={() => guardarCambios(producto.id)}
+                className="px-4 py-1 bg-blue-500 text-white rounded-md"
+              >
+                Guardar
+              </button>
+            ) : (
+              <>
+                <button
+                  onClick={() => setEditando(producto.id)}
+                  className="px-4 py-1 bg-yellow-500 text-white rounded-md"
+                >
+                  Editar
+                </button>
+                <button
+                  onClick={() => eliminarProducto(producto.id)}
+                  className="px-4 py-1 bg-red-500 text-white rounded-md"
+                >
+                  Eliminar
+                </button>
+              </>
+            )}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
     </div>
   );
 };

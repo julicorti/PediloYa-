@@ -103,7 +103,6 @@ const ListaPedidos = ({ socket }) => {
       <p className="loading">Cargando pedidos...</p>
     ) : (
       <>
-        <h2>Lista de Pedidos</h2>
         {pedidos.length === 0 ? (
           <p className="no-pedidos">No hay pedidos disponibles.</p>
         ) : (
@@ -128,7 +127,7 @@ const ListaPedidos = ({ socket }) => {
                   <td>
                     {pedido.productos.map((producto) => (
                       <div key={producto.producto_id}>
-                        {producto.nombre} - {producto.cantidad} x ${producto.precio}
+                        {producto.producto_nombre} - {producto.cantidad} x ${producto.precio}
                       </div>
                     ))}
                   </td>

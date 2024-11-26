@@ -37,7 +37,7 @@ const Producto = ({ categoriaId }) => {
       confirmButtonText: 'OK',
       background: '#f8f9fa', // Cambia el color de fondo
       color: '#333', // Cambia el color del texto
-      timer: 2000, // Desaparece automáticamente después de 2 segundos
+      timer: 1000, // Desaparece automáticamente después de 2 segundos
     }); };
 
   return (

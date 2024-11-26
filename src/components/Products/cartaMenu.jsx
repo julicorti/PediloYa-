@@ -1,18 +1,20 @@
 import { DarkModeContext } from "../context/modeContext";
 import { CartContext } from "../context/CartContext";
+import { AuthContext } from "../context/AuthContext"; // Importa el contexto de autenticación
 import { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Importa useNavigate
 import axios from "axios";
-import Swal from "sweetalert2"; // Importa SweetAlert
+import Swal from "sweetalert2";
 
 const CartaMenu = ({ categoriaId }) => {
   const { darkMode } = useContext(DarkModeContext);
-  const { agregarAlCarrito } = useContext(CartContext); // Obtiene la función del contexto
+  const { agregarAlCarrito } = useContext(CartContext);
+  const { isAuthenticated } = useContext(AuthContext); // Obtén el estado de autenticación
+  const navigate = useNavigate(); // Hook para redirección
 
-  // Definir estado y efectos fuera de condicionales
   const [productos, setProductos] = useState([]);
   const [error, setError] = useState(null);
 
-  // Efecto para obtener productos
   useEffect(() => {
     const fetchProductos = async () => {
       try {
@@ -26,18 +28,23 @@ const CartaMenu = ({ categoriaId }) => {
     };
 
     fetchProductos();
-  }, [categoriaId]); // Dependencia de categoriaId
+  }, [categoriaId]);
 
   const handleAddToCart = (producto) => {
+    if (!isAuthenticated) {
+      navigate("/login"); // Redirige al login si el usuario no está autenticado
+      return;
+    }
+
     agregarAlCarrito({ ...producto, cantidad: 1 });
     Swal.fire({
-      icon: 'success',
-      title: 'Producto Agregado',
+      icon: "success",
+      title: "Producto Agregado",
       text: `${producto.nombre} ha sido agregado al carrito.`,
-      confirmButtonText: 'OK',
-      background: '#f8f9fa',
-      color: '#333',
-      timer: 2000,
+      confirmButtonText: "OK",
+      background: "#f8f9fa",
+      color: "#333",
+      timer: 1000,
     });
   };
 
@@ -50,9 +57,15 @@ const CartaMenu = ({ categoriaId }) => {
             producto.cantidad_stock > 0 && (
               <div
                 key={producto.id}
-                className={`w-64 p-4 rounded-xl shadow-lg transition-all duration-300 ${darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"}`}
+                className={`w-64 p-4 rounded-xl shadow-lg transition-all duration-300 ${
+                  darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"
+                }`}
+                style={{
+                  backgroundColor: darkMode ? "#111214" : "white", // Cambiar color de fondo a #242732
+                  color:  darkMode ? "white" : "#000", // Asegurarse de que el texto sea claro sobre el fondo oscuro
+                }}
               >
-                <div
+                <div 
                   className="imagen-placeholder h-48 bg-cover bg-center mb-4"
                   style={{
                     backgroundImage: `url(http://localhost:4000/${producto.imagen})`,

@@ -29,14 +29,14 @@ function App() {
             {/* Rutas públicas */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            {/* Rutas protegidas */}
             <Route
               path="/"
               element={
-                <ProtectedRoute>
+             
                   <Inicio />
-                </ProtectedRoute>
+               
               }
+            
             />
             <Route
               path="/productos/categoria/:categoriaId"
@@ -128,7 +128,7 @@ function NavBarContainer() {
   const hideNavBar = noNavBarRoutes.some((route) => route === location.pathname);
 
   // Si el usuario está autenticado y no está en las rutas de login/register, mostramos el NavBar
-  return !hideNavBar && isAuthenticated ? <NavBar /> : null;
+  return !hideNavBar ? <NavBar /> : null;
 }
 
 export default App;

@@ -1,5 +1,3 @@
-// pedido.scss
-
 // Colores y variables
 $primary-color: #3498db;
 $secondary-color: #2c3e50;
@@ -11,7 +9,7 @@ $danger-color: #e74c3c;
 $success-color: #2ecc71;
 
 .pedido-lista-container {
-  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   padding: 20px;
   background-color: $white;
@@ -30,6 +28,11 @@ $success-color: #2ecc71;
     text-align: center;
     font-size: 1.2rem;
     color: $secondary-color;
+  }
+
+  // Hacemos que la tabla sea desplazable horizontalmente en pantallas pequeñas
+  table-container {
+    overflow-x: auto; // Permite desplazar la tabla en pantallas pequeñas
   }
 
   table {
@@ -104,6 +107,183 @@ $success-color: #2ecc71;
             }
           }
         }
+      }
+    }
+  }
+}
+
+// Media Queries (Responsividad)
+@media (max-width: 1024px) {
+  .pedido-lista-container {
+    padding: 15px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  table {
+    font-size: 0.9rem;
+
+    thead th {
+      padding: 10px;
+    }
+
+    tbody td {
+      padding: 10px;
+    }
+
+    .acciones {
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+
+      .btn {
+        width: 100%;
+        padding: 12px;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .pedido-lista-container {
+    padding: 15px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  table {
+    font-size: 0.9rem;
+
+    thead th {
+      padding: 10px;
+    }
+
+    tbody td {
+      padding: 10px;
+    }
+
+    .acciones {
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+
+      .btn {
+        width: 100%;
+        padding: 12px;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .pedido-lista-container {
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  table {
+    font-size: 0.85rem;
+
+    thead th {
+      padding: 8px;
+    }
+
+    tbody td {
+      padding: 8px;
+    }
+
+    .acciones {
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+
+      .btn {
+        width: 100%;
+        padding: 12px;
+        font-size: 0.85rem;
+      }
+    }
+  }
+
+  // Estilos similares al ejemplo para la tabla
+  .pedido-lista-container {
+    margin-top: 50px;
+  }
+
+  .table-container {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  table th {
+    display: none;
+  }
+
+  table td {
+    display: block;
+    text-align: left;
+    padding: 5px 0;
+  }
+
+  table tr {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+  }
+
+  table td img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .acciones .btn {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pedido-lista-container {
+    padding: 8px;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+  }
+
+  table {
+    font-size: 0.8rem;
+
+    thead th {
+      padding: 6px;
+    }
+
+    tbody td {
+      padding: 6px;
+    }
+
+    .acciones {
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+
+      .btn {
+        width: 100%;
+        padding: 10px;
+        font-size: 0.8rem;
       }
     }
   }

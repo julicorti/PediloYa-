@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import "../../SASS/style.css";
 
 function ListaUsuarios() {
   const [usuarios, setUsuarios] = useState([]);
@@ -31,12 +32,7 @@ function ListaUsuarios() {
     return usuarios.map((usuario) => (
       <div className="item-usuario" key={usuario.id}>
         <div className="item-izquierda">
-          <img 
-            src={usuario.emailHash 
-              ? `https://www.gravatar.com/avatar/${usuario.emailHash}` 
-              : '/img/default-avatar.png'} 
-            alt={usuario.nombre || 'Usuario'} 
-          />
+          
         </div>
         <div className="item-derecha">
           <div><strong>Nombre:</strong> {usuario.nombre || 'Desconocido'}</div>

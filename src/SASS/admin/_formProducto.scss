@@ -1,91 +1,136 @@
 .pg {
-    height: 93vh;
+  height: 93vh;
+  display: flex;
+  margin-top: 40px;
+  justify-content: center;
+  align-items: center;
+  background-color: #f1f1f1;
+
+  .product-form {
+    width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: flex;
-    margin-top: 40px;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    background-color: #f1f1f1; // Opcional, para darle color al fondo
-  
-    .product-form {
-      width: 800px;
-      margin: 0 auto;
-      padding: 2rem;
-      background-color: #f8f9fa;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    .form-row {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-  
-      .form-row {
-        display: flex;
-        justify-content: space-between;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-        width: 100%; // Asegura que el contenido no se desborde
-  
-        .input-group {
-          flex: 1;
-          min-width: 200px;
-          
-          label {
-            display: block;
-            font-size: 0.9rem;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 0.5rem;
-          }
-  
-          input,
-          select,
-          textarea {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            color: #333;
-            transition: border-color 0.3s ease;
-  
-            &:focus {
-              border-color: #007bff;
-              box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
-              outline: none;
-            }
-          }
-  
-          textarea {
-            resize: none;
-            min-height: 100px;
-          }
-  
-          input[type="file"] {
-            padding: 0.5rem;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      width: 100%;
+
+      .input-group {
+        flex: 1;
+        min-width: 0; // Evita que los elementos se desborden
+        label {
+          display: block;
+          font-size: 0.9rem;
+          font-weight: bold;
+          color: #333;
+          margin-bottom: 0.5rem;
+        }
+
+        input,
+        select,
+        textarea {
+          width: 100%;
+          padding: 0.8rem;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          font-size: 0.9rem;
+          color: #333;
+          transition: border-color 0.3s ease;
+
+          &:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+            outline: none;
           }
         }
-      }
-  
-      #guardar {
-        display: block;
-        width: 100%;
-        padding: 0.8rem;
-        font-size: 1rem;
-        font-weight: bold;
-        color: #fff;
-        background-color: #6c757d;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-  
-        &:hover {
-          background-color: #343a40;
+
+        textarea {
+          resize: none;
+          min-height: 100px;
         }
-  
-        &:active {
-          background-color: #23272b;
+
+        input[type="file"] {
+          padding: 0.5rem;
         }
       }
     }
+
+    #guardar {
+      display: block;
+      width: 100%;
+      padding: 0.8rem;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #fff;
+      background-color: #6c757d;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #343a40;
+      }
+
+      &:active {
+        background-color: #23272b;
+      }
+    }
   }
-  
+
+  // Responsividad optimizada
+  @media (max-width: 1200px) {
+    .product-form {
+      width: 70%; // Ajusta el ancho para pantallas medianas
+      padding: 1.5rem;
+    }
+
+    .form-row {
+      flex-direction: column; // Cambia a columna para evitar desbordamientos
+      gap: 1rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .product-form {
+      width: 90%; // Asegura que ocupe la mayor parte del ancho
+      padding: 1rem;
+    }
+
+    .form-row {
+      flex-direction: column; // Asegura que los elementos estén apilados
+      gap: 0.5rem;
+    }
+
+    #guardar {
+      font-size: 0.9rem; // Ajusta el tamaño del texto
+      padding: 0.7rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .product-form {
+      width: 95%; // Ocupa casi todo el ancho disponible
+      padding: 0.5rem;
+    }
+
+    .form-row {
+      flex-direction: column;
+      gap: 0.3rem; // Reduce el espacio entre filas
+    }
+
+    #guardar {
+      font-size: 0.8rem; // Botón más compacto
+      padding: 0.5rem;
+    }
+  }
+}

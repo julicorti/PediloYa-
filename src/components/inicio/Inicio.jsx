@@ -31,8 +31,8 @@ const Inicio = () => {
       </div>
       <div className={`seccion2 ${darkMode ? "dark" : "light"}`}>
    
-
-        <section class="quienes-somos">
+      
+        <section class={`quienes-somos ${darkMode ? "dark" : "light"}`}>
           <div class="icon-container">
             <div class="icon">
               <img src={img5} alt="Icono Comida" />
@@ -47,8 +47,8 @@ const Inicio = () => {
               <img src={img10} alt="Icono Pan" />
             </div>
           </div>
-          <div class="contenido">
-          <div class="titulo">Quiénes Somos</div>
+          <div class={`contenido ${darkMode ? "dark" : "light"}`}>
+          <div class={`titulo ${darkMode ? "dark" : "light"}`}>Quiénes Somos</div>
             <p>
               Bienvenidos al <strong>Proyecto Buffet</strong>, una iniciativa
               colaborativa desarrollada por los estudiantes de 6to 3ra.
