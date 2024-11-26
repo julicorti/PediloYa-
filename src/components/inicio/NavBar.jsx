@@ -42,18 +42,16 @@ const NavBar = ({ onLogout }) => {
           id="navBar"
         >
           {/* Logo */}
-          <div className="flex items-center space-x-3 rtl:space-x-reverse" id="logo">
+          <div className="flex items-center space-x-3 rtl:space-x-reverse">
             <Link to="/">
               <img
                 src={darkMode ? logoDark : logoLight}
                 alt="Logo"
-                className="object-contain"
-
+                className="w-32 h-5 object-contain"
               />
             </Link>
             
           </div>
-
           {/* Botones a la derecha */}
           <div className="mode-container">
             <Mode />
